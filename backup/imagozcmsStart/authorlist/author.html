@@ -1,0 +1,35 @@
+﻿
+<?php 
+/*Загрузка функций в шаблон*/
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php'?>
+
+<!DOCKTYPE html>
+<html>
+<head> 
+
+<title>Book list</title> 
+<meta charset = "utf-8">
+</head>
+<body>
+	<p><center><b><a href = "..">Главная страница</a></b></center></p><br>
+	<br>
+	<p><a href = '?addbook'>Добавить книгу</a></p>
+	<h1>Книги в базе данных</h1>
+	<br>
+		
+		 <?php foreach ($bookname as $book): ?> 
+		  <form action = "?deletebook" method = "post">
+		 <blockquote>
+			<p>
+			<?php htmlecho($book['text']);?>
+			<input type = "hidden" name = "idbook" value = "<?php echo $book['idbook']; ?>">
+			<input type = "submit" value = "Del">
+			(автор <?php htmlecho($book['authorname']);?>)	
+			</p>
+		 </blockquote>
+		  </form>		 
+		 <?php endforeach; ?>	
+		 
+
+</body>
+</html>

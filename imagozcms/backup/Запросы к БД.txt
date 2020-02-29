@@ -1,0 +1,9 @@
+CREATE TABLE metapost (idpost INT NOT NULL, idauthor INT NOT NULL, idnews INT NOT NULL, PRIMARY KEY (idpost, idauthor, idnews)) DEFAULT CHARACTER SET utf8 ENGINE=InnoDB
+
+ALTER TABLE metapost ADD FOREIGN KEY (idauthor) REFERENCES author (id)
+
+ALTER TABLE newsblock ADD FOREIGN KEY (idcategory) REFERENCES category (id)
+
+ALTER TABLE metapost ADD FOREIGN KEY (idmeta) REFERENCES meta (id)
+
+ALTER TABLE votedauthor ADD FOREIGN KEY (idnews) REFERENCES newsblock (id)

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0"
+
+xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	 >
+	
+<?php 
+/*Загрузка функций в шаблон*/
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';?>
+
+<channel>
+
+<title>Hi-Tech новости, игры, наука, интернет в отражении на imagoz.ru</title>
+
+<link>https://imagoz.ru/</link>
+
+<description>
+
+Портал IMAGOZ. Место где мы рассматриваем мир Hi-Tech, игровую индустрию, науку и технику в оригинальном авторском отражении!
+
+</description>
+<image>
+     <url>https://imagoz.ru/logomain.jpg</url>
+</image>
+
+<language>ru</language>
+
+	<?php foreach ($newsMain as $newsMain_3): ?>
+	
+<item>
+
+<title><?php echo $newsMain_3['newstitle']; ?></title>
+
+<link>https://imagoz.ru/viewnews/?id=<?php htmlecho ($newsMain_3['id']); ?></link>
+
+<pubDate><?php echo $newsMain_3['newsdate']; ?></pubDate>
+
+<enclosure url="https://imagoz.ru/images/<?php echo $newsMain_3['imghead']; ?>" type="image/jpeg"/>
+
+<description>
+
+<![CDATA[
+
+<?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($newsMain_3['textnews'])), 0, 50))); ?> [...]
+
+]]>
+
+</description>
+
+</item>
+
+<?php endforeach; ?>
+
+</channel>
+
+</rss>

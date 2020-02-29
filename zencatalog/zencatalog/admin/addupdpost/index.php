@@ -1,0 +1,1093 @@
+﻿<?php
+
+/*Загрузка функций для формы входа*/
+require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+
+if (loggedIn())
+{
+	/*Если loggedIn = TRUE, выводится имя пользователя иначе меню авторизации*/
+}
+
+else
+{
+	include '../login.html.php';
+	exit();
+}
+
+/*Загрузка сообщения об ошибке входа*/
+if ((!userRole('Администратор')) && (!userRole('Автор')))
+{
+	$title = 'Ошибка доступа';//Данные тега <title>
+	$headMain = 'Ошибка доступа';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	$error = 'В данный раздел доступ запрещён!';
+	include '../accessfail.html.php';
+	exit();
+}
+
+/*Ошибка доступа, если автор не взял задание*/
+if ((userRole('Автор')) && (!isset ($_POST['id'])))
+{
+	$title = 'Ошибка доступа';//Данные тега <title>
+	$headMain = 'Ошибка доступа';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	$error = 'Сначала необходимо получить задание!';
+	include '../accessfail.html.php';
+	exit();
+}
+
+/*Вывод ссылок на разделы администрирования списков*/
+if (userRole('Администратор'))
+{
+	$addAuthor = '<a href="/admin/authorlist/">Редактировать список авторов</a>';
+	$addCatigorys = '<a href="/admin/categorylist/">Редактировать рубрики</a>';
+	$addMetas = '| <a href="/admin/metalist/" class="btn btn-primary-sm">Редактировать список тегов</a>';
+}
+
+else
+{
+	$addAuthor = '';
+	$addCatigorys = '';
+	$addMetas = '';
+}
+
+/*Добавление информации о статье*/
+if (isset($_GET['add']))//Если есть переменная add выводится форма
+{
+	$title = 'Добавить новую статью';//Данные тега <title>
+	$headMain = 'Добавить новую статью';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	$action = 'addform';
+	$posttitle = '';
+	$description = '';
+	$text = '';
+	$imgalt = '';
+	$videoyoutube = '';
+	$idauthor = '';
+	$idcategory = '';
+	$id = '';
+	$button = 'Добавить статью';
+	$errorForm = '';
+	$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
+	
+	if (isset($_POST['id']))
+	{
+		@session_start();//Открытие сессии для сохранения id задания
+	
+		$_SESSION['idtask'] = $_POST['id'];
+	}
+	
+	else
+	{
+		@session_start();//Открытие сессии для сохранения id задания
+	
+		$_SESSION['idtask'] = 0;
+	}
+	
+	@session_start();//Открытие сессии для сохранения id автора
+	
+	$_SESSION['authorname'] = $authorPost;
+	
+	/*Вывод информации для формы добавления*/
+
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	/*Список рубрик*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, categoryname FROM category');
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода category '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$categorys_1[] = array('idcategory' => $row['id'], 'categoryname' => $row['categoryname']);
+	}
+	
+	/*Список тематик*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, metaname FROM meta');
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода meta '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$metas_1[] = array('idmeta' => $row['id'], 'metaname' => $row['metaname'], 'selected' => FALSE);
+	}
+	
+	include 'addupdform.html.php';
+	exit();
+	
+}
+
+/*Обновление информации о статье*/
+if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
+{
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	/*Команда SELECT*/
+	try
+	{
+		$sql = 'SELECT id, post, posttitle, idauthor, imghead, imgalt, translittitle, videoyoutube,  description, idcategory FROM posts WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Error select book: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s -> fetch();
+	
+	$title = 'Обновление статьи';//Данные тега <title>
+	$headMain = 'Обновление статьи';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	$action = 'editform';
+	$text = $row['post'];
+	$posttitle = $row['posttitle'];
+	$description = $row['description'];
+	$imgalt = $row['imgalt']; 
+	$videoyoutube = $row['videoyoutube']; 
+	$idcategory = $row['idcategory'];
+	$id = $row['id'];
+	$button = 'Обновить информацию о статье';
+	$errorForm ='';
+	
+	@session_start();//Открытие сессии для сохранения названия файла изображения
+	
+	$_SESSION['imghead'] = $row['imghead'];
+	
+	
+	/*Выбор автора статьи*/
+	try
+	{
+		$result = $pdo -> query ('SELECT authorname FROM posts INNER JOIN author ON idauthor = author.id WHERE posts.id = '.$id);
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода author '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$authors_1[] = array('authorname' => $row['authorname']);
+	}
+	
+	$authorPost = $row['authorname'];//возвращает имя автора00
+	
+	/*Список рубрик*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, categoryname FROM category');
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода category '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$categorys_1[] = array('idcategory' => $row['id'], 'categoryname' => $row['categoryname']);
+	}
+	
+	/*Статьи по тематикам*/
+	try
+	{
+		$sql = 'SELECT idmeta FROM metapost WHERE idpost = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $id);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода metapost ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($s as $row)
+	{
+		$selectedMeta[] = $row['idmeta'];
+	}
+	
+	/*Список тематик*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, metaname FROM meta');
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода meta '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$metas_1[] = array('idmeta' => $row['id'],'metaname' => $row['metaname'], 'selected' => in_array($row['id'], $selectedMeta));
+	}
+
+	include 'addupdform.html.php';
+	exit();
+}
+
+/*команда INSERT  - добавление в базу данных*/
+if (isset($_GET['addform']))//Если есть переменная addform выводится форма
+{
+	$fileNameScript = 'img-'. time();//имя файла новости/статьи
+	$filePathScript = '/images/';//папка с изображениями для новости/статьи
+	
+	/*Загрузка функций для формы входа*/
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+	
+	/*Загрузка скрипта добавления файла*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+		
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	/*Возвращение id автора*/
+	
+	$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
+	
+	if (($_POST['category'] == '') || ($_POST['text'] == '') || ($_POST['posttitle'] == ''))
+	{
+		$title = 'Добавить новую новость';//Данные тега <title>
+		$headMain = 'Добавить новую новость';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$action = 'addform';
+		$idauthor = '';
+		$idcategory = '';
+		$id = '';
+		$button = 'Добавить новость';
+		$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
+		$errorForm = 'Один или несколько атрибутов не указаны. Выбирете все!';
+		
+		@session_start();//Открытие сессии для сохранения id автора
+	
+		$_SESSION['posttitle'] = $_POST['posttitle'];
+		$_SESSION['imgalt'] = $_POST['imgalt'];
+		$_SESSION['description'] = $_POST['description'];
+		$_SESSION['text'] = $_POST['text'];
+		
+		$posttitle = $_SESSION['posttitle'];
+		$imgalt = $_SESSION['imgalt'];
+		$description = $_SESSION['description'];
+		$text = $_SESSION['text'];
+		
+	/*Список рубрик*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, categoryname FROM category');
+	}
+	
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода category '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$categorys_1[] = array('idcategory' => $row['id'], 'categoryname' => $row['categoryname']);
+	}
+	
+	/*Список тематик*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, metaname FROM meta');
+	}
+		
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода meta '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$metas_1[] = array('idmeta' => $row['id'], 'metaname' => $row['metaname'], 'selected' => FALSE);
+	}
+	
+	include 'addupdform.html.php';
+	exit();
+	}
+	
+	/*Определение предворительной длины и цены текста*/
+	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	
+	$text = $_POST['text'];
+	$lengthText = lengthText($text);//определение длины текста
+	
+	/*Выбор цены за 1000 знаков*/
+	try
+	{
+		$result = $pdo -> query ('SELECT pricepost, bonus FROM author INNER JOIN rang ON idrang = rang.id
+									WHERE author.id = '.$selectedAuthor);
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка выбора цены статьи '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$price[] =  array ('pricepost' => $row['pricepost'], 'bonus' => $row['bonus'] );
+	}	
+	
+	$pricePost = $row['pricepost'];//цена за 1000 знаков
+	
+	$bonus = $row['bonus'];//выбор бонуса(множителя)
+	
+	$fullPrice = priceText($text, $pricePost, $bonus);//полная стоимость статьи
+	
+	/*Обновление параметров задания*/
+	
+	if($_SESSION['idtask'] != 0)
+	{
+		try
+		{
+			$pdo->beginTransaction();//инициация транзакции
+
+			$sql = 'UPDATE task SET readystatus  = "YES",
+									readydate = SYSDATE()
+								WHERE id = '.$_SESSION['idtask'];
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+
+			$sql = 'UPDATE author SET taskcount  = taskcount - 1
+								  WHERE id = '.$selectedAuthor;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+
+			$pdo->commit();//подтверждение транзакции			
+		}
+
+		catch (PDOException $e)
+		{
+			$pdo->rollBack();//отмена транзакции
+			
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Error transaction 1 newsblock '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();		
+		}
+	}
+	
+	try
+	{
+		$sql = 'INSERT INTO posts SET 
+			post = :post,
+			posttitle = :posttitle,	
+			description = :description,
+			postdate = SYSDATE(),
+			imgalt = :imgalt,
+			videoyoutube = :videoyoutube,
+			imghead = '.'"'.$fileName.'"'.', '.
+			'idauthor = '.$selectedAuthor.','.
+			'idcategory = :idcategory,
+			idtask = '.$_SESSION['idtask'].' ,
+			lengthtext = '.$lengthText.', 
+			pricepost = '.$pricePost.',
+			authorbonus = '.$bonus.',
+			pricetext = '.$fullPrice;
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':post', $_POST['text']);//отправка значения
+		$s -> bindValue(':posttitle', $_POST['posttitle']);//отправка значения
+		$s -> bindValue(':description', $_POST['description']);//отправка значения
+		$s -> bindValue(':imgalt', $_POST['imgalt']);//отправка значения
+		$s -> bindValue(':videoyoutube', $_POST['videoyoutube']);//отправка значения
+		$s -> bindValue(':idcategory', $_POST['category']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка добавления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$idpost_ind = $pdo->lastInsertId();//метод возвращает число, которое MySQL назначил последней автомнкрементной записи (INSERT INTO post - в данном случае)
+
+	if (isset ($_POST['metas']))
+	{
+		try
+		{
+			$sql = 'INSERT INTO metapost SET 
+				idpost = :idpost, 
+				idmeta = :idmeta,
+				idnews = 0,
+				idpromotion = 0';
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+
+			foreach	($_POST['metas'] as $idmetas)
+			{		
+				$s -> bindValue(':idpost', $idpost_ind);//отправка значения
+				$s -> bindValue(':idmeta', $idmetas);//отправка значения
+				$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+			}
+		}
+		catch (PDOException $e)
+		{
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка добавления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+		
+	}
+	
+	/*Отправка сообщений (тест)*/
+	
+	$titleMessage = 'Ваш материал "'. $_POST['posttitle'].'" находится в премодерации.';
+	$mailMessage = 'Вами был отправлен в премодерацию материал "'. $_POST['posttitle'].'". После успешной проверки Вам будет начислен '.$fullPrice.' балл';
+
+	toEmail_1($titleMessage, $mailMessage);//отправка письма
+	
+	$title = 'Материал в премодерации';//Данные тега <title>
+	$headMain = 'Материал в премодерации';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	
+	unset($_SESSION['idtask']);//закрытие сессии
+	
+	include 'premodsucc.html.php';
+	exit();
+}
+
+/*UPDATE - обновление информации в базе данных*/
+
+if (isset($_GET['editform']))//Если есть переменная editform выводится форма
+{
+	if (!is_uploaded_file($_FILES['upload']['tmp_name']))//если файл не загружен, оставить старое имя
+	{
+		$fileName = $_SESSION['imghead'];
+	}
+	
+	else
+	{
+		/*Удаление старого файла изображения*/
+		$fileName = $_SESSION['imghead'];
+		$delFile = $_SERVER['DOCUMENT_ROOT'] . '/images/'.$fileName;//путь к файлу для удаления
+		unlink($delFile);//удаление файла
+		
+		$fileNameScript = 'img-'. time();//имя файла новости/статьи
+		$filePathScript = '/images/';//папка с изображениями для новости/статьи
+		
+		/*Загрузка скрипта добавления файла*/
+		include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+	}
+	
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	if (($_POST['category'] == '') || ($_POST['text'] == '') || ($_POST['posttitle'] == ''))
+	{
+		$title = 'В форме есть незаполненные поля!';//Данные тега <title>
+		$headMain = 'В форме есть незаполненные поля!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Один или несколько атрибутов не указаны. Выбирете все.';
+		include 'error.html.php';
+		exit();
+	}
+	
+	/*Определение предворительной длины и цены текста*/
+	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	
+	$text = $_POST['text'];
+	$lengthText = lengthText($text);//определение длины текста
+	
+	/*Выбор цены за 1000 знаков*/
+	try
+	{
+		$sql = 'SELECT pricepost, authorbonus FROM posts WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);
+		$s -> execute();
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка выбора цены статьи '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s -> fetch();
+	
+	$pricePost = $row['pricepost'];//цена за 1000 знаков
+	$bonus = $row['authorbonus'];
+	
+	$fullPrice = priceText($text, $pricePost, $bonus);//полная стоимость статьи
+	
+	try
+	{
+		$sql = 'UPDATE posts SET 
+			post = :post,
+			posttitle = :posttitle,
+			description = :description,
+			imgalt = :imgalt,
+			videoyoutube = :videoyoutube,
+			imghead = '.'"'.$fileName.'"'.', '.
+			'idcategory = :idcategory,
+			lengthtext = '.$lengthText.', 
+			pricetext = '.$fullPrice.
+			' WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> bindValue(':post', $_POST['text']);//отправка значения
+		$s -> bindValue(':posttitle', $_POST['posttitle']);//отправка значения
+		$s -> bindValue(':description', $_POST['description']);//отправка значения
+		$s -> bindValue(':imgalt', $_POST['imgalt']);//отправка значения
+		$s -> bindValue(':videoyoutube', $_POST['videoyoutube']);//отправка значения
+		$s -> bindValue(':idcategory', $_POST['category']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка обновления информации post'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	try
+	{
+		$sql = 'DELETE FROM metapost WHERE idpost = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	if (isset ($_POST['metas']))
+	{
+		try
+		{
+			$sql = 'INSERT INTO metapost SET 
+				idpost = :idpost, 
+				idmeta = :idmeta,
+				idnews = 0,
+				idpromotion = 0';
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+
+			foreach	($_POST['metas'] as $idmetas)
+			{		
+				$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+				$s -> bindValue(':idmeta', $idmetas);//отправка значения
+				$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+			}
+		}
+		catch (PDOException $e)
+		{
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка обновления информации metapost'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+	}
+	
+	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	exit();
+}
+
+/*DELETE - удаление материала*/
+
+if (isset ($_POST['action']) && $_POST['action'] == 'Del')
+{	
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	/*Команда SELECT*/
+	try
+	{
+		$sql = 'SELECT id, posttitle, imghead FROM posts WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Error select book: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s -> fetch();
+	
+	$title = 'Удаление статьи';//Данные тега <title>
+	$headMain = 'Удаление статьи';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	$action = 'delete';
+	$posttitle = $row['posttitle'];
+	$id = $row['id'];
+	$button = 'Удалить';
+	
+	@session_start();//Открытие сессии для сохранения названия файла изображения
+	
+	$_SESSION['imghead'] = $row['imghead'];
+	
+	include 'delete.html.php';
+}
+
+if (isset ($_GET['delete']))
+{
+	/*Удаление изображения заголовка*/
+	$fileName = $_SESSION['imghead'];
+	$delFile = $_SERVER['DOCUMENT_ROOT'] . '/images/'.$fileName;//путь к файлу для удаления
+	unlink($delFile);//удаление файла
+	
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	try
+	{
+		$sql = 'DELETE FROM comments WHERE idpost = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+		
+	try
+	{
+		$sql = 'DELETE FROM metapost WHERE idpost = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	try
+	{
+		$sql = 'DELETE FROM votedauthor WHERE idpost = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	try
+	{
+		$sql = 'DELETE FROM posts WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+
+	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	exit();
+}	
+
+/*Переработка материала*/
+
+/*Обновление информации о статье*/
+if (isset ($_POST['action']) && $_POST['action'] == 'Переделать')
+{
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	/*Команда SELECT*/
+	try
+	{
+		$sql = 'SELECT id, post, posttitle, idauthor, imghead, imgalt, translittitle, videoyoutube,  description, idcategory FROM posts WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Error select book: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s -> fetch();
+	
+	$title = 'Обновление статьи';//Данные тега <title>
+	$headMain = 'Обновление статьи';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	$action = 'rewrite';
+	$text = $row['post'];
+	$posttitle = $row['posttitle'];
+	$description = $row['description'];
+	$imgalt = $row['imgalt']; 
+	$videoyoutube = $row['videoyoutube']; 
+	$idcategory = $row['idcategory'];
+	$id = $row['id'];
+	$button = 'Обновить информацию о статье';
+	$errorForm ='';
+	
+	@session_start();//Открытие сессии для сохранения названия файла изображения
+	
+	$_SESSION['imghead'] = $row['imghead'];
+	
+	
+	/*Выбор автора статьи*/
+	try
+	{
+		$result = $pdo -> query ('SELECT authorname FROM posts INNER JOIN author ON idauthor = author.id WHERE posts.id = '.$id);
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода author '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$authors_1[] = array('authorname' => $row['authorname']);
+	}
+	
+	$authorPost = $row['authorname'];//возвращает имя автора00
+	
+	/*Список рубрик*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, categoryname FROM category');
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода category '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$categorys_1[] = array('idcategory' => $row['id'], 'categoryname' => $row['categoryname']);
+	}
+	
+	/*Статьи по тематикам*/
+	try
+	{
+		$sql = 'SELECT idmeta FROM metapost WHERE idpost = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $id);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода metapost ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($s as $row)
+	{
+		$selectedMeta[] = $row['idmeta'];
+	}
+	
+	/*Список тематик*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, metaname FROM meta');
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода meta '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$metas_1[] = array('idmeta' => $row['id'],'metaname' => $row['metaname'], 'selected' => in_array($row['id'], $selectedMeta));
+	}
+
+	include 'addupdform.html.php';
+	exit();
+}
+
+/*UPDATE - обновление информации в базе данных*/
+
+if (isset($_GET['rewrite']))//Если есть переменная editform выводится форма
+{
+	if (!is_uploaded_file($_FILES['upload']['tmp_name']))//если файл не загружен, оставить старое имя
+	{
+		$fileName = $_SESSION['imghead'];
+	}
+	
+	else
+	{
+		/*Удаление старого файла изображения*/
+		$fileName = $_SESSION['imghead'];
+		$delFile = $_SERVER['DOCUMENT_ROOT'] . '/images/'.$fileName;//путь к файлу для удаления
+		unlink($delFile);//удаление файла
+		
+		$fileNameScript = 'img-'. time();//имя файла новости/статьи
+		$filePathScript = '/images/';//папка с изображениями для новости/статьи
+		
+		/*Загрузка скрипта добавления файла*/
+		include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+	}
+	
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	if (($_POST['category'] == '') || ($_POST['text'] == '') || ($_POST['posttitle'] == ''))
+	{
+		$title = 'В форме есть незаполненные поля!';//Данные тега <title>
+		$headMain = 'В форме есть незаполненные поля!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Один или несколько атрибутов не указаны. Выбирете все.';
+		include 'error.html.php';
+		exit();
+	}
+	
+	/*Определение предворительной длины и цены текста*/
+	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	
+	$text = $_POST['text'];
+	$lengthText = lengthText($text);//определение длины текста
+	
+	/*Выбор цены за 1000 знаков*/
+	try
+	{
+		$sql = 'SELECT pricepost, authorbonus FROM posts WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);
+		$s -> execute();
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка выбора цены статьи '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s -> fetch();
+	
+	$pricePost = $row['pricepost'];//цена за 1000 знаков
+	$bonus = $row['authorbonus'];
+	
+	$fullPrice = priceText($text, $pricePost, $bonus);//полная стоимость статьи
+	
+	try
+	{
+		$sql = 'UPDATE posts SET 
+			post = :post,
+			posttitle = :posttitle,
+			description = :description,
+			imgalt = :imgalt,
+			videoyoutube = :videoyoutube,
+			imghead = '.'"'.$fileName.'"'.', '.
+			'idcategory = :idcategory,
+			lengthtext = '.$lengthText.', 
+			pricetext = '.$fullPrice.
+			' WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> bindValue(':post', $_POST['text']);//отправка значения
+		$s -> bindValue(':posttitle', $_POST['posttitle']);//отправка значения
+		$s -> bindValue(':description', $_POST['description']);//отправка значения
+		$s -> bindValue(':imgalt', $_POST['imgalt']);//отправка значения
+		$s -> bindValue(':videoyoutube', $_POST['videoyoutube']);//отправка значения
+		$s -> bindValue(':idcategory', $_POST['category']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка обновления информации post'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	try
+	{
+		$sql = 'DELETE FROM metapost WHERE idpost = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	if (isset ($_POST['metas']))
+	{
+		try
+		{
+			$sql = 'INSERT INTO metapost SET 
+				idpost = :idpost, 
+				idmeta = :idmeta,
+				idnews = 0,
+				idpromotion = 0';
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+
+			foreach	($_POST['metas'] as $idmetas)
+			{		
+				$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+				$s -> bindValue(':idmeta', $idmetas);//отправка значения
+				$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+			}
+		}
+		catch (PDOException $e)
+		{
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка обновления информации metapost'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+	}
+	
+	/*Вернуть материал в премодерацию*/
+	try
+	{
+		$sql = 'UPDATE posts SET refused = "NO" WHERE id = :idpost';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка отклонения публикации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	/*Отправка сообщений (тест)*/
+	
+	$titleMessage = 'Ваш материал "'. $_POST['posttitle'].'" находится в премодерации.';
+	$mailMessage = 'Вами был отправлен в премодерацию материал "'. $_POST['posttitle'].'". После успешной проверки Вам будет начислен '.$fullPrice.' балл';
+
+	toEmail_1($titleMessage, $mailMessage);//отправка письма
+	
+	$title = 'Материал в премодерации';//Данные тега <title>
+	$headMain = 'Материал в премодерации';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	
+	include 'premodsucc.html.php';
+	exit();
+}

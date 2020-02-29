@@ -1,0 +1,304 @@
+
+.descr {
+	display: block;/*Текстовое поле для добавления description*/
+	width: 50%;
+ }
+
+ h1 {
+	text-align: center;
+	font-family: 'Arial';/*Стиль заголовков*/
+		
+}
+
+.logo {
+	text-align: center;
+}
+
+.forlogo {
+	width: 90%;
+	height: 90%;
+    padding: 10px;
+	margin: auto;
+}
+
+.maincont {
+	width: 80%;
+	position: relative;
+	left:5%;
+	margin: 0,5%;
+	/*background-color: #AFEEEE;*/
+	font-family: 'Arial';
+	/*border: solid 5px #AFEEEE;*/
+	clear:both;
+}
+.blocks{
+	width: 75%;
+	position: relative;
+	left:5%;
+	margin: 0,5%;
+	margin-top: 1%;
+}
+
+.posttitle {
+	border-radius: 5px;
+	color: white;
+	text-indent: 1.5em;
+	background-color: #1E90FF;
+	font-family: 'Arial';
+	
+}
+
+.post {
+	border-radius: 9px;
+	color: black;
+	font-family: 'Arial';
+	margin: 2%;
+	border: 2px solid #1E90FF;
+	padding: 5px;
+	
+}
+
+.fortop5{
+	border-radius: 9px;
+	color: black;
+	font-family: 'Arial';
+	font-size: 10pt;
+	margin: 2%;
+	border: 2px solid #1E90FF;
+	padding: 5px;
+}
+
+.titles_main_padge {
+	font-family: 'Arial';
+	margin: 2%;
+	margin-top: 2%;
+	background-color: #1E90FF;
+	color: white;
+	clear:both;
+	
+}
+
+.for_allposts_link {	
+	background-color: #1E90FF;
+	margin: 2%;
+}
+
+.newstitle {
+	float: right;
+	padding: 3px;
+	text-indent: 1.5em;
+	position: relative;
+	width: 60%;
+	border-radius: 5px;
+	color: white;
+	background-color: #1E90FF;
+	font-family: 'Arial';
+	
+}
+
+.newstext {
+	position: relative;
+	width: 100%;
+	font-family: 'Arial';
+	font-size: 12pt;
+	
+}
+
+
+
+.left_column {
+	width: 10%;
+	position: relative;
+	left:1%;
+	font-family: 'Arial';
+	
+}
+
+.right_column {
+	width: 12%;
+	position: relative;
+	left: 85%;
+	font-family: 'Arial';
+	font-size: 8pt;
+	clear: left;
+	
+}
+
+.newsimg {
+	width: 30%;
+	position: relative;
+	float: left;
+	left:2%;
+	font-family: 'Arial';
+	
+	
+}
+
+.newsblock {
+	left: 2%;
+	width: 50%;
+	position: relative;
+	float: left;
+	margin: 0,5%;
+	font-family: 'Arial';
+	font-size: 9pt;
+	border: 2px solid #1E90FF;
+	padding: 5px;
+	border-radius: 9px;
+	overflow: auto;
+	height: 350px;
+	
+}
+
+.imageday {
+	width: 50%;
+	left: 4%;
+	float: left;
+	position: relative;
+	font-family: 'Arial';
+	font-size: 12pt;
+	height: 350px;
+	border-radius: 9px;
+	border: 2px solid #1E90FF;
+	padding: 5px;
+	
+	
+}
+
+.clear {
+    clear: left; /* Отмена обтекания */
+ }
+
+.categorypanel {
+	position: absolute;
+	left:0%;
+	font-family: 'Arial';
+}
+
+.like {
+	font-weight: bolder;
+	font-family: 'Arial';
+}
+
+/*.premod_post_table {
+	width: 45%;
+	position: absolute;
+	float: left; 
+	font-family: 'Arial';
+}
+
+.premod_news_table {
+	width: 45%;
+	position: absolute;
+	float: left; 
+	font-family: 'Arial';
+}
+
+.footer {  
+	position: relative;
+	bottom: 100%;
+	float: left; 
+	font-family: 'Arial';
+}*/
+
+body {
+	background-color: #FAEBD7;	
+}
+
+.btn-info{
+
+background-color: red;
+
+color: white;
+
+}
+
+.btn-info:hover,
+
+.btn-info:focus,
+
+.btn-info:visited{
+
+background-color: white;
+
+color: #1E90FF;
+
+}
+
+#menu1{
+    position:relative;
+    display:block;
+    width:100%;
+    height:auto;
+    z-index:10;
+}
+    #menu1 ul{
+        position:relative;
+        display:block;
+        margin:0px;
+        padding:0px;
+        width:100%;
+        height:auto;
+        list-style:none;
+        background:#1E90FF;
+    }
+    #menu1 > ul::after{
+        display:block;
+        width:100%;
+        height:0px;
+        clear:both;
+        content:" ";
+    }
+        #menu1 ul li{
+            position:relative;
+            display:block;
+            float:left;
+            width:auto;
+            height:auto;
+        }
+            #menu1 ul li a{
+                display:block;
+                padding:9px 25px 0px 25px;
+                font-size:14px;
+                font-family:Arial, sans-serif;
+                color:#ffffef;
+                line-height:1.3em;
+                text-decoration:none;
+                font-weight:bold;
+                text-transform:uppercase;
+                height:36px;
+                box-sizing:border-box;
+            }
+            #menu1 ul li > a:hover, #menu1 ul li:hover > a{
+                background:white;
+                color:#2B45E0;
+            }
+			
+			#menu1 ul li ul{
+    position:absolute;
+    top:36px;
+    left:0px;
+    display:none;
+    width:200px;
+    background:#EBBD5B;
+}
+#menu1 ul li:hover ul{display:block;}/*эта строчка реализует механизм выпадения*/
+    #menu1 ul li ul li{
+        float:none;
+        width:100%;
+    }
+        #menu1 ul li ul li a{
+            display:block;
+            text-transform:none;
+            height:auto;
+            padding:7px 25px;
+            width:100%;
+            box-sizing:border-box;
+            border-top:1px solid #ffffff;
+        }
+        #menu1 ul li ul li:first-child a{border-top:0px;}
+        #menu1 ul li ul li a:hover{
+            background:white;
+            color:#6572BC;
+        }
+
