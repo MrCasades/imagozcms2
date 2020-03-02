@@ -141,8 +141,57 @@ if (isset ($_GET['taskyes']))
 		$row = $s -> fetch();
 
 		$taskcount = (int)$row['taskcount'];
+		$takenTasks = 2;//Количество взятых заданий
 		
-		if ($taskcount > 2)
+		/*Количество отказанных новостей*/
+		try
+		{
+			$sql = 'SELECT COUNT(*) AS refused_count FROM newsblock WHERE refused = "YES" 
+					AND premoderation = "NO" AND idauthor = '.$selectedAuthor;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		}
+
+		catch (PDOException $e)
+		{
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка выбора информации числе взятых заданий автора: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+
+		$row = $s -> fetch();
+		$refusedNews = $row['refused_count'];
+		
+		/*Количество отказанных статей*/
+		try
+		{
+			$sql = 'SELECT COUNT(*) AS refused_count FROM posts WHERE refused = "YES" 
+					AND premoderation = "NO" AND idauthor = '.$selectedAuthor;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		}
+
+		catch (PDOException $e)
+		{
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка выбора информации числе взятых заданий автора: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+
+		$row = $s -> fetch();
+		$refusedPosts = $row['refused_count'];
+		
+		$allRefused = 1;//Все отказанные материалы
+		
+		if ($taskcount > $takenTasks)
 		{
 			$title = 'Ошибка взятия задания';//Данные тега <title>
 			$headMain = 'Ошибка взятия задания';
@@ -152,7 +201,19 @@ if (isset ($_GET['taskyes']))
 
 			include 'error.html.php';
 			exit();
-		}	
+		}
+		
+		elseif ($refusedNews + $refusedPosts > $allRefused)
+		{
+			$title = 'Ошибка взятия задания';//Данные тега <title>
+			$headMain = 'Ошибка взятия задания';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'У Вас отклонено более '.($refusedNews + $refusedPosts).' заданий! Переделайте их или удалите, чтобы взять новые!';// вывод сообщения об ошибке в переменой $e
+
+			include 'error.html.php';
+			exit();
+		}
 		
 		else
 		{
