@@ -27,6 +27,59 @@ if ((!userRole('Администратор')) && (!userRole('Супер-авто
 	exit();
 }
 
+/*Вывод таймера до окончания паузы между публикациями*/
+/*Команда SELECT*/
+
+/*Подключение к базе данных*/
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+
+try
+{
+	$sql = 'SELECT pubtime FROM superuserpubtime WHERE idauthor = '.authorID($_SESSION['email'], $_SESSION['password']);
+	$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+	$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+}
+
+catch (PDOException $e)
+{
+	$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+	$headMain = 'Ошибка данных!';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	$error = 'Ошибка выбора информации о задании: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+	include 'error.html.php';
+	exit();
+}
+	
+$row = $s -> fetch();
+
+$pubtTime = $row['pubtime'];
+
+if ($pubtTime != '')
+{
+	$timer = ($row['pubtime'] + 60 * 60 * 24 * 2) - time();//остаток до завершения 
+	
+	if ($timer <= 0)
+	{
+		$viewTimer = '<h3>Вы можете совершить публикацию!</h3>';
+	}
+	
+	else
+	{
+		/*Конвертируем секунды в часы и минуты*/
+		$hour = floor($timer/3600);
+		$min  = floor(($timer/3600 - $hour) * 60);
+		
+		$viewTimer = '<h3>Вы сможете совершить следующую публикацию через '.$hour.' часов '.$min.' мин!</h3>';
+	}
+}
+
+else
+{
+	$viewTimer = '<h3>Вы можете совершить публикацию!</h3>';
+}
+
+	
 /*Текст о сотрудничестве*/
 
 $superUserPanel = "<p align='center'><a href='/admin/addupdpost/?add' class='btn btn-primary btn-sm'>Добавить статью</a> | 
