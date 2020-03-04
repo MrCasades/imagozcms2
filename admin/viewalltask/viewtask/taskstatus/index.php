@@ -191,6 +191,54 @@ if (isset ($_GET['taskyes']))
 		
 		$allRefused = 1;//Все отказанные материалы
 		
+		/*Количество новостей в премодерации*/
+		try
+		{
+			$sql = 'SELECT COUNT(*) AS premod_count FROM newsblock WHERE refused = "NO" 
+					AND premoderation = "NO" AND idauthor = '.$selectedAuthor;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		}
+
+		catch (PDOException $e)
+		{
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка выбора информации числе взятых заданий автора: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+
+		$row = $s -> fetch();
+		$premodNews = $row['premod_count'];
+		
+		/*Количество статей в премодерации*/
+		try
+		{
+			$sql = 'SELECT COUNT(*) AS premod_count FROM posts WHERE refused = "NO" 
+					AND premoderation = "NO" AND idauthor = '.$selectedAuthor;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		}
+
+		catch (PDOException $e)
+		{
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка выбора информации числе взятых заданий автора: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+
+		$row = $s -> fetch();
+		$premodPosts = $row['premod_count'];
+		
+		$allPremod = 3;//Все материалы в премодерации
+		
 		if ($taskcount > $takenTasks)
 		{
 			$title = 'Ошибка взятия задания';//Данные тега <title>
@@ -210,6 +258,18 @@ if (isset ($_GET['taskyes']))
 			$robots = 'noindex, nofollow';
 			$descr = '';
 			$error = 'У Вас отклонено более '.($refusedNews + $refusedPosts).' заданий! Переделайте их или удалите, чтобы взять новые!';// вывод сообщения об ошибке в переменой $e
+
+			include 'error.html.php';
+			exit();
+		}
+		
+		elseif ($premodNews + $premodPosts > $allPremod)
+		{
+			$title = 'Ошибка взятия задания';//Данные тега <title>
+			$headMain = 'Ошибка взятия задания';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'В премодерации находится '.($premodNews + $premodPosts).' материалов. Новое задание можно будет взять только когда на проверке будет оставаться максимум '.$allPremod.' материала!';// вывод сообщения об ошибке в переменой $e
 
 			include 'error.html.php';
 			exit();
