@@ -18,7 +18,7 @@ if (isset ($_GET['id']))
 	@session_start();//Открытие сессии для сохранения id статьи
 	
 	$_SESSION['idnews'] = $idNews;
-	$select = 'SELECT newsblock.id AS newsid, author.id AS idauthor, news, newstitle, imghead, videoyoutube, viewcount, averagenumber, description, imgalt, newsdate, authorname, category.id AS categoryid, categoryname FROM newsblock 
+	$select = 'SELECT newsblock.id AS newsid, author.id AS idauthor, news, newstitle, imghead, videoyoutube, viewcount, averagenumber, favouritescount, description, imgalt, newsdate, authorname, category.id AS categoryid, categoryname FROM newsblock 
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND newsblock.id = ';
 
@@ -46,7 +46,8 @@ if (isset ($_GET['id']))
 	{
 		$newsIn[] =  array ('id' => $row['newsid'], 'idauthor' => $row['idauthor'],  'textnews' => $row['news'], 'newstitle' =>  $row['newstitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'],
 							'description' => $row['description'], 'newsdate' => $row['newsdate'], 'viewcount' => $row['viewcount'], 'averagenumber' => $row['averagenumber'],
-							'authorname' => $row['authorname'], 'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid'], 'videoyoutube' => $row['videoyoutube']);
+							'authorname' => $row['authorname'], 'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid'], 
+							'videoyoutube' => $row['videoyoutube'], 'favouritescount' => $row['favouritescount']);
 	}
 	
 	

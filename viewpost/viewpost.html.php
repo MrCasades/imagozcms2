@@ -64,8 +64,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
                     </script>
 				  <hr>
 				    <p class="like"> 
-				     <img width = "5%" height = "5%" src="/viewpost/view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($post['viewcount']); ?> 
-				     <img width = "3%" height = "3%" src="/viewpost/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($post['averagenumber']); ?>
+				     <img width = "5%" height = "5%" src="./view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($post['viewcount']); ?> 
+				     <img width = "3%" height = "3%" src="./like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($post['averagenumber']); ?>
+					 <img width = "3%" height = "3%" src="./favourite.jpg" alt="Добавили в избранное" title="Добавили в избранное"> <?php htmlecho ($post['favouritescount']); ?>
 					</p>
 					<?php if ($post['imghead'] == '')
 					{
@@ -85,7 +86,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					<p><?php echo $delAndUpd; ?></p>
 					<p><?php echo $premoderation; ?></p>
 					<p><strong><a href="https://zen.yandex.ru/imagoz" rel = "nofollow">
-						<img width = "5%" height = "5%" src="/viewpost/zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
+						<img width = "5%" height = "5%" src="./zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
 					</p>
 					 
 					<div align="center"><?php echo $recommendation; ?></div>

@@ -64,8 +64,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
                     </script>
 				  <hr>
 				   <p class="like"> 
-				    <img width = "5%" height = "5%" src="/viewnews/view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($news['viewcount']); ?> 
-				    <img width = "3%" height = "3%" src="/viewnews/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($news['averagenumber']); ?>
+				    <img width = "5%" height = "5%" src="./view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($news['viewcount']); ?> 
+				    <img width = "3%" height = "3%" src="./like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($news['averagenumber']); ?>
+					<img width = "3%" height = "3%" src="./favourite.jpg" alt="Добавили в избранное" title="Добавили в избранное"> <?php htmlecho ($news['favouritescount']); ?>   
 				   </p>
 				<?php if ($news['imghead'] == '')
 					{
@@ -85,7 +86,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					<p><?php echo $delAndUpd; ?></p>
 					<p><?php echo $premoderation; ?></p>
 					<p><strong><a href="https://zen.yandex.ru/imagoz" rel = "nofollow">
-						<img width = "5%" height = "5%" src="/viewnews/zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
+						<img width = "5%" height = "5%" src="./zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
 					</p>
 			</div>	   	
 		 <?php endforeach; ?>

@@ -18,7 +18,7 @@ if (isset ($_GET['id']))
 	@session_start();//Открытие сессии для сохранения id статьи
 	
 	$_SESSION['idpost'] = $idPost;
-	$select = 'SELECT posts.id AS postid, author.id AS idauthor, post, posttitle, imghead, videoyoutube, viewcount, averagenumber, description, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
+	$select = 'SELECT posts.id AS postid, author.id AS idauthor, post, posttitle, imghead, videoyoutube, viewcount, averagenumber, favouritescount, description, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND zenpost = "NO" AND posts.id = ';
 
@@ -46,7 +46,8 @@ if (isset ($_GET['id']))
 	{
 		$posts[] =  array ('id' => $row['postid'], 'idauthor' => $row['idauthor'], 'text' => $row['post'], 'posttitle' =>  $row['posttitle'], 'imgalt' =>  $row['imgalt'], 'imghead' => $row['imghead'],
 							'postdate' => $row['postdate'], 'viewcount' => $row['viewcount'], 'averagenumber' => $row['averagenumber'], 'description' => $row['description'],
-							'authorname' => $row['authorname'], 'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid'], 'videoyoutube' => $row['videoyoutube']);
+							'authorname' => $row['authorname'], 'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid'], 
+						    'videoyoutube' => $row['videoyoutube'], 'favouritescount' => $row['favouritescount']);
 	}
 	
 	/*Если страница отсутствует. Ошибка 404*/
