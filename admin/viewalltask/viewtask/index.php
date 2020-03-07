@@ -33,9 +33,10 @@ if (isset ($_GET['id']))
 	@session_start();//Открытие сессии для сохранения id статьи
 	
 	$_SESSION['idtask'] = $idTask;
-	$select = 'SELECT task.id AS taskid, description, author.id AS authorid, tasktitle, taskdate, authorname, tasktype.id AS tasktypeid, tasktypename FROM task 
+	$select = 'SELECT task.id AS taskid, description, author.id AS authorid, tasktitle, taskdate, authorname, task.idrang AS rangid, tasktype.id AS tasktypeid, rangname, tasktypename FROM task 
 			   INNER JOIN author ON idcreator = author.id 
 			   INNER JOIN tasktype ON idtasktype = tasktype.id  
+			   INNER JOIN rang ON task.idrang = rang.id
 			   WHERE taskstatus = "NO" AND task.id = ';
 
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
@@ -62,13 +63,40 @@ if (isset ($_GET['id']))
 	{
 		$tasks[] =  array ('id' => $row['taskid'], 'idauthor' => $row['authorid'], 'text' => $row['description'], 'tasktitle' =>  $row['tasktitle'],
 							'taskdate' =>  $row['taskdate'], 'authorname' =>  $row['authorname'], 
-							'tasktypename' =>  $row['tasktypename'], 'tasktypeid' => $row['tasktypeid']);
+							'tasktypename' =>  $row['tasktypename'], 'tasktypeid' => $row['tasktypeid'], 'idrang' => $row['rangid'], 'rangname' => $row['rangname']);
 	}	
 
+	$taskRang = $row['rangid'];
 	$title = 'Техническое задание #'.$row['taskid'].' "'.$row['tasktitle'].'"' ;//Данные тега <title>
 	$headMain = 'Техническое задание #'.$row['taskid'].' "'.$row['tasktitle'].'"' ;	
 	$robots = 'noindex, nofollow';
 	$descr = '';
+	
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	/*Выбор id ранга автора*/
+	try
+	{
+		$sql = 'SELECT idrang FROM author WHERE id = '.(int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора;
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+		$headMain = 'Ошибка данных!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка выбора информации о задании: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s -> fetch();
+	
+	$authorRang = $row['idrang'];
 	
 	/*Вывод кнопок "Обновить" | "Удалить" | "Опубликовать"*/
 	
@@ -90,10 +118,18 @@ if (isset ($_GET['id']))
 	
 	if ((userRole('Автор')) || (userRole('Администратор')))
 	{
-		$changeTaskStatus = "<form action = '/admin/viewalltask/viewtask/taskstatus/' method = 'post'>
-								<input type = 'hidden' name = 'id' value = '".$_SESSION['idtask']."'>
-								<input type = 'submit' name = 'action' value = 'Взять задание' class='btn btn-primary btn-sm'>
-					 		 </form>";			  
+		if ($authorRang >= $taskRang)
+		{
+			$changeTaskStatus = "<form action = '/admin/viewalltask/viewtask/taskstatus/' method = 'post'>
+									<input type = 'hidden' name = 'id' value = '".$_SESSION['idtask']."'>
+									<input type = 'submit' name = 'action' value = 'Взять задание' class='btn btn-primary btn-sm'>
+								 </form>";	
+		}
+		
+		else
+		{
+			$changeTaskStatus = "<strong>Вы не можете взять это задание, так как Ваш ранг ниже необходимого!</strong>";
+		}
 	}
 	
 	include 'task.html.php';

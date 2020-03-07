@@ -43,6 +43,23 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		</select>
 		</td>
 		</tr>		
+	 </div>
+	 <div>
+	   <tr>
+		<td><label for = "rang"> Ранг задания:</label></td>
+		<td>
+		<select name = "idrang" id = "idrang">
+			<?php foreach ($rangs_1 as $rangs): ?>
+			 <option value = "<?php htmlecho($rangs['idrang']); ?>"
+			 <?php if ($rangs['idrang'] == $idrang)
+			 {
+				 echo 'selected';
+			 }				 
+			  ?>><?php htmlecho($rangs['rangname']); ?></option>
+			<?php endforeach; ?> 
+		</select>
+		</td>
+		</tr>		
 	 </div>	
 	 </table>
 	<div>

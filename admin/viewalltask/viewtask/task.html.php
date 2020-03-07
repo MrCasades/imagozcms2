@@ -17,7 +17,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			
 				<div class = "posttitle">
 				  <?php echo ('Дата выдачи: '.$task['taskdate']. ' | Задание выдал: <a href="/account/?id='.$task['idauthor'].'" style="color: white" >'.$task['authorname']).'</a>';?>
-					<p>Тип: <?php echo $task['tasktypename'];?></p>
+					<p>Тип: <?php echo $task['tasktypename'];?> | Для ранга не ниже: <?php echo $task['rangname'];?></p>
 				</div>	
 					<p><?php echomarkdown ($task['text']); ?></p>
 					<p><?php echo $delAndUpd; ?></p>

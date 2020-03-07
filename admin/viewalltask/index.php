@@ -43,9 +43,10 @@ $shift = ($page - 1) * $onPage;// (номер страницы - 1) * стате
 /*Команда SELECT*/
 try
 {
-	$sql = 'SELECT task.id AS taskid, description, author.id AS authorid, tasktitle, taskdate, authorname, tasktype.id AS tasktypeid, tasktypename FROM task 
+	$sql = 'SELECT task.id AS taskid, description, author.id AS authorid, tasktitle, taskdate, authorname, tasktype.id AS tasktypeid, rangname, tasktypename FROM task 
 			INNER JOIN author ON idcreator = author.id 
 			INNER JOIN tasktype ON idtasktype = tasktype.id 
+			INNER JOIN rang ON task.idrang = rang.id
 			WHERE taskstatus = "NO" ORDER BY task.id DESC LIMIT '.$shift.' ,'.$onPage;//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
@@ -66,7 +67,7 @@ foreach ($result as $row)
 {
 	$tasks[] =  array ('id' => $row['taskid'], 'idauthor' => $row['authorid'], 'text' => $row['description'], 'tasktitle' =>  $row['tasktitle'],
 						'taskdate' =>  $row['taskdate'], 'authorname' =>  $row['authorname'], 
-						'tasktypename' =>  $row['tasktypename'], 'tasktypeid' => $row['tasktypeid']);
+						'tasktypename' =>  $row['tasktypename'], 'tasktypeid' => $row['tasktypeid'], 'rangname' => $row['rangname']);
 }
 
 /*Определение количества заданий*/

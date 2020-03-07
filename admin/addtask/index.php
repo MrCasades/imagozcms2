@@ -37,6 +37,7 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 	$tasktitle = '';
 	$description = '';
 	$idtasktype = '';
+	$idrang = 1;
 	$id = '';
 	$button = 'Добавить задание';
 	$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
@@ -69,6 +70,25 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 		$tasktypes_1[] = array('idtasktype' => $row['id'], 'tasktypename' => $row['tasktypename']);
 	}
 	
+	/*Список рангов*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, rangname FROM rang');
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода rang '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$rangs_1[] = array('idrang' => $row['id'], 'rangname' => $row['rangname']);
+	}
+	
 	include 'addtask.html.php';
 	exit();
 	
@@ -83,7 +103,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT id, description, tasktitle, idcreator, idtasktype FROM task WHERE id = :idtask';
+		$sql = 'SELECT id, description, tasktitle, idcreator, idtasktype, idrang FROM task WHERE id = :idtask';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':idtask', $_POST['id']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -109,6 +129,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
 	$tasktitle = $row['tasktitle'];
 	$description = $row['description'];
 	$idtasktype = $row['idtasktype'];
+	$idrang = $row['idrang'];
 	$id = $row['id'];
 	$button = 'Обновить информацию о задании';
 	$errorForm = '';
@@ -153,7 +174,25 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
 		$tasktypes_1[] = array('idtasktype' => $row['id'], 'tasktypename' => $row['tasktypename']);
 	}
 	
-
+	/*Список рангов*/
+	try
+	{
+		$result = $pdo -> query ('SELECT id, rangname FROM rang');
+	}
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка вывода rang '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	foreach ($result as $row)
+	{
+		$rangs_1[] = array('idrang' => $row['id'], 'rangname' => $row['rangname']);
+	}
+	
 	include 'addtask.html.php';
 	exit();
 }
@@ -162,37 +201,12 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
 if (isset($_GET['addform']))//Если есть переменная addform выводится форма
 
 {
-		
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	/*Загрузка функций для формы входа*/
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
 	
 	/*Возвращение id автора*/
-	try
-	{
-		$selectID = 'SELECT id FROM author WHERE authorname = ';//запрос, возвращающий id
-		
-		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
-		$sql = $selectID.'"'.$_SESSION['authorname'].'"';
-		$result = $pdo->query($sql);
-	}
-
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора id автора ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-		
-	foreach ($result as $row)
-	{
-		$authorID[] =  array ('idauthor' => $row['id']);
-	}
-
-	$selectedAuthor = (int)$row['id'];//id автора комментария
+	$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
 	
 	if (($_POST['idtasktype'] == '') || ($_POST['description'] == '') || ($_POST['tasktitle'] == ''))
 	{
@@ -206,6 +220,9 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 		exit();
 	}
 	
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
 	try
 	{
 		$sql = 'INSERT INTO task SET 
@@ -213,11 +230,13 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 			description = :description,		
 			taskdate = SYSDATE(),
 			idcreator = '.$selectedAuthor.','.
-			'idtasktype = :idtasktype';
+			'idtasktype = :idtasktype,
+			idrang = :idrang';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':tasktitle', $_POST['tasktitle']);//отправка значения
 		$s -> bindValue(':description', $_POST['description']);//отправка значения
 		$s -> bindValue(':idtasktype', $_POST['idtasktype']);//отправка значения
+		$s -> bindValue(':idrang', $_POST['idrang']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	catch (PDOException $e)
@@ -263,13 +282,15 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		$sql = 'UPDATE task SET 
 				tasktitle = :tasktitle,	
 				description = :description,
-				idtasktype = :idtasktype
+				idtasktype = :idtasktype,
+				idrang = :idrang
 				WHERE id = :idtask';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':idtask', $_POST['id']);//отправка значения
 		$s -> bindValue(':tasktitle', $_POST['tasktitle']);//отправка значения
 		$s -> bindValue(':description', $_POST['description']);//отправка значения
 		$s -> bindValue(':idtasktype', $_POST['idtasktype']);//отправка значения
+		$s -> bindValue(':idrang', $_POST['idrang']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	catch (PDOException $e)
