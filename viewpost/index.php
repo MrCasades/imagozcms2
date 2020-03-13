@@ -643,6 +643,32 @@ if (isset ($_GET['id']))
 							  'authorname' => $row['authorname'], 'subcommentcount' => $row['subcommentcount'], 'avatar' => $row['avatar']);
 	}
 	
+	/*Форма добавления комментария / Получение имени автора для вывода меню редактирования или удаления комментария*/
+	if (isset($_SESSION['loggIn']))
+	{
+		$action = 'addform';
+		$authorName = authorLogin ($_SESSION['email'], $_SESSION['password']);//имя автора вошедшего в систему
+		$addComment = '<form action = "?'.$action.'" method = "post" align="center">
+						 <div>
+							<textarea class = "descr" id = "comment" name = "comment" data-provide="markdown" rows="10" placeholder = "Напишите свой комментарий!"></textarea>	
+						 </div>
+						  <div>
+							<input type = "submit" value = "Добавить комментарий" class="btn btn-info btn-sm">
+						  </div>	  
+						</form>
+						<hr/>';	
+	}
+	
+	else
+	{
+		$authorName = '';
+		$_SESSION['email'] = '';
+		$addComment = '<a href="/admin/registration/?log">Авторизируйтесь</a> в системе или 
+						 <a href="/admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы оставить комментарий!';//Вывод сообщения в случае невхода в систему
+		
+		$action = '';	
+	}
+	
 	/*Определение количества статей*/
 	try
 	{
@@ -673,42 +699,6 @@ if (isset ($_GET['id']))
 	exit();		
 }
 	
-/*Добавление комментария*/
-if (isset ($_GET['addcomment']))
-{
-	$title = 'Добавление комментария | imagoz.ru';//Данные тега <title>
-	$headMain = 'Добавление комментария';
-	$robots = 'noindex, follow';
-	$descr = 'Форма добавления комментария';
-	$padgeTitle = 'Новый комментарий';// Переменные для формы "Новая статья"
-	$action = 'addform';	
-	$text = '';
-	$idauthor = '';
-	$id = '';
-	$button = 'Добавить комментарий';
-	
-	if (isset($_SESSION['loggIn']))
-	{
-		$authorComment = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
-		
-		include 'form.html.php';
-		exit();
-	}	
-	
-	else
-	{
-		$title = 'Ошибка добавления комментария';//Данные тега <title>
-		$headMain = 'Ошибка добавления комментария';
-		$robots = 'noindex, follow';
-		$descr = '';
-		$commentError = '<a href="/admin/registration/?log">Авторизируйтесь</a> в системе или 
-						 <a href="/admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы оставить комментарий!';//Вывод сообщения в случае невхода в систему
-		
-		include 'commentfail.html.php';
-		exit();
-	}	
-}
-
 /*Обновление комментария*/
 if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать')
 {		
@@ -753,6 +743,18 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 /*команда INSERT  - добавление комментария в базу данных*/
 if (isset($_GET['addform']))//Если есть переменная addform выводится форма
 {
+	/*Если поле комментария пустое*/
+	if ($_POST['comment'] == '')
+	{
+		$title = 'Напишите текст комментария!';//Данные тега <title>
+		$headMain = 'Напишите текст комментария!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Поле комментария не может быть пустым!';
+		include 'error.html.php';
+		exit();
+	}
+	
 	/*Подключение к базе данных*/
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 		

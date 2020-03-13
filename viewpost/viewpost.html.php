@@ -1,8 +1,5 @@
 <?php 
 
-/*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
-
 /*Загрузка функций в шаблон*/
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
 
@@ -127,8 +124,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 <?php endforeach; ?>
 	   </div>		
 		
-		 <div align="center"><h4>Комментарии (<?php echo $countPosts; ?>)</h4>
-		 <a href="?addcomment#bottom" class="btn btn-primary">Добавить комментарий</a></div>
+		 <h4 align="center">Комментарии (<?php echo $countPosts; ?>)</h4>
+			<p align="center"><?php echo $addComment; ?></p>
 		<div>
 		<?php if (empty ($comments))
 				{
@@ -144,15 +141,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				  </div>		
 					<p><?php 
 				   
-						/*Вывод меню редактирования и удаления комментария для автора*/
-						 if (isset($_SESSION['loggIn']))
-						 {
-							$authorName = authorLogin ($_SESSION['email'], $_SESSION['password']);//имя автора вошедшего в систему
-						 }
-						 else
-						 {
-							 $authorName = '';
-						 }
+						//Вывод панели обновления - удаления комментария!
 						 if (($authorName == $comment['authorname']) || (userRole('Администратор')))
 						 {
 							 $updAnddel = '<form action = "?" method = "post">
@@ -196,7 +185,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						 echo "<a href='/viewpost/?id=".$idPost."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
 					 }
 				 }?>
-				</div>	
+				</div>
 		</div>		
 	</div>		
 
