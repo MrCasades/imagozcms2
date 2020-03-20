@@ -80,7 +80,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p>Вывести весь топ</p>
+          <p align = "center"><a href="/viewfullnewstop/" class="btn btn-primary">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
@@ -264,7 +264,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p>Вывести весь топ</p>
+          <p align = "center"><a href="/viewfullpromotiontop/" class="btn btn-primary">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
@@ -378,7 +378,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p>Вывести весь топ</p>
+          <p align = "center"><a href="/viewfullposttop/" class="btn btn-primary">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
