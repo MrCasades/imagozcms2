@@ -33,7 +33,7 @@ if (userRole('Автор'))
 
 	try
 	{
-		$sql = 'SELECT newsblock.id, newstitle, newsdate, authorname, email, reasonrefusal FROM newsblock INNER JOIN author 
+		$sql = 'SELECT newsblock.id, newstitle, newsdate, idauthor, authorname FROM newsblock INNER JOIN author 
 				ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
@@ -53,14 +53,14 @@ if (userRole('Автор'))
 	foreach ($result as $row)
 	{
 		$newsIn[] =  array ('id' => $row['id'], 'newstitle' =>  $row['newstitle'], 'newsdate' =>  $row['newsdate'], 
-								'authorname' =>  $row['authorname'], 'email' =>  $row['email']);
+								'authorname' =>  $row['authorname'], 'idauthor' =>  $row['idauthor']);
 	}
 
 	/*Вывод стаей*/
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT posts.id, posttitle, postdate, authorname, email, reasonrefusal FROM posts INNER JOIN author 
+		$sql = 'SELECT posts.id, posttitle, postdate, idauthor, authorname FROM posts INNER JOIN author 
 		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
@@ -80,14 +80,14 @@ if (userRole('Автор'))
 	foreach ($result as $row)
 	{
 		$posts[] =  array ('id' => $row['id'], 'posttitle' =>  $row['posttitle'], 'postdate' =>  $row['postdate'], 
-								'authorname' =>  $row['authorname'], 'email' =>  $row['email']);
+								'authorname' =>  $row['authorname'], 'idauthor' =>  $row['idauthor']);
 	}
 	
 	/*Вывод промоушен*/
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT promotion.id, promotiontitle, promotiondate, authorname, email, reasonrefusal FROM promotion INNER JOIN author 
+		$sql = 'SELECT promotion.id, promotiontitle, promotiondate, idauthor, authorname FROM promotion INNER JOIN author 
 		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
@@ -107,7 +107,7 @@ if (userRole('Автор'))
 	foreach ($result as $row)
 	{
 		$promotions[] =  array ('id' => $row['id'], 'promotiontitle' =>  $row['promotiontitle'], 'promotiondate' =>  $row['promotiondate'], 
-								'authorname' =>  $row['authorname'], 'email' =>  $row['email']);
+								'authorname' =>  $row['authorname'], 'idauthor' =>  $row['idauthor']);
 	}
 	
 	if (!isset($newsIn) && !isset($posts) && !isset($promotions))
@@ -144,7 +144,7 @@ if (userRole('Рекламодатель'))
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT promotion.id, promotiontitle, promotiondate, authorname, email, reasonrefusal FROM promotion INNER JOIN author 
+		$sql = 'SELECT promotion.id, promotiontitle, promotiondate, idauthor, authorname FROM promotion INNER JOIN author 
 		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
@@ -164,7 +164,7 @@ if (userRole('Рекламодатель'))
 	foreach ($result as $row)
 	{
 		$promotions[] =  array ('id' => $row['id'], 'promotiontitle' =>  $row['promotiontitle'], 'promotiondate' =>  $row['promotiondate'], 
-								'authorname' =>  $row['authorname'], 'email' =>  $row['email']);
+								'authorname' =>  $row['authorname'], 'idauthor' =>  $row['idauthor']);
 	}
 	
 	if (!isset($promotions))

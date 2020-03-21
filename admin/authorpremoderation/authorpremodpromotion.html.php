@@ -5,37 +5,28 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
 /*Загрузка header*/
 include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
-	<div class = "maincont">
+	<div class = "maincont_for_view">
 		<div>
 			<h3 align = "center">Промоушен</h3>
-		<table align = "center" border = "1">
-		  <tr>
-				<th width = "70 px">#id</th>
-				<th width = "200 px">Дата публикации</th>
-				<th width = "200 px">Заголовок</th>	
-				<th width = "120 px">Автор</th>
-				<th width = "200 px">E-mail</th>
-		  </tr> 
 		  
-		  <?php if (!isset($promotions))
-		 {
-			 $noPosts = '<p align = "center">Материалы в премодерации отсутствуют</p>';
-			 echo $noPosts;
-			 $promotions = null;
+		  <?php if (empty ($promotions))
+		 { 
+			 echo '<p align = "center">Отклонённые материалы отсутствуют</p>';
 		 }
 		 
 		 else
 		  
 		 foreach ($promotions as $promotion): ?> 
-		  <tr>
-				<td><?php echo '# '.$promotion['id'];?></td>
-				<td><?php echo $promotion['promotiondate'];?></td>
-				<td><?php echo $promotion['promotiontitle'];?></td>
-				<td><?php echo $promotion['authorname'];?></td>
-				<td><?php echo $promotion['email'];?></td>
-		  </tr> 				
+		  <div class = "post">
+			  <div class = "posttitle">
+				  <?php echo ($promotion['promotiondate']. ' | Автор: <a href="/account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
+			  </div>
+			  <div>
+				  <h3 align = "center"><?php echo $promotion['promotiontitle'];?></h3>		  	
+			  </div> 
+		  </div>			
 		 <?php endforeach; ?> 
-		</table>
+	   </div>	
 		<p><a name="bottom"></a></p>
 		</div>	
 			

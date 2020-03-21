@@ -5,100 +5,74 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
 /*Загрузка header*/
 include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
-	<div class = "maincont">
+		<div class = "maincont_for_view">
 		<div>
 			<h3 align = "center">Статьи</h3>
-		<table align = "center" border = "1">
-		  <tr>
-				<th width = "70 px">#id</th>
-				<th width = "200 px">Дата публикации</th>
-				<th width = "200 px">Заголовок</th>	
-				<th width = "120 px">Автор</th>
-				<th width = "200 px">E-mail</th>
-		  </tr> 
 		  
-		  <?php if (!isset($posts))
-		 {
-			 $noPosts = '<p align = "center">Материалы в премодерации отсутствуют</p>';
-			 echo $noPosts;
-			 $posts = null;
+		  <?php if (empty ($posts))
+		 { 
+			 echo '<p align = "center">Материалы отсутствуют</p>';
 		 }
 		 
 		 else
 		  
 		 foreach ($posts as $post): ?> 
-		  <tr>
-				<td><?php echo '# '.$post['id'];?></td>
-				<td><?php echo $post['postdate'];?></td>
-				<td><?php echo $post['posttitle'];?></td>
-				<td><?php echo $post['authorname'];?></td>
-				<td><?php echo $post['email'];?></td>
-		  </tr> 				
+		  <div class = "post">
+			  <div class = "posttitle">
+				  <?php echo ($post['postdate']. ' | Автор: <a href="/account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';?>
+			  </div>
+			  <div>
+				  <h3 align = "center"><?php echo $post['posttitle'];?></h3>		  	
+			  </div> 
+		  </div>			
 		 <?php endforeach; ?> 
-		</table>
-		</div>	
+	</div>	
 		
 		<hr/>
+		<div>
 			<h3 align = "center">Новости</h3>
-		<table align = "center" border = "1">
-		  <tr>
-				<th width = "70 px">#id</th>
-				<th width = "200 px">Дата публикации</th>
-				<th width = "200 px">Заголовок</th>	
-				<th width = "120 px">Автор</th>
-				<th width = "200 px">E-mail</th>	
-		  </tr> 
 		  
-		   <?php if (!isset($newsIn))
-		 {
-			 $noPosts = '<p align = "center">Материалы в премодерации отсутствуют</p>';
-			 echo $noPosts;
-			 $newsIn = null;
+		  <?php if (empty ($newsIn))
+		 { 
+			 echo '<p align = "center">Материалы отсутствуют</p>';
 		 }
 		 
 		 else
-			 
+		  
 		 foreach ($newsIn as $news): ?> 
-		  <tr>
-				<td><?php echo '# '.$news['id'];?></td>
-				<td><?php echo $news['newsdate'];?></td>
-				<td><?php echo $news['newstitle'];?></td>
-				<td><?php echo $news['authorname'];?></td>
-				<td><?php echo $news['email'];?></td>
-		  </tr> 				
+		  <div class = "post">
+			  <div class = "posttitle">
+				  <?php echo ($news['newsdate']. ' | Автор: <a href="/account/?id='.$news['idauthor'].'" style="color: white" >'.$news['authorname']).'</a>';?>
+			  </div>
+			  <div>
+				  <h3 align = "center"><?php echo $news['newstitle'];?></h3>		  	
+			  </div> 
+		  </div>			
 		 <?php endforeach; ?> 
-		</table>
+	</div>	
 		
 		<hr/>
-		<h3 align = "center">Промоушен</h3>
-		<table align = "center" border = "1">
-		  <tr>
-				<th width = "70 px">#id</th>
-				<th width = "200 px">Дата публикации</th>
-				<th width = "200 px">Заголовок</th>	
-				<th width = "120 px">Автор</th>
-				<th width = "200 px">E-mail</th>
-		  </tr> 
+	<div>
+			<h3 align = "center">Промоушен</h3>
 		  
-		  <?php if (!isset($promotions))
-		 {
-			 $noPosts = '<p align = "center">Материалы в премодерации отсутствуют</p>';
-			 echo $noPosts;
-			 $promotions = null;
+		  <?php if (empty ($promotions))
+		 { 
+			 echo '<p align = "center">Материалы отсутствуют</p>';
 		 }
 		 
 		 else
 		  
 		 foreach ($promotions as $promotion): ?> 
-		  <tr>
-				<td><?php echo '# '.$promotion['id'];?></td>
-				<td><?php echo $promotion['promotiondate'];?></td>
-				<td><?php echo $promotion['promotiontitle'];?></td>
-				<td><?php echo $promotion['authorname'];?></td>
-				<td><?php echo $promotion['email'];?></td>
-		  </tr> 				
+		  <div class = "post">
+			  <div class = "posttitle">
+				  <?php echo ($promotion['promotiondate']. ' | Автор: <a href="/account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
+			  </div>
+			  <div>
+				  <h3 align = "center"><?php echo $promotion['promotiontitle'];?></h3>		  	
+			  </div> 
+		  </div>			
 		 <?php endforeach; ?> 
-		</table>
+	</div>	
 		<p><a name="bottom"></a></p>
 	</div>
 
