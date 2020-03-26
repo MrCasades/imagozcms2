@@ -56,6 +56,8 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 	$robots = 'noindex, nofollow';
 	$descr = '';
 	$action = 'premodyes';
+	$pointPanel = '<label for = "points">Оценка статьи </label>
+			  	   <input type = "text" name = "points" value = "100"> ';
 	$premodYes = 'Опубликовать материал ';
 	$posttitle = $row['newstitle'];
 	$id = $row['id'];
@@ -94,6 +96,8 @@ if (isset ($_GET['premodyes']))
 	$idAuthor = (int) $row['idauthor'];
 	$paymentStatus = $row['paymentstatus'];
 	
+	$rating = (int) $_POST['points'];//получение оценки редактора
+	
 	/*Выбор счётчика статей и номера ранга для сравнения*/
 	try
 	{
@@ -127,7 +131,8 @@ if (isset ($_GET['premodyes']))
 			/*Обновить счёт автора и счётчик статей*/
 			$sql = 'UPDATE author 
 					SET score = score + '.$price.',
-					countposts = countposts + 1 WHERE id = '.$idAuthor;
+					countposts = countposts + 1,
+					rating = rating + '.$rating.' WHERE id = '.$idAuthor;
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
@@ -140,7 +145,8 @@ if (isset ($_GET['premodyes']))
 			
 			/*Обновить статус оплаты во избежании повторной оплаты*/
 			$sql = 'UPDATE newsblock SET paymentstatus = "YES", 
-										 newsdate = SYSDATE() WHERE id = :idnews';
+										 newsdate = SYSDATE(),
+										 articlerating = articlerating + '.$rating.' WHERE id = :idnews';
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> bindValue(':idnews', $_POST['id']);//отправка значения
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -211,6 +217,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Снять с публик�
 	$robots = 'noindex, nofollow';
 	$descr = '';
 	$action = 'premodno';
+	$pointPanel = '';
 	$premodYes = 'Снять с публикации материал ';
 	$posttitle = $row['newstitle'];
 	$id = $row['id'];

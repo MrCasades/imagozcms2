@@ -20,7 +20,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		   <p><?php if (($authorRole == 'Автор') || ($authorRole == 'Администратор'))//если пользователю присвоен определённый статус, то выводятся его ранг
 				
 				{
-					echo ('<strong> Авторский ранг: '.$rangView.' </strong>'.$score.'<p>'.$payForm.'</p>'.$payFormIn);
+					echo ('<strong> Авторский ранг: '.$rangView.' </strong>'.$score.
+						  '<p><strong> Рейтинг: '.$rating.'</strong></p>'.
+						  '<p>'.$payForm.'</p>'.$payFormIn);
 					echo $prices;
 					echo $openTable;
 					echo $paysystemName;

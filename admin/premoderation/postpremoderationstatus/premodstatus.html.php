@@ -8,14 +8,14 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	  <div class = "maincont"> 
 	   <div class = "post" align = "center">
 		  <p><?php htmlecho($premodYes); ?> "<?php htmlecho($posttitle); ?>"?</p>
-	   <p>
-	    <form action = "?<?php htmlecho($action); ?> " method = "post">
-		  <input type = "hidden" name = "id" value = "<?php htmlecho($id); ?>">
-		  <input type = "submit" name = "delete" class="btn btn-primary btn-sm" value = "<?php htmlecho($button); ?>">
-	    </form>
-	   </p>
-	 
-	   <a href="#" onclick="history.back();" class="btn btn-primary btn-sm">Назад</a>
+		  <p>
+		  <form action = "?<?php htmlecho($action); ?> " method = "post">
+			  <?php echo $pointPanel; ?>
+			  <input type = "hidden" name = "id" value = "<?php htmlecho($id); ?>">
+			  <input type = "submit" name = "delete" class="btn btn-primary btn-sm" value = "<?php htmlecho($button); ?>">
+			  <a href="#" onclick="history.back();" class="btn btn-primary btn-sm">Назад</a>
+		   </form>
+		   </p>
 	   </div>
 	</div>	
 <?php 

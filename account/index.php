@@ -364,7 +364,7 @@ if (isset ($_GET['id']))
 		/*Вывод ранга автора*/
 		try
 		{
-			$sql = 'SELECT rangname, pricenews, pricepost FROM author
+			$sql = 'SELECT rangname, pricenews, pricepost, rating FROM author
 					INNER JOIN rang ON rang.id = idrang 
 					WHERE author.id = '.$_SESSION['idAuthor'];
 			$result = $pdo->query($sql);
@@ -383,10 +383,12 @@ if (isset ($_GET['id']))
 		
 		foreach ($result as $row)
 		{
-			$rangName[] =  array ('rangname' => $row['rangname'], 'pricenews' => $row['pricenews'], 'pricepost' => $row['pricepost']);
+			$rangName[] =  array ('rangname' => $row['rangname'], 'pricenews' => $row['pricenews'], 'pricepost' => $row['pricepost'],
+								  'rating' => $row['rating']);
 		}	
 		
-		$rangView = (string) $row['rangname'];//Если присвоен соответствующий статус, то выводиться ранг	
+		$rangView = (string) $row['rangname'];//Если присвоен соответствующий статус, то выводиться ранг
+		$rating = (string) $row['rating'];//Если присвоен соответствующий статус, то выводиться рейтинг
 		
 		if ($selectedAuthor == $idAuthor)
 		{

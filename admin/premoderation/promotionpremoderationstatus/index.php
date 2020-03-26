@@ -124,7 +124,8 @@ if (isset ($_GET['premodyes']))
 			$pdo->beginTransaction();//инициация транзакции
 		
 			/*Обновить счёт автора и счётчик статей*/
-			$sql = 'UPDATE author SET countposts = countposts + 1 WHERE id = '.$idAuthor;
+			$sql = 'UPDATE author SET countposts = countposts + 1,
+					rating = rating + 100 WHERE id = '.$idAuthor;
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
