@@ -80,7 +80,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p align = "center"><a href="/viewfullnewstop/" class="btn btn-primary">Вывести весь топ</a></p>
+          <p align = "center"><a href="/viewfullnewstop/">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
@@ -264,7 +264,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p align = "center"><a href="/viewfullpromotiontop/" class="btn btn-primary">Вывести весь топ</a></p>
+          <p align = "center"><a href="/viewfullpromotiontop/">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
@@ -333,7 +333,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 				 </div>
 			</div>			
 		 <?php endforeach; ?>
-		 <div class="for_allposts_link"><p align = "center"><a href="/viewallposts/" style="color: white"">Все статьи</a></p></div>
+		 <div class="for_allposts_link"><p align = "center"><a href="/viewallposts/" style="color: white">Все статьи</a></p></div>
 		
 		<div>
 		 <table cellspacing="5">
@@ -378,7 +378,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p align = "center"><a href="/viewfullposttop/" class="btn btn-primary">Вывести весь топ</a></p>
+          <p align = "center"><a href="/viewfullposttop/">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
@@ -396,9 +396,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		foreach ($authorsTOP as $authorTOP): ?> 
 		<div class="columns__panel">
           <div class="columns__panel-content">	  
-			 <div class = "fortop5">  
+			 <div class = "fortop5"> 
 			  <img width = "40 px" height = "40 px" src="/avatars/<?php echo $authorTOP['avatar'];?>" alt="<?php echo $authorTOP['authorname'];?>">
 			  <a href="/account/?id=<?php echo $authorTOP['id'];?>"><?php echo $authorTOP['authorname'];?></a>
+			  <p><img width = "4%" height = "4%" src="../countposts.jpg" alt="Опубликовано материалов" title="Опубликовано материалов"> <?php htmlecho ($authorTOP['countposts']); ?> 
+		  	  <img width = "4%" height = "4%" src="../rating.jpg" alt="Рейтинг автора" title="Рейтинг"> <?php htmlecho ($authorTOP['rating']); ?></p>
 			 </div>
 		  </div>
 		</div>	 

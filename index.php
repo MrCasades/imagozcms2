@@ -243,7 +243,7 @@ foreach ($result as $row)
 /*Команда SELECT*/
 try
 {
-	$sql = 'SELECT id, authorname, avatar FROM author WHERE countposts > 2 ORDER BY countposts DESC LIMIT 7';//Вверху самое последнее значение
+	$sql = 'SELECT id, authorname, avatar, countposts, rating FROM author WHERE countposts > 2 ORDER BY countposts DESC LIMIT 7';//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
 
@@ -261,7 +261,8 @@ catch (PDOException $e)
 /*Вывод результата в шаблон*/
 foreach ($result as $row)
 {
-	$authorsTOP[] =  array ('id' => $row['id'], 'authorname' => $row['authorname'], 'avatar' => $row['avatar']);
+	$authorsTOP[] =  array ('id' => $row['id'], 'authorname' => $row['authorname'], 'avatar' => $row['avatar'],
+						    'countposts' => $row['countposts'], 'rating' => $row['rating']);
 }
 
 
