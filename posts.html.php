@@ -399,7 +399,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 			 <div class = "fortop5"> 
 			  <img width = "40 px" height = "40 px" src="/avatars/<?php echo $authorTOP['avatar'];?>" alt="<?php echo $authorTOP['authorname'];?>">
 			  <a href="/account/?id=<?php echo $authorTOP['id'];?>"><?php echo $authorTOP['authorname'];?></a>
-			  <p><img width = "4%" height = "4%" src="../countposts.jpg" alt="Опубликовано материалов" title="Опубликовано материалов"> <?php htmlecho ($authorTOP['countposts']); ?> 
+			  <p align = "right"><img width = "4%" height = "4%" src="../countposts.jpg" alt="Опубликовано материалов" title="Опубликовано материалов"> <?php htmlecho ($authorTOP['countposts']); ?> 
 		  	  <img width = "4%" height = "4%" src="../rating.jpg" alt="Рейтинг автора" title="Рейтинг"> <?php htmlecho ($authorTOP['rating']); ?></p>
 			 </div>
 		  </div>
