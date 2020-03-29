@@ -36,13 +36,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			<th>Повторить пароль:* </th><td><input type = "password" name = "password2" id = "password2" value = "<?php htmlecho($password2);?>"></td> 	
 		 </tr>		
 		 <tr>
-			<th>WWW: </th><td><input type = "text" name = "www" id = "www" value = "<?php htmlecho($www);?>"></td> 
+			<th>Сайт или ссылка на соцсеть: </th><td><input type = "text" name = "www" id = "www" value = "<?php htmlecho($www);?>" placeholder = "Без http://"></td> 
 		 </tr>
 	 </table>
 	 <br>
 		<div>
 			<strong><label for = "post">Введите дополнительную информацию:</label></strong>
-			<textarea class = "descr" id = "accountinfo" name = "accountinfo" data-provide="markdown" rows="10"><?php htmlecho($accountinfo);?></textarea>	
+			<textarea class = "descr" id = "accountinfo" name = "accountinfo" data-provide="markdown" rows="10" placeholder = "Расскажите о себе"><?php htmlecho($accountinfo);?></textarea>	
 		</div>		 
      <br>
 			<p><input type = "hidden" name = "role" value = "<?php htmlecho($role);?>">

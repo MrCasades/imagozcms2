@@ -90,8 +90,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	</div>
 	<div>
 	  <tr>
-		<td><label for = "www">Введите ссылку на сайт (при необходимости). В основной текст ссылку можно добавить при помощи синтаксиса: [Текст](ссылка) </label></td>
-		<td><input type = "www" name = "www" id = "www" value = "<?php htmlecho($www);?>"></td>
+		<td><label for = "www">Введите ссылку на сайт (при необходимости). </label></td>
+		<td><input type = "www" name = "www" id = "www" value = "<?php htmlecho($www);?>" placeholder = "Без http://"></td>
 	  </tr>	
 	</div>
 	<div>
@@ -102,7 +102,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	</div>
 	<div>
 		<label for = "description">Введите краткое описание (250 знаков)</label><br>
-		<textarea class = "descr" id = "description" name = "description" rows = "3" cols = "40"><?php htmlecho($description);?></textarea>	
+		<textarea class = "descr" id = "description" name = "description" rows = "3" cols = "40" placeholder = "Опишите в паре предложений суть материала"><?php htmlecho($description);?></textarea>	
 	 </div>
 		<h5>Подсказка по разметке текста</h5>
 		 <ul>
@@ -117,7 +117,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 </ul>	
 	 <div>
 		<label for = "promotion">Введите текст статьи</label><br>
-		<textarea class = "descr" id = "text" name = "text" data-provide="markdown" rows="10"><?php htmlecho($text);?></textarea>	
+		<textarea class = "descr" id = "text" name = "text" data-provide="markdown" rows="10" placeholder = "Добавьте текст"><?php htmlecho($text);?></textarea>	
 	 </div>
 	 <hr/>
 	  <div>

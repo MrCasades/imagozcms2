@@ -96,7 +96,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	</div>	
 	<div>
 		<label for = "description">Введите аннотацию статьи (для тега Description)</label><br>
-		<textarea class = "descr" id = "description" name = "description" rows = "3" cols = "40"><?php htmlecho($description);?></textarea>	
+		<textarea class = "descr" id = "description" name = "description" rows = "3" cols = "40" placeholder = "Опишите в паре предложений суть материала"><?php htmlecho($description);?></textarea>	
 	 </div>
 		<h5>Подсказка по разметке текста</h5>
 		 <ul>
@@ -111,7 +111,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 </ul>	
 	 <div>
 		<label for = "post">Введите текст статьи</label><br>
-		<textarea class = "descr" id = "text" name = "text" data-provide="markdown" rows="10"><?php htmlecho($text);?></textarea>	
+		<textarea class = "descr" id = "text" name = "text" data-provide="markdown" rows="10" placeholder = "Добавьте текст"><?php htmlecho($text);?></textarea>	
 	 </div>
 	 <hr/>	
 	  <div>
