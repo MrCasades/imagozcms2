@@ -265,6 +265,64 @@ foreach ($result as $row)
 						    'countposts' => $row['countposts'], 'rating' => $row['rating']);
 }
 
+/*Вывод конкурсной статистики*/
+/*Команда SELECT проверка запуска конкурса*/
+try
+{
+	$sql = 'SELECT contestpanel FROM contest WHERE id = 1';//Вверху самое последнее значение
+	$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+	$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+}
+
+catch (PDOException $e)
+{
+	$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+	$headMain = 'Ошибка данных!';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	$error = 'Ошибка выбора статей ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+	include 'error.html.php';
+	exit();
+}
+
+$row = $s -> fetch();
+		
+$contestPanel = $row['contestpanel'];//проверка на включение конкурса
+
+if ($contestPanel == 'YES')//Если конкурс включен, выводится блок в панели
+{
+	$hederContest = '<div class = "titles_main_padge"><h4 align = "center">Результаты конкурса</h4></div>';
+	
+	try
+	{
+		$sql = 'SELECT id, authorname, avatar, contestscore FROM author WHERE contestscore > 0 ORDER BY contestscore DESC LIMIT 7';//Вверху самое последнее значение
+		$result = $pdo->query($sql);
+	}
+
+	catch (PDOException $e)
+	{
+		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+		$headMain = 'Ошибка данных!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка выбора статей ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+
+	/*Вывод результата в шаблон*/
+	foreach ($result as $row)
+	{
+		$contestsTOP[] =  array ('id' => $row['id'], 'authorname' => $row['authorname'], 'avatar' => $row['avatar'], 'contestscore' => $row['contestscore']);
+	}
+
+}
+
+else
+{
+	$hederContest = '';
+}
+
 
 /*Вывод изображения дня*/
 /*Команда SELECT*/

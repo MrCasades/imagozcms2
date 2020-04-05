@@ -405,8 +405,30 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		  </div>
 		</div>	 
 	 <?php endforeach; ?>
-	</div>		
-			 
+	</div>	
+			
+	<?php echo $hederContest; ?>
+	<div class="columns">		
+	 <?php if (empty($contestsTOP))
+		 {
+			 echo '';
+		 }
+		 
+		 else
+		
+		foreach ($contestsTOP as $contestTOP): ?> 
+		 <div class="columns__panel">
+          <div class="columns__panel-content"> 
+			<div class = "fortop5">	 	
+          		<img width = "40 px" height = "40 px" src="/avatars/<?php echo $contestTOP['avatar'];?>" alt="<?php echo $contestTOP['authorname'];?>">
+		  		<a href="/account/?id=<?php echo $contestTOP['id'];?>"><?php echo $contestTOP['authorname'];?></a>
+		  		<p align = "right"><?php echo $contestTOP['contestscore'];?></p>	   
+			 </div>
+		  </div>
+		</div>	   	
+	 <?php endforeach; ?>		
+	</div>
+			
 	<script type="text/javascript">
 teasernet_blockid = 902572;
 teasernet_padid = 319119;
