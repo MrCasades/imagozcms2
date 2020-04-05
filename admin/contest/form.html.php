@@ -9,16 +9,17 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	<br>
 	<form action = "?<?php htmlecho ($action); ?>" method = "post">
 		<div>
-			<label for = "contestname">Название конкурса: <input type = "text" name = "contestname" id = "contestname" value = "<?php htmlecho($contestname);?>" 
-			</label>	
+			<label for = "contestname">Название конкурса: </label> 
+			<input type = "text" name = "contestname" id = "contestname" value = "<?php htmlecho($contestname);?>">	
 		</div> 
 		<div>
-			<label for = "votingpoints">Очки за голосование: <input type = "text" name = "votingpoints" id = "votingpoints" value = "<?php htmlecho($votingpoints);?>" 
-			</label>	
+			<label for = "votingpoints">Очки за голосование: </label> <input type = "text" name = "votingpoints" id = "votingpoints" value = "<?php htmlecho($votingpoints);?>">		
 		</div>
 		<div>
-			<label for = "commentpoints">Очки за комментарии: <input type = "text" name = "commentpoints" id = "commentpoints" value = "<?php htmlecho($commentpoints);?>" 
-			</label>	
+			<label for = "commentpoints">Очки за комментарии: </label><input type = "text" name = "commentpoints" id = "commentpoints" value = "<?php htmlecho($commentpoints);?>">		
+		</div>
+		<div>
+			<label for = "favouritespoints">Очки за доб. в избранное: </label><input type = "text" name = "favouritespoints" id = "favouritespoints" value = "<?php htmlecho($favouritespoints);?>">		
 		</div>
 		<div>
 			<input type = "hidden" name = "idcontest" value = "<?php htmlecho($idcontest);?>">

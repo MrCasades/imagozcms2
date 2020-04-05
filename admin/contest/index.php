@@ -32,6 +32,7 @@ $action = 'addform';
 $contestname = '';
 $votingpoints = '';
 $commentpoints = '';
+$favouritespoints = '';
 $idcontest = '';
 $button = 'Добавить конкурс';
 
@@ -44,11 +45,13 @@ if (isset ($_GET['addform']))
 	{
 		$sql = 'INSERT INTO contest SET contestname = :contestname,
 												votingpoints = :votingpoints,
-												commentpoints = :commentpoints';// псевдопеременная получающая значение из формы
+												commentpoints = :commentpoints,
+												favouritespoints = :favouritespoints';// псевдопеременная получающая значение из формы
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':contestname', $_POST['contestname']);//отправка значения
 		$s -> bindValue(':votingpoints', $_POST['votingpoints']);//отправка значения
 		$s -> bindValue(':commentpoints', $_POST['commentpoints']);//отправка значения
+		$s -> bindValue(':favouritespoints', $_POST['favouritespoints']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	catch (PDOException $e)
@@ -74,7 +77,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'))
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT id, contestname, votingpoints, commentpoints FROM contest WHERE id = :idcontest';
+		$sql = 'SELECT id, contestname, votingpoints, commentpoints, favouritespoints FROM contest WHERE id = :idcontest';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':idcontest', $_POST['idcontest']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -96,6 +99,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'))
 	$contestname = $row['contestname'];
 	$votingpoints = $row['votingpoints'];
 	$commentpoints = $row['commentpoints'];
+	$favouritespoints = $row['favouritespoints'];
 	$idcontest = $row['id'];
 	$button = 'Обновить конкурс';
 	
@@ -113,13 +117,15 @@ if (isset ($_GET['editform']))
 	{
 		$sql = 'UPDATE contest SET contestname = :contestname, 
 										  votingpoints = :votingpoints,
-										  commentpoints = :commentpoints
+										  commentpoints = :commentpoints,
+										  favouritespoints = :favouritespoints
 										  WHERE id = :idcontest';// псевдопеременная получающая значение из формы
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':idcontest', $_POST['idcontest']);//отправка значения
 		$s -> bindValue(':contestname', $_POST['contestname']);//отправка значения
 		$s -> bindValue(':votingpoints', $_POST['votingpoints']);//отправка значения
 		$s -> bindValue(':commentpoints', $_POST['commentpoints']);//отправка значения
+		$s -> bindValue(':favouritespoints', $_POST['favouritespoints']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	catch (PDOException $e)
@@ -216,7 +222,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'OFF'))
 	exit();
 }
 
-/*Включить - выключить конкурс*/
+/*Вывод панели участников*/
 /*Включение*/
 if (isset ($_POST['action']) && ($_POST['action'] == 'CP_ON'))
 {
@@ -317,7 +323,8 @@ catch (PDOException $e)
 foreach ($result as $row)
 {
 	$contests[] =  array ('id' => $row['id'], 'contestname' => $row['contestname'], 'votingpoints' => $row['votingpoints'],
-						  'commentpoints' => $row['commentpoints'], 'conteston' => $row['conteston'], 'contestpanel' => $row['contestpanel']);
+						  'commentpoints' => $row['commentpoints'], 'conteston' => $row['conteston'], 'contestpanel' => $row['contestpanel'],
+						  'favouritespoints' => $row['favouritespoints']);
 }
 
 include 'contest.html.php';

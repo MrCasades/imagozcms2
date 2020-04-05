@@ -17,6 +17,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		<div>
 		  <label for = "commentpoints">Очки за комментарий: <input type = "text" name = "commentpoints" id = "commentpoints" value = "<?php htmlecho($commentpoints);?>"> </label>	
 		 </div>
+		 <div>
+		  <label for = "favouritespoints">Очки за доб. в избранное: <input type = "text" name = "favouritespoints" id = "favouritespoints" value = "<?php htmlecho($favouritespoints);?>"> </label>	
+		 </div>
 		<div>
 		  <input type = "hidden" name = "idcontest" value = "<?php htmlecho($idcontest);?>">
 		  <input type = "submit" value = "<?php htmlecho($button);?>" class="btn btn-primary btn-sm">
@@ -24,7 +27,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	</form>	
 			
 		<table>
-		<tr><th>Название</th><th>Значение</th><th>Возможные действия</th></tr>
+		<tr>
+			<th>Название</th>
+			<th>За голос</th>
+			<th>За комментарий</th>
+			<th>За избранное</th>
+			<th>Возможные действия</th>
+		</tr>
 		<?php if (!isset($contests))
 		 {
 			 $noPosts = '<p align = "center">Категории не добавлены</p>';
@@ -66,6 +75,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				<td><?php htmlecho($contest['contestname']);?></td>
 				<td><?php htmlecho($contest['votingpoints']);?></td>
 				<td><?php htmlecho($contest['commentpoints']);?></td>
+				<td><?php htmlecho($contest['favouritespoints']);?></td>
 				<td>
 				<input type = "hidden" name = "idcontest" value = "<?php echo $contest['id']; ?>">
 				<input type = "submit" name = "action" value = "Upd" class="btn btn-primary btn-sm">
