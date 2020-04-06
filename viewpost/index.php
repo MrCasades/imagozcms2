@@ -139,18 +139,47 @@ if (isset ($_GET['id']))
 
 	if (isset($_GET['addfav']))
 	{
+		$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
+		$favData = 'SELECT id, post, posttitle, postdate, imghead, imgalt, idauthor, idcategory FROM posts WHERE id = '.$_SESSION['idpost'];//подготовка данных для избранного
+		
 		/*Выбор материала для избранного*/
 		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 		
 		try
 		{
-			$sql = 'SELECT id, post, posttitle, postdate, imghead, imgalt, idauthor, idcategory FROM posts WHERE id = '.$_SESSION['idpost'];
+			$pdo->beginTransaction();//инициация транзакции
+			
+			$sql = $favData;
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+			
+			$row = $s -> fetch();
+		
+			$post = implode(' ', array_slice(explode(' ', strip_tags($row['post'])), 0, 50));
+			$postTitle = $row['posttitle'];
+			$postDate = $row['postdate'];
+			$imgHead = $row['imghead'];
+			$imgAlt = $row['imgalt'];
+			$idAuthorPost = $row['idauthor'];
+			$idCategory = $row['idcategory'];
+			$url = '<a href="/viewpost/?id='.$row['id'].'" class="btn btn-primary">Далее</a>';
+
+			
+			$sql = $SELECTCONTEST;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+			
+			$row = $s -> fetch();
+		
+			$contestOn = $row['conteston'];//проверка на включение конкурса
+			
+			$pdo->commit();//подтверждение транзакции
 		}
 		
 		catch (PDOException $e)
 		{
+			$pdo->rollBack();//отмена транзакции
+			
 			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
 			$headMain = 'Ошибка данных!';
 			$robots = 'noindex, nofollow';
@@ -159,17 +188,6 @@ if (isset ($_GET['id']))
 			include 'error.html.php';
 			exit();
 		}
-
-		$row = $s -> fetch();
-		
-		$post = implode(' ', array_slice(explode(' ', strip_tags($row['post'])), 0, 50));
-		$postTitle = $row['posttitle'];
-		$postDate = $row['postdate'];
-		$imgHead = $row['imghead'];
-		$imgAlt = $row['imgalt'];
-		$idAuthorPost = $row['idauthor'];
-		$idCategory = $row['idcategory'];
-		$url = '<a href="/viewpost/?id='.$row['id'].'" class="btn btn-primary">Далее</a>';
 
 		/*Вставка материала для избранного*/
 		try
@@ -223,7 +241,9 @@ if (isset ($_GET['id']))
 			include 'error.html.php';
 			exit();
 		}
-
+		
+		if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('add', 'favouritespoints');//если конкурс включен
+		
 		header ('Location: ../viewpost/?id='.$_SESSION['idpost']."#bottom");//перенаправление обратно в контроллер index.php
 		exit();	
 	}
@@ -231,19 +251,36 @@ if (isset ($_GET['id']))
 	/*Удаление из избранного*/
 	if (isset($_GET['delfav']))
 	{
+		$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
+		$delFav = 'DELETE FROM favourites WHERE 
+					idauthor = '.(int)(authorID($_SESSION['email'], $_SESSION['password'])).' AND
+					idpost = '.$_SESSION['idpost'];
+		
 		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
 		try
 		{
-			$sql = 'DELETE FROM favourites WHERE 
-					idauthor = '.(int)(authorID($_SESSION['email'], $_SESSION['password'])).' AND
-					idpost = '.$_SESSION['idpost'];
+			$pdo->beginTransaction();//инициация транзакции
+			
+			$sql = $delFav;
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+			
+			$sql = $SELECTCONTEST;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+			
+			$row = $s -> fetch();
+		
+			$contestOn = $row['conteston'];//проверка на включение конкурса
+			
+			$pdo->commit();//подтверждение транзакции	
 		}
 
 		catch (PDOException $e)
 		{
+			$pdo->rollBack();//отмена транзакции
+			
 			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
 			$headMain = 'Ошибка данных!';
 			$robots = 'noindex, nofollow';
@@ -275,6 +312,8 @@ if (isset ($_GET['id']))
 			include 'error.html.php';
 			exit();
 		}
+		
+		if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('del', 'favouritespoints');//если конкурс включен
 
 		header ('Location: ../viewpost/?id='.$_SESSION['idpost']."#bottom");//перенаправление обратно в контроллер index.php
 		exit();	
@@ -482,55 +521,8 @@ if (isset ($_GET['id']))
 		
 		/*Добавление конкурсных очков автору*/
 		
-		if ($contestOn == 'YES')
-		{
-			/*Загрузка функций для формы входа*/
-			require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
-			
-			if ((!userRole('Администратор')) && (!userRole('Автор')))
-			{
-			
-				/*Возврат id автора*/
-
-				$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
-
-				/*Подключение к базе данных*/
-				include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-
-				try
-				{
-					$pdo->beginTransaction();//инициация транзакции
-
-					$sql = 'SELECT votingpoints FROM contest WHERE id = 1';
-					$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-					$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-
-					$row = $s -> fetch();
-
-					$votingpoints = $row['votingpoints'];//проверка на включение конкурса	
-
-					$sql = 'UPDATE author SET contestscore = contestscore + '.$votingpoints.' WHERE id = '.$selectedAuthor;//обновление конкурсного счёта
-					$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-					$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-
-					$pdo->commit();//подтверждение транзакции			
-				}
-
-				catch (PDOException $e)
-				{
-					$pdo->rollBack();//отмена транзакции
-
-					$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-					$headMain = 'Ошибка данных!';
-					$robots = 'noindex, nofollow';
-					$descr = '';
-					$error = 'Error transaction при изменении конкурсного счёта '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
-					include 'error.html.php';
-					exit();		
-				}	
-			}
-		}
-		
+		if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('add', 'votingpoints');//если конкурс включен
+	
 		header ('Location: ../viewpost/?id='.$_SESSION['idpost']);//перенаправление обратно в контроллер index.php
 		exit();
 	}
@@ -805,43 +797,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	}
 	
 	/*Если конкурс включён, происходит изменение конкурсного счёта*/	
-	if (($contestOn == 'YES') && (!userRole('Администратор')) && (!userRole('Автор')))
-	{	
-		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-			
-		try
-		{
-			$pdo->beginTransaction();//инициация транзакции
-
-			$sql = 'SELECT commentpoints FROM contest WHERE id = 1';
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-
-			$row = $s -> fetch();
-
-			$commentpoints = $row['commentpoints'];//выбор значения конкурсных очков
-
-			$sql = 'UPDATE author SET contestscore = contestscore + '.$commentpoints.' WHERE id = '.$selectedAuthor;//обновление конкурсного счёта
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-
-			$pdo->commit();//подтверждение транзакции			
-		}
-
-		catch (PDOException $e)
-		{
-			$pdo->rollBack();//отмена транзакции
-
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Error transaction при изменении конкурсного счёта '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();		
-		}		
-	}
+	if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('add', 'commentpoints');//если конкурс включен
 	
 	header ('Location: ../viewpost/?id='.$_SESSION['idpost']);//перенаправление обратно в контроллер index.php
 	exit();	
@@ -925,6 +881,9 @@ if (isset ($_GET['delete']))
 	
 	$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
 	
+	/*Если конкурс включён, происходит изменение конкурсного счёта*/
+	if ($contestOn == 'YES') delOrAddContestScore('del', 'commentpoints');//если конкурс включен
+	
 	/*Удаление комментариев*/
 	try
 	{
@@ -943,6 +902,9 @@ if (isset ($_GET['delete']))
 		
 		$contestOn = $row['conteston'];//проверка на включение конкурса
 		
+		/*Если конкурс включён, происходит изменение конкурсного счёта*/
+		if ($contestOn == 'YES') delOrAddContestScore('del', 'commentpoints');//если конкурс включен
+		
 		$pdo->commit();//подтверждение транзакции	
 	}
 	
@@ -957,52 +919,6 @@ if (isset ($_GET['delete']))
 		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
 		include 'error.html.php';
 		exit();
-	}
-	
-	/*Если конкурс включён, происходит изменение конкурсного счёта*/
-	if ($contestOn == 'YES')
-	{
-		/*Загрузка функций для формы входа*/
-		require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
-			
-		/*Возврат id автора*/
-	
-		$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
-			
-		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-			
-		try
-		{
-			$pdo->beginTransaction();//инициация транзакции
-
-			$sql = 'SELECT commentpoints FROM contest WHERE id = 1';
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-
-			$row = $s -> fetch();
-
-			$commentpoints = $row['commentpoints'];//выбор значения конкурсных очков
-
-			$sql = 'UPDATE author SET contestscore = contestscore - '.$commentpoints.' WHERE id = '.$selectedAuthor;//обновление конкурсного счёта
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-
-			$pdo->commit();//подтверждение транзакции			
-		}
-
-		catch (PDOException $e)
-		{
-			$pdo->rollBack();//отмена транзакции
-
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Error transaction при изменении конкурсного счёта '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();		
-		}		
 	}
 	
 	/*Удаление ответов*/

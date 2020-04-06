@@ -371,3 +371,95 @@ function SiteVerify($url)
     curl_close($curl);
     return $curlData;
 }
+
+/*Добавить / удалить конкурсные очки*/
+function delOrAddContestScore($type, $pointsName)//$type - add or del, $pointsName - votingpoints, commentpoints or favouritespoints
+{
+	/*Загрузка функций для формы входа*/
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+			
+			
+	$selectPoints = 'SELECT '.$pointsName.' FROM contest WHERE id = 1';//тип добавляемых конкурсных очков
+		
+	/*Изменение очков в зависимости от типа действия*/
+	if ($type == 'add') 
+	{
+		$updContestScore = 'UPDATE author SET contestscore = contestscore + ';
+	}
+		
+	elseif ($type == 'del') 
+	{
+		$updContestScore = 'UPDATE author SET contestscore = contestscore - ';
+	}
+		
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		
+	/*Выбор idauthor в зависимости от аргументов*/
+	if (($type == 'del') && ($pointsName == 'commentpoints'))
+	{
+		/*Подключение к базе данных*/
+		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+			
+		try
+		{
+			$sql = 'SELECT idauthor FROM comments WHERE id = :idcomment';
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		}
+			
+		catch (PDOException $e)
+		{
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка выбора idauthor для contest '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+				exit();		
+		}	
+			
+		$row = $s -> fetch();
+			
+		$idAuthor = (int)$row['idauthor'];//проверка на включение конкурса
+	}
+		
+	else
+	{
+		$idAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));
+	}
+
+	/*Обновить конкурсный счёт*/
+	try
+	{
+		$pdo->beginTransaction();//инициация транзакции
+
+		$sql = $selectPoints;
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+
+		$row = $s -> fetch();
+
+		$points = $row[$pointsName];//проверка на включение конкурса
+			
+		$sql = $updContestScore.$points.' WHERE id = '.$idAuthor;//обновление конкурсного счёта
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+
+		$pdo->commit();//подтверждение транзакции			
+	}
+
+	catch (PDOException $e)
+	{
+		$pdo->rollBack();//отмена транзакции
+
+		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+		$headMain = 'Ошибка данных!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Error transaction при изменении конкурсного счёта '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();		
+	}	
+}
