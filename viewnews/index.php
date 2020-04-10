@@ -72,7 +72,7 @@ if (isset ($_GET['id']))
 	$robots = 'all';
 	$descr = $row['description'];
 	$authorComment = '';
-	$otherCode = '<script type="text/javascript" async src="https://relap.io/api/v6/head.js?token=7xtipo4KrlOuwcTB"></script>';
+	$scriptJScode = '<script src="/script.js"></script>';//добавить код JS
 	
 	/*Вывод видео в статью*/
 	if ((isset($row['videoyoutube'])) && ($row['videoyoutube'] != ''))

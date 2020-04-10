@@ -422,7 +422,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 			<div class = "fortop5">	 	
           		<img width = "40 px" height = "40 px" src="/avatars/<?php echo $contestTOP['avatar'];?>" alt="<?php echo $contestTOP['authorname'];?>">
 		  		<a href="/account/?id=<?php echo $contestTOP['id'];?>"><?php echo $contestTOP['authorname'];?></a>
-		  		<p align = "right"><?php echo $contestTOP['contestscore'];?></p>	   
+		  		<p align = "right"><img width = "4%" height = "4%" src="../score.jpg" alt="Конкурсные очки" title="Конкурсные очки"><?php echo $contestTOP['contestscore'];?></p>	   
 			 </div>
 		  </div>
 		</div>	   	

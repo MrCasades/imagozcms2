@@ -689,6 +689,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	$headMain = 'Материал в премодерации';
 	$robots = 'noindex, nofollow';
 	$descr = '';
+	$scriptJScode = '<script src="/script.js"></script>';//добавить код JS
 	
 	unset($_SESSION['idtask']);//закрытие сессии
 	
@@ -922,6 +923,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 	$headMain = 'Материал в премодерации';
 	$robots = 'noindex, nofollow';
 	$descr = '';
+	$scriptJScode = '<script src="/script.js"></script>';//добавить код JS
 	
 	unset($_SESSION['idtask']);//закрытие сессии
 	
@@ -1428,6 +1430,7 @@ if (isset($_GET['rewrite']))//Если есть переменная editform в
 	$headMain = 'Материал в премодерации';
 	$robots = 'noindex, nofollow';
 	$descr = '';
+	$scriptJScode = '<script src="/script.js"></script>';//добавить код JS
 	
 	include 'premodsucc.html.php';
 	exit();
