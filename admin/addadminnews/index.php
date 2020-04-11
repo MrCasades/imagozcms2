@@ -41,6 +41,10 @@ if (isset ($_GET['addmessage']))
 	$id = '';
 	$button = 'Добавить сообщение';
 	$errorForm = '';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 		
 	$authorMessage = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
 		
@@ -84,6 +88,10 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
 	$id = $row['id'];
 	$button = 'Обновить новость';
 	$errorForm = '';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	$authorMessage = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
 	

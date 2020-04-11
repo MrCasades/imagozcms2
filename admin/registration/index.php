@@ -49,6 +49,10 @@ if (isset($_GET['reg']))
 	$accountinfo = '';
 	$button = 'Регистрация';
 	$errLog = '';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	/*Формирование списка ролей*/
 	
@@ -88,7 +92,7 @@ if (isset ($_GET['addform']))
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
 	/*Вывод сообщения об ошибке, если не заполнены поля email или "Пароль"*/
-	if (($_POST['email'] == '') || ($_POST['password'] == ''))
+	if (($_POST['email'] == '') || ($_POST['password'] == '') || ($_POST['authorname'] == ''))
 	{
 		$title = 'Регистрация нового пользователя';//Данные тега <title>
 		$headMain = 'Регистрация';
@@ -104,6 +108,10 @@ if (isset ($_GET['addform']))
 		$password2 = '';
 		$button = 'Регистрация';
 		$errLog = 'Заполните все обязательные поля';
+		$scriptJScode = '<script src="script.js"></script>
+						 <script src="/js/jquery-1.min.js"></script>
+						 <script src="/js/bootstrap-markdown.js"></script>
+						 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 		
 		include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
 		exit();
@@ -125,6 +133,10 @@ if (isset ($_GET['addform']))
 		$password2 = '';
 		$button = 'Регистрация';
 		$errLog = 'Пароли должны совпадать!';
+		$scriptJScode = '<script src="script.js"></script>
+						 <script src="/js/jquery-1.min.js"></script>
+						 <script src="/js/bootstrap-markdown.js"></script>
+						 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 		
 		include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
 		exit();
@@ -245,6 +257,10 @@ if (isset ($_GET['addform']))
 				$password2 = '';
 				$button = 'Регистрация';
 				$errLog = 'Проверка не пройдена';
+				$scriptJScode = '<script src="script.js"></script>
+					 			 <script src="/js/jquery-1.min.js"></script>
+					 			 <script src="/js/bootstrap-markdown.js"></script>
+								 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 
 				include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
 				exit();
@@ -266,6 +282,10 @@ if (isset ($_GET['addform']))
 			$password2 = '';
 			$button = 'Регистрация';
 			$errLog = 'Проверка не пройдена';
+			$scriptJScode = '<script src="script.js"></script>
+							 <script src="/js/jquery-1.min.js"></script>
+							 <script src="/js/bootstrap-markdown.js"></script>
+					 		 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 
 			include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
 			exit();

@@ -4,7 +4,7 @@ $title = 'Управление конкурсом';//Данные тега <titl
 $headMain = 'Управление конкурсом';
 $robots = 'noindex, nofollow';
 $descr = '';
-$scriptJScode = '<script src="/script.js"></script>';//добавить код JS
+$scriptJScode = '<script src="script.js"></script>';//добавить код JS
 
 /*Загрузка функций для формы входа*/
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';

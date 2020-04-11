@@ -574,6 +574,10 @@ if (isset ($_GET['addcomment']))
 	$idauthor = '';
 	$id = '';
 	$button = 'Добавить запись';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	if (isset($_SESSION['loggIn']))
 	{
@@ -634,6 +638,10 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 	$imgalt = $row['imgalt'];
 	$id = $row['id'];
 	$button = 'Обновить запись';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	@session_start();//Открытие сессии для сохранения названия файла изображения
 	
@@ -1200,6 +1208,10 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Обновить инфор
 	$accountinfo = $row['accountinfo'];
 	$idauthor = $row['id'];
 	$button = 'Обновить информацию об авторе';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	include 'form.html.php';
 	exit();

@@ -41,6 +41,10 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 	$id = '';
 	$button = 'Добавить задание';
 	$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	@session_start();//Открытие сессии для сохранения id автора
 	
@@ -133,6 +137,10 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
 	$id = $row['id'];
 	$button = 'Обновить информацию о задании';
 	$errorForm = '';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	/*Выбор автора статьи*/
 	try

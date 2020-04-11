@@ -23,6 +23,10 @@ if (isset ($_GET['addmessage']))
 	$id = '';
 	$button = 'Добавить сообщение';
 	$errorForm = '';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	if (isset($_SESSION['loggIn']))
 	{

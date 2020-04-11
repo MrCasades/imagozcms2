@@ -71,7 +71,10 @@ if (isset ($_GET['id']))
 	$robots = 'all';
 	$descr = $row['description'];
 	$authorComment = '';
-	$scriptJScode = '<script src="/script.js"></script>';//добавить код JS
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	/*Вывод видео в статью*/
 	if ((isset($row['videoyoutube'])) && ($row['videoyoutube'] != ''))
@@ -727,6 +730,10 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 	$text = $row['comment'];
 	$id = $row['id'];
 	$button = 'Обновить комментарий';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	include 'form.html.php';
 	exit();
@@ -1053,7 +1060,10 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Рекомендовать 
 		$posttitle = $row['posttitle'];;
 		$id = $row['id'];
 		$button = 'Рекомендовать';
-		$scriptJScode = '<script src="/script.js"></script>';//добавить код JS
+		$scriptJScode = '<script src="script.js"></script>
+						 <script src="/js/jquery-1.min.js"></script>
+						 <script src="/js/bootstrap-markdown.js"></script>
+						 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 
 		include 'reccomendationok.html.php';
 		
