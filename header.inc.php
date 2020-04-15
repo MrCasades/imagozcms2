@@ -10,7 +10,7 @@
 	<meta charset = "utf-8"/>
 	<meta name="robots" content="<?php echo $robots; ?>"/>
 	<meta name="Description" content= "<?php echo $descr; ?>"/>
-	<meta name="viewport" content="width=device-width"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="yandex-verification" content="b1b036a76e433a2f" />
 	<meta name="msvalidate.01" content="B52E69B4EFB1372BDECC826BB005BFC2" />
 	<meta name="11e66bf0747b49e92165b564157d94b9" content="">

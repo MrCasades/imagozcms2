@@ -129,6 +129,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		 <?php endforeach; ?>
 	</div>	
 	<div class="for_allposts_link"><p align = "center"><a href="/viewallrecommpost/" style = "color: white">Все рекомендации</a></p></div>
+	 
+	 <?php
+	 /*Загрузка компонента магазина*/
+		include_once $_SERVER['DOCUMENT_ROOT'] . '/shopcomponent/shopcomponent.inc.php';?>
 			 	
 		<div>
 		<div class = "titles_main_padge"><h4 align = "center">Отражение дня</h4></div>
