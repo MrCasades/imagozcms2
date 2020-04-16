@@ -57,11 +57,12 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 	$descr = '';
 	$action = 'premodyes';
 	$pointPanel = '<label for = "points">Оценка статьи </label>
-			  	   <input type = "text" name = "points" value = "100"> ';
+			  	   <input type = "text" name = "points" value = "100" id = "checknum"> ';
 	$premodYes = 'Опубликовать материал ';
 	$posttitle = $row['newstitle'];
 	$id = $row['id'];
 	$button = 'Опубликовать';
+	$scriptJScode = '<script src="script.js"></script>';
 	
 	include 'premodstatus.html.php';
 }

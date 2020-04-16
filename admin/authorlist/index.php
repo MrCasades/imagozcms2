@@ -4,6 +4,7 @@ $title = 'Список пользователей';//Данные тега <titl
 $headMain = 'Зарегестрированные пользователи';
 $robots = 'noindex, nofollow';
 $descr = '';
+$scriptJScode = '<script src="script.js"></script>';//добавить код JS
 
 /*Загрузка функций для формы входа*/
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';

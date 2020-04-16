@@ -90,7 +90,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		</table>
 	</div>
 		<hr/>
-		<form action = " " method = "post" id = "removecontest">
+		<form action = " " method = "post">
 				<input type = "submit" name = "action" value = "Обнулить баллы" id = "resetcontest" class="btn btn-primary btn-sm">
 		</form>	
 <?php 
