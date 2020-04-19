@@ -8,7 +8,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	<div class = "maincont_for_view">
 	 <div class = "post" align="center">
 	  <?php if (isset($errLogin)): ?>
-		<p><?php htmlecho($errLogin); ?></p>
+		<p style="color: red"><strong><?php htmlecho($errLogin); ?></strong></p>
 	  <?php endif; ?>	
 	  <form action = " " method = "post">
 	   <table cellpadding = "2">	

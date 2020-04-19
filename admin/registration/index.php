@@ -15,8 +15,13 @@ if (isset($_GET['log']))
 	$robots = 'noindex, nofollow';
 	$descr = 'Авторизация пользователя в системе';
 	
+	/*Ошибки авторизации*/
+	$GLOBALS['loginError'] = '';
+	$errLogin = '';
+	
 	if (!loggedIn())
 	{
+		$errLogin = $GLOBALS['loginError'];
 		include $_SERVER['DOCUMENT_ROOT'].'/admin/login.html.php';
 		exit();
 	}	
