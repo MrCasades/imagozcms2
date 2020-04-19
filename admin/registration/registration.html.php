@@ -8,7 +8,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	<div class = "maincont_for_view">
 	<div class = "post">
 	  <div  align="justify">
-		<p><strong><?php htmlecho($errLog);?></strong></p>
 		<p>Пройдите процедуру регистрации в системе, для того, чтобы получить возможность оценивать материалы наших авторов, оставлять комментарии и отвечать на них. 
 		   У Вас будет свой профиль, где сможете вести персональный блог на стенеи и общаться с другими пользователями.</p>
 
@@ -20,7 +19,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			</ul>
 		  </p>
 	  </div>	  
-	<div  align="center">	
+	<div  align="center">
+	<strong><p id = "incorr" style="color: red"><?php htmlecho($errLog);?></p></strong>
 	<form action = "?<?php htmlecho ($action); ?>" method = "post">
 	 <table>
 		 <tr>
@@ -50,7 +50,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			
 			<div class="g-recaptcha" data-sitekey="<?php echo SITE_KEY;?>"></div>
 				<br>
-			<input type = "submit" value = "<?php htmlecho($button); ?>" class="btn btn-primary"></p>
+			<input type = "submit" value = "<?php htmlecho($button); ?>" class="btn btn-primary" id = "confirm"></p>
 	</form>
 	</div>
 	</div>

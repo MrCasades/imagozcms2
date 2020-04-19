@@ -96,6 +96,39 @@ if (isset ($_GET['addform']))
 	/*Подключение к базе данных*/
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
+	/*Проверка на дубль E-mail*/
+	try
+	{
+		$sql = 'SELECT email FROM author
+				WHERE email = :email';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':email', $_POST['email']);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+	
+	catch (PDOException $e)
+	{
+		$error = 'Ошибка поиска автора: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s-> fetch();
+	
+	$email = $row['email'];
+		
+	/*Вывод сообщения об ошибке при дубле email*/	
+	if ($email != '')	
+	{
+			$title = 'Такой пользователь уже зарегестрирован в системе!';//Данные тега <title>
+			$headMain = 'Такой пользователь уже зарегестрирован в системе!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Пользователь с таким адресом электронной почты уже зарегестрирован в системе. Если Вы забыли свой пароль, воспользуйтесь <a href = "/admin/recoverpassword/?send">функцией восстановления</a>!';
+			include 'error.html.php';
+			exit();
+	}
+	
 	/*Вывод сообщения об ошибке, если не заполнены поля email или "Пароль"*/
 	if (($_POST['email'] == '') || ($_POST['password'] == '') || ($_POST['authorname'] == ''))
 	{
