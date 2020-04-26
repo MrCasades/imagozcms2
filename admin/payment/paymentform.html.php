@@ -8,7 +8,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	<div class = "maincont">
 	<div class = "post">
 	
-	<p align = "center"><strong><?php htmlecho($errorForm); ?></strong></p>
+	<strong><p id = "incorr" style="color: red"></p></strong>
 	
 	<form action = "?<?php htmlecho($action); ?> " method = "post">
 	<table>
@@ -23,7 +23,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	<div>
 	  <tr>
 		<td><label for = "score"> Размер счёта:</label></td>
-		<td>
+		<td id = "score">
 		 <?php echo round($score, 2, PHP_ROUND_HALF_DOWN);?>
 		</td>
 	  </tr>
@@ -53,7 +53,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	</table>
 	 <div>
 		<input type = "hidden" name = "id" value = "<?php htmlecho($idauthor); ?>">
-		<input type = "submit" value = "<?php htmlecho($button); ?>" class="btn btn-primary btn-sm">
+		<input type = "submit" value = "<?php htmlecho($button); ?>" id = "confirm" class="btn btn-primary btn-sm">
 	  </div>	  
 	</form>	
 	</div>

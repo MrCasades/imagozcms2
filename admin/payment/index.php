@@ -184,7 +184,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Вывести средст
 		$idauthor = $row['authorid'];
 		$idpaysystem = $row['paysystemid'];
 		$button = 'Создать заявку';
-		$errorForm ='';
+		$scriptJScode = '<script src="script.js"></script>';
 		
 		if ((!isset ($paysystemname)) || (!isset ($ewallet)))
 		{
