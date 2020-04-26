@@ -168,7 +168,7 @@ elseif (userRole('Администратор'))
 	
 	$row = $s -> fetch();
 		
-	$scoreTitle = 'Размер счёта: '.$row['score'];//отклонённые новости
+	$scoreTitle = 'Размер счёта: '.round($row['score'], 2, PHP_ROUND_HALF_DOWN);//размер счёта
 	
 	$payForms = '<div align = "center"><form action = "/admin/payment/" method = "post">
 								<div>
@@ -381,7 +381,7 @@ elseif (userRole('Администратор') || userRole('Автор'))
 	
 	$row = $s -> fetch();
 		
-	$scoreTitle = 'Размер счёта: '.$row['score'];//отклонённые новости
+	$scoreTitle = 'Размер счёта: '.round($row['score'], 2, PHP_ROUND_HALF_DOWN);//размер счёта
 	
 	$payForms = '<div align = "center"><form action = "/admin/payment/" method = "post">
 								<div>
@@ -480,7 +480,7 @@ elseif (userRole('Администратор') || userRole('Автор') || user
 	
 	$row = $s -> fetch();
 		
-	$scoreTitle = 'Размер счёта: '.$row['score'];//отклонённые новости
+	$scoreTitle = 'Размер счёта: '.round($row['score'], 2, PHP_ROUND_HALF_DOWN);//размер счёта
 	
 	$payForms = '<div align = "center"><form action = "/admin/payment/" method = "post">
 								<div>

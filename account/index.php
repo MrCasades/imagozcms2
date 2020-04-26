@@ -172,7 +172,7 @@ if (isset ($_GET['id']))
 
 		$row = $s -> fetch();
 	
-		$score = '<strong> | Мой счёт '.$row['score'].'</strong>';	//вывод счёта
+		$score = '<strong> | Мой счёт '.round($row['score'], 2, PHP_ROUND_HALF_DOWN).'</strong>';	//вывод счёта
 		
 		/*Команда SELECT, Вывод платёжной системы и кошелька*/
 		try

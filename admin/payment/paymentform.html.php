@@ -24,7 +24,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	  <tr>
 		<td><label for = "score"> Размер счёта:</label></td>
 		<td>
-		 <?php echo $score;?>
+		 <?php echo round($score, 2, PHP_ROUND_HALF_DOWN);?>
 		</td>
 	  </tr>
 	 </div>

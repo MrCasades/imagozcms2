@@ -243,7 +243,7 @@ foreach ($result as $row)
 /*Команда SELECT*/
 try
 {
-	$sql = 'SELECT id, authorname, avatar, countposts, rating FROM author WHERE countposts > 2 ORDER BY countposts DESC LIMIT 7';//Вверху самое последнее значение
+	$sql = 'SELECT id, authorname, avatar, countposts, rating FROM author WHERE countposts > 2 AND id <> 1 ORDER BY countposts DESC LIMIT 7';//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
 
