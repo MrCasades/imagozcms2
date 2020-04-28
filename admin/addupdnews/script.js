@@ -1,12 +1,3 @@
-//Вывод сообщения об успешной рекомендации статьи!
-
-const recommOk = document.querySelector('#recommok')
-
-if (recommOk)
-{
-	recommOk.addEventListener('click', () => alert('Вы успешно рекомендовали статью! Она сейчас лидирует в списке рекомендаций!'))
-}
-
 //Вывод сообщения о подтверждении премодерации!
 
 const confirmOk = document.querySelector('#confirmok')
@@ -20,20 +11,6 @@ if (confirmOk)
 								}	
 							}, false)
 											
-}
-
-//Вывод сообщения о подтверждении голосования.
-
-const confirmLike = document.querySelector('#confirmlike')
-
-if (confirmLike)
-{
- 	confirmLike.addEventListener('click', (event) => {confLk = confirm('Вы уверены, что хотите проголосовать за данный материал')
-								 if (confLk === false)
-								 {
-									 event.preventDefault();
-								 }
-							}, false)
 }
 
 //Вывод сообщения о подтверждении удаления объекта.
@@ -50,16 +27,40 @@ if (confirmDel)
 							}, false)
 }
 
-//Вывод сообщения о подтверждении обнуления конкурсных баллов.
+//Проверка заполнения обязательных полей
 
-const removeContest = document.querySelector('#removecontest')
+const title = document.getElementById('newstitle')
+const category = document.getElementById('category')
+const text = document.getElementById('text')
 
-if (removeContest)
-{
- 	removeContest.addEventListener('click', (event) => {confDel = confirm('Вы уверены, что хотите обнулить конкурсные баллы?')
-								 if (confDel === false)
-								 {
-									 event.preventDefault();
-								 }
-							}, false)
-}
+const confirm = document.getElementById('confirm')
+
+confirm.addEventListener('click', (event) => {
+    if ((title.value === "") || (category.options.selectedIndex === 0) || 
+        (text.value === "")){
+        alert ('Заполните все обязательные поля!')
+        event.preventDefault()	
+    }
+
+    else if (title.value.length > 200) {
+        alert ('Длина заголовка превышена!')
+        event.preventDefault()	
+    }
+})
+
+//Подсчёт количества знаков в заголовке
+const countTitleLen = document.getElementById('counttitlelen')
+
+title.addEventListener('input', (event) => {
+
+        countTitleLen.innerHTML = title.value.length
+
+        //Изменение цвета при привышении лимита
+        if (title.value.length > 200){
+            countTitleLen.style.color = ('red')
+        }
+
+        else {
+            countTitleLen.style.color = ('black')
+        }
+})

@@ -5,34 +5,26 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
 /*Загрузка header*/
 include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	
-	<div class = "maincont">
+	<div class = "maincont_for_view">
 	<div class = "post">
 	
 	<p align = "center"><strong><?php htmlecho($errorForm); ?></strong></p>
 	
-	<form action = "?<?php htmlecho($action); ?> " method = "post" enctype="multipart/form-data" autocomplete="on">
-	<table>
+	<form action = "?<?php htmlecho($action); ?> " method = "post" enctype="multipart/form-data">
 	 <div>
-	  <tr>
-		<td><label for = "author"> Автор:</label></td>
-		<td>
+		<label for = "author"> Автор:</label>
 		 <?php echo $authorPost;?>
-		</td>
-		<td>
 		 <?php echo $addAuthor;?>
-		</td>
-	  </tr>
 	 </div>
+	<hr/>
 	<div>
-	  <tr>
-		<td><label for = "promotiontitle">Введите заголовок </label></td>
-		<td><input type = "promotiontitle" name = "promotiontitle" id = "promotiontitle" value = "<?php htmlecho($promotiontitle);?>"></td>
-	  </tr>	
-	</div>	
+		<label for = "promotiontitle">Введите заголовок <span style = "color: red"> *</span> </label><br>
+		<textarea class = "descr" id = "promotiontitle" name = "promotiontitle" rows = "3" cols = "40" placeholder = "Введите заголовок!"><?php htmlecho($promotiontitle);?></textarea>
+		<p><span id="counttitlelen">0</span> / 200	</p>
+	</div>
+	<hr/>	
 	 <div>
-	   <tr>
-		<td><label for = "category"> Рубрика:</label></td>
-		<td>
+		<label for = "category"> Рубрика:<span style = "color: red"> *</span></label>
 		<select name = "category" id = "category">
 		  <option value = "">Выбрать</option>
 			<?php foreach ($categorys_1 as $category): ?>
@@ -44,25 +36,18 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			  ?>><?php htmlecho($category['categoryname']); ?></option>
 			<?php endforeach; ?> 
 		</select>
-		</td>
-		<td>
-		 <?php echo $addCatigorys;?>
-		</td>
-		</tr>		
+		 <?php echo $addCatigorys;?>	
 	 </div>	
-	 </table>
 	 <fieldset>
 		<legend>Тематика <?php echo $addMetas;?></legend>
-		 <?php if (!isset($metas_1))
-		 {
-			 $noPosts = '<p align = "center">Теги не добавлены</p>';
-			 echo $noPosts;
-			 $metas_1 = null;
+		 <?php if (empty ($metas_1))
+		 { 
+			 echo '<p align = "center">Теги не добавлены</p>';
 		 }
 		 
 		 else
-		
-		 foreach ($metas_1 as $meta): ?>
+			 
+		foreach ($metas_1 as $meta): ?>
 		 <div>
 		  <label for = "meta<?php htmlecho ($meta['idmeta']);?>">
 		   <input type = "checkbox" name = "metas[]" id = "meta<?php htmlecho ($meta['idmeta']);?>"
@@ -76,32 +61,29 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 </div>
 		<?php endforeach; ?>
 	 </fieldset>
+	<hr/>	
 	 <div>
-	  <tr>
-		<td><label for = "upload">Загрузите файл изображения для шапки</label><input type = "file" name = "upload" id = "upload"></td>
-		<td><input type = "hidden" name = "action" value = "upload"></td>
-	  </tr>	
+		<label for = "upload">Загрузите файл изображения для шапки</label><input type = "file" name = "upload" id = "upload">
+		<input type = "hidden" name = "action" value = "upload">
 	</div>
+	<hr/>		
 	<div>
-	  <tr>
-		<td><label for = "imgalt">Введите alt-текст для изображения</label></td>
-		<td><input type = "imgalt" name = "imgalt" id = "imgalt" value = "<?php htmlecho($imgalt);?>"></td>
-	  </tr>	
+		<label for = "imgalt">Введите alt-текст для изображения:</label>
+		<input type = "imgalt" name = "imgalt" id = "imgalt" value = "<?php htmlecho($imgalt);?>">
 	</div>
+	<hr/>
 	<div>
-	  <tr>
-		<td><label for = "www">Введите ссылку на сайт (при необходимости). </label></td>
-		<td><input type = "www" name = "www" id = "www" value = "<?php htmlecho($www);?>" placeholder = "Без http://"></td>
-	  </tr>	
+		<label for = "www">Введите ссылку на сайт (при необходимости). </label>
+		<input type = "www" name = "www" id = "www" value = "<?php htmlecho($www);?>" placeholder = "Без http://">
 	</div>
+	<hr/>	
 	<div>
-	  <tr>
-		<td><label for = "videoyoutube">Ссылка на видео Youtube: </label></td>
-		<td><input type = "videoyoutube" name = "videoyoutube" id = "videoyoutube" value = "<?php htmlecho($videoyoutube);?>"></td>
-	  </tr>	
+		<label for = "videoyoutube">Ссылка на видео Youtube: </label>
+		<input type = "videoyoutube" name = "videoyoutube" id = "videoyoutube" value = "<?php htmlecho($videoyoutube);?>">
 	</div>
+	<hr/>		
 	<div>
-		<label for = "description">Введите краткое описание (250 знаков)</label><br>
+		<label for = "description">Краткое описание</label><br>
 		<textarea class = "descr" id = "description" name = "description" rows = "3" cols = "40" placeholder = "Опишите в паре предложений суть материала"><?php htmlecho($description);?></textarea>	
 	 </div>
 		<h5>Подсказка по разметке текста</h5>
@@ -115,14 +97,15 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				<p>ВАЖНО! На картинках не должно быть водяных знаков сторонних ресурсов. Само изображение желательно минимально обработать, если оно неоригинальное.
 				   (Хотябы немного обрезать, отзеркалить и т.п.)</p></li>
 		 </ul>	
+	 <hr/>	
 	 <div>
-		<label for = "promotion">Введите текст статьи</label><br>
+		<label for = "post">Введите текст статьи <span style = "color: red"> *</span></label><br>
 		<textarea class = "descr" id = "text" name = "text" data-provide="markdown" rows="10" placeholder = "Добавьте текст"><?php htmlecho($text);?></textarea>	
 	 </div>
-	 <hr/>
+	 <hr/>	
 	  <div>
 		<input type = "hidden" name = "id" value = "<?php htmlecho($id); ?>">
-		<input type = "submit" value = "<?php htmlecho($button); ?>" class="btn btn-primary btn-sm">
+		<input type = "submit" value = "<?php htmlecho($button); ?>" class="btn btn-primary btn-sm" id = "confirm">
 	  </div>	  
 	</form>	
 	</div>
