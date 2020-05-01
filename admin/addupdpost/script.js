@@ -52,6 +52,8 @@ confirm.addEventListener('click', (event) => {
 //Подсчёт количества знаков в заголовке
 const countTitleLen = document.getElementById('counttitlelen')
 
+countTitleLen.innerHTML = title.value.length
+
 title.addEventListener('input', (event) => {
 
         countTitleLen.innerHTML = title.value.length

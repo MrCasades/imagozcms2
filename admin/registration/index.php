@@ -39,25 +39,12 @@ if (isset($_GET['reg']))
 {	
 	/*Подключение к базе данных*/
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	/*Загрузка функций в шаблон*/
+	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
 	
-	$title = 'Регистрация нового пользователя';//Данные тега <title>
-	$headMain = 'Регистрация';
-	$robots = 'noindex, nofollow';
-	$descr = 'Регистрация нового пользователя в системе';
-	$action = 'addform';
-	$authorname = '';
-	$email = '';
-	$www = '';
-	$idauthor = '';
-	$password = '';
-	$password2 = '';
-	$accountinfo = '';
-	$button = 'Регистрация';
+	defaultRegFormData();//данные для формы регистрации по умолчанию
+	
 	$errLog = '';
-	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	/*Формирование списка ролей*/
 	
@@ -132,24 +119,9 @@ if (isset ($_GET['addform']))
 	/*Вывод сообщения об ошибке, если не заполнены поля email или "Пароль"*/
 	if (($_POST['email'] == '') || ($_POST['password'] == '') || ($_POST['authorname'] == ''))
 	{
-		$title = 'Регистрация нового пользователя';//Данные тега <title>
-		$headMain = 'Регистрация';
-		$robots = 'noindex, nofollow';
-		$descr = 'Регистрация нового пользователя в системе';
-		$action = 'addform';
-		$authorname = '';
-		$email = '';
-		$www = '';
-		$accountinfo = '';
-		$idauthor = '';
-		$password = '';
-		$password2 = '';
-		$button = 'Регистрация';
+		defaultRegFormData();//данные для формы регистрации по умолчанию
+		
 		$errLog = 'Заполните все обязательные поля';
-		$scriptJScode = '<script src="script.js"></script>
-						 <script src="/js/jquery-1.min.js"></script>
-						 <script src="/js/bootstrap-markdown.js"></script>
-						 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 		
 		include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
 		exit();
@@ -158,23 +130,9 @@ if (isset ($_GET['addform']))
 	/*Вывод сообщения об ошибке, введённые пароли не совпадают*/
 	if ($_POST['password'] != $_POST['password2'])
 	{
-		$title = 'Регистрация нового пользователя';//Данные тега <title>
-		$headMain = 'Регистрация';
-		$robots = 'noindex, nofollow';
-		$descr = 'Регистрация нового пользователя в системе';
-		$action = 'addform';
-		$authorname = '';
-		$email = '';
-		$www = '';
-		$accountinfo = '';
-		$password = '';
-		$password2 = '';
-		$button = 'Регистрация';
+		defaultRegFormData();
+		
 		$errLog = 'Пароли должны совпадать!';
-		$scriptJScode = '<script src="script.js"></script>
-						 <script src="/js/jquery-1.min.js"></script>
-						 <script src="/js/bootstrap-markdown.js"></script>
-						 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 		
 		include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
 		exit();
@@ -282,24 +240,10 @@ if (isset ($_GET['addform']))
 			
 			else
 			{
-				$title = 'Регистрация нового пользователя';//Данные тега <title>
-				$headMain = 'Регистрация';
-				$robots = 'noindex, nofollow';
-				$descr = 'Регистрация нового пользователя в системе';
-				$action = 'addform';
-				$authorname = '';
-				$email = '';
-				$www = '';
-				$accountinfo = '';
-				$password = '';
-				$password2 = '';
-				$button = 'Регистрация';
+				defaultRegFormData();//данные для формы регистрации по умолчанию
+				
 				$errLog = 'Проверка не пройдена';
-				$scriptJScode = '<script src="script.js"></script>
-					 			 <script src="/js/jquery-1.min.js"></script>
-					 			 <script src="/js/bootstrap-markdown.js"></script>
-								 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
-
+				
 				include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
 				exit();
 			}
@@ -307,24 +251,10 @@ if (isset ($_GET['addform']))
 		
 		else
 		{
-			$title = 'Регистрация нового пользователя';//Данные тега <title>
-			$headMain = 'Регистрация';
-			$robots = 'noindex, nofollow';
-			$descr = 'Регистрация нового пользователя в системе';
-			$action = 'addform';
-			$authorname = '';
-			$email = '';
-			$www = '';
-			$accountinfo = '';
-			$password = '';
-			$password2 = '';
-			$button = 'Регистрация';
+			defaultRegFormData();//данные для формы регистрации по умолчанию
+			
 			$errLog = 'Проверка не пройдена';
-			$scriptJScode = '<script src="script.js"></script>
-							 <script src="/js/jquery-1.min.js"></script>
-							 <script src="/js/bootstrap-markdown.js"></script>
-					 		 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
-
+			
 			include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
 			exit();
 		}

@@ -506,3 +506,26 @@ function delOrAddContestScore($type, $pointsName)//$type - add or del, $pointsNa
 		exit();		
 	}	
 }
+
+/*Данные по умолчанию для формы регистрации*/
+function defaultRegFormData()
+{
+	$GLOBALS ['title'] = 'Регистрация нового пользователя';//Данные тега <title>
+	$GLOBALS ['headMain'] = 'Регистрация';
+	$GLOBALS ['robots'] = 'noindex, nofollow';
+	$GLOBALS ['descr'] = 'Регистрация нового пользователя в системе';
+	$GLOBALS ['action'] = 'addform';
+	$GLOBALS ['authorname'] = '';
+	$GLOBALS ['email'] = '';
+	$GLOBALS ['www'] = '';
+	$GLOBALS ['idauthor'] = '';
+	$GLOBALS ['password'] = '';
+	$GLOBALS ['password2'] = '';
+	$GLOBALS ['accountinfo'] = '';
+	$GLOBALS ['button'] = 'Регистрация';
+	//$errLog = '';
+	$GLOBALS ['scriptJScode'] = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+}
