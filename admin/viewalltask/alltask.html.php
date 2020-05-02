@@ -5,17 +5,15 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
 /*Загрузка header*/
 include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	
-	<div class = "maincont"> 
+	<div class = "maincont_for_view"> 
 			<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
 			<script src="//yastatic.net/share2/share.js"></script>
 			<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,twitter,lj"></div></div>
 		
 		<div>
-		<?php if (!isset($tasks))
+		<?php if (empty ($tasks))
 		 {
-			 $noPosts = '<p align = "center">Задания пока отсутствуют</p>';
-			 echo $noPosts;
-			 $tasks = null;
+			 echo '<h4 align = "center">Задания пока отсутствуют!</h4>';
 		 }
 		 
 		 else
