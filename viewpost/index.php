@@ -76,6 +76,15 @@ if (isset ($_GET['id']))
 					 <script src="/js/bootstrap-markdown.js"></script>
 					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
+	/*Микроразметка для Twitter*/
+	
+	$twitterCard = '<meta name="twitter:card" content="summary_large_image">
+					<meta name="twitter:site" content="@Arseni_Pol">
+					<meta name="twitter:title" content="'.substr($row['posttitle'], 0, 70).'">
+					<meta name="twitter:description" content="'.substr($row['description'], 0, 200).'">
+					<meta name="twitter:image" content="https://'.$_SERVER['SERVER_NAME'].'/images/'.$row['imghead'].'">	
+					<meta name="twitter:image:alt" content="'.$row['imgalt'].'">';
+	
 	/*Вывод видео в статью*/
 	if ((isset($row['videoyoutube'])) && ($row['videoyoutube'] != ''))
 	{

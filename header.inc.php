@@ -18,6 +18,12 @@
 	
 	
 	<script src='https://www.google.com/recaptcha/api.js'></script>
+		
+	<?php 
+        //Микроразметка для twitter
+        if (empty ($twitterCard)) $twitterCard = '';
+    
+        echo $twitterCard; ?>	
 	
 	<?php 
         //Дополнительный код
