@@ -20,11 +20,11 @@
 	<script src='https://www.google.com/recaptcha/api.js'></script>
 		
 	<?php 
-        //Микроразметка для twitter
-        if (empty ($twitterCard)) $twitterCard = '';
+        //Микроразметка
+        if (empty ($dataMarkup)) $dataMarkup = '';
     
-        echo $twitterCard; ?>	
-	
+        echo $dataMarkup; ?>
+		
 	<?php 
         //Дополнительный код
         if (empty ($otherCode)) $otherCode = '';

@@ -27,13 +27,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 </table>
 		</div>
 		
-		<div class = "post">
-		 <?php foreach ($newsIn as $news): ?> 	  
+		<div class = "post">	  
 			<div  align="justify">
-			
 				<div class = "posttitle">
-				  <?php echo ($news['newsdate']. ' | Автор: <a href="/account/?id='.$news['idauthor'].'" style="color: white" >'.$news['authorname']).'</a>';?>
-				  <p>Рубрика: <a href="../viewcategory/?id=<?php echo $news['categoryid']; ?>" style="color: white"><?php echo $news['categoryname'];?></a></p>
+				  <?php echo ($date.' | Автор: <a href="/account/?id='.$authorId.'" style="color: white" >'.$nameAuthor).'</a>';?>
+				  <p>Рубрика: <a href="../viewcategory/?id=<?php echo $categoryId; ?>" style="color: white"><?php echo $categoryName;?></a></p>
 				</div>
 				  <p><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
 				  <script src="//yastatic.net/share2/share.js"></script>
@@ -61,21 +59,21 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
                     </script>
 				  <hr>
 				   <p class="like"> 
-				    <img width = "5%" height = "5%" src="./view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($news['viewcount']); ?> 
-				    <img width = "3%" height = "3%" src="./like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($news['averagenumber']); ?>
-					<img width = "3%" height = "3%" src="./favourite.jpg" alt="Добавили в избранное" title="Добавили в избранное"> <?php htmlecho ($news['favouritescount']); ?>   
+				    <img width = "5%" height = "5%" src="./view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($viewCount); ?> 
+				    <img width = "3%" height = "3%" src="./like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($averageNumber); ?>
+					<img width = "3%" height = "3%" src="./favourite.jpg" alt="Добавили в избранное" title="Добавили в избранное"> <?php htmlecho ($favouritesCount); ?>   
 				   </p>
-				<?php if ($news['imghead'] == '')
+				<?php if ($imgHead == '')
 					{
 						$img = '';//если картинка в заголовке отсутствует
 						echo $img;
 					}
 						else 
 					{
-						$img = '<p align="center"><img width = "80%" height = "80%" src="/images/'.$news['imghead'].'"'. ' alt="'.$news['imgalt'].'"'.'></p>';//если картинка присутствует
+						$img = '<p align="center"><img width = "80%" height = "80%" src="/images/'.$imgHead.'"'. ' alt="'.$imgAlt.'"'.'></p>';//если картинка присутствует
 					}?>
 					<p><?php echo $img;?></p>
-					<p><?php echomarkdown ($news['textnews']); ?></p>
+					<p><?php echomarkdown ($articleText); ?></p>
 					<p align="center"><?php echo $video; ?></p>
 					<p><?php echo $votePanel; ?></p>
 					<p><a name="bottom"></a></p> 
@@ -86,7 +84,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						<img width = "5%" height = "5%" src="./zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
 					</p>
 			</div>	   	
-		 <?php endforeach; ?>
 		</div>
 		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<!-- ForPosts -->

@@ -27,16 +27,15 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 </table>
 		</div>
 		
-		<div class = "post">
-		 <?php foreach ($promotions as $promotion): ?> 	  
+		<div class = "post"> 	  
 			<div  align="justify">
 			
 				<div class = "posttitle">
-				  <?php echo ($promotion['promotiondate']. ' | Автор: <a href="/account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
-				  <p>Рубрика: <a href="../viewcategory/?id=<?php echo $promotion['categoryid']; ?>" style="color: white"><?php echo $promotion['categoryname'];?></a>
-					<?php if ($promotion['www'] != '')//если автор приложил ссылку
+				  <?php echo ($date.' | Автор: <a href="/account/?id='.$authorId.'" style="color: white" >'.$nameAuthor).'</a>';?>
+				  <p>Рубрика: <a href="../viewcategory/?id=<?php echo $categoryId; ?>" style="color: white"><?php echo $categoryName;?></a>
+					<?php if ($www != '')//если автор приложил ссылку
 						{
-							$link = '| <a href="//'.$promotion['www'].'" style="color: white" rel = "nofollow">Ссылка на ресурс</a>';
+							$link = '| <a href="//'.$www.'" style="color: white" rel = "nofollow">Ссылка на ресурс</a>';
 							echo $link;
 						}?></p>
 				</div>
@@ -66,17 +65,17 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
                     </script>
 				  <hr>
 				    <p class="like"> 
-				     <img width = "5%" height = "5%" src="/viewpromotion/view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($promotion['viewcount']); ?> 
-				     <img width = "3%" height = "3%" src="/viewpromotion/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($promotion['averagenumber']); ?>
+				     <img width = "5%" height = "5%" src="/viewpromotion/view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($viewCount); ?> 
+				     <img width = "3%" height = "3%" src="/viewpromotion/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($averageNumber); ?>
 					</p>
-					<?php if ($promotion['imghead'] == '')
+					<?php if ($imgHead == '')
 					{
 						$img = '';//если картинка в заголовке отсутствует
 						echo $img;
 					}
 						else 
 					{
-						$img = '/images/'.$promotion['imghead'];//если картинка присутствует
+						$img = '/images/'.$imgHead;//если картинка присутствует
 					}?>
 					
 					<div class = "img_post" style = "background: url(<?php echo $img; ?>);
@@ -84,7 +83,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
     												-webkit-background-size: 100% auto;
    												    -moz-background-size: 100% auto; 
  												    background-size: 100% auto; "></div>	
-					<p><?php echomarkdown ($promotion['text']); ?></p>
+					<p><?php echomarkdown ($articleText); ?></p>
 					<p align="center"><?php echo $video; ?></p>
 					<p><?php echo $votePanel; ?></p>
 					<p><?php echo $delAndUpd; ?></p>
@@ -94,7 +93,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					</p>
 					<div align="center"><?php echo $recommendation; ?></div>
 			</div>			
-		 <?php endforeach; ?>
 		</div>
 		<div>
 		 <h4>Случайные статьи рубрики</h4>

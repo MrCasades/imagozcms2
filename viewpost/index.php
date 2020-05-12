@@ -18,7 +18,7 @@ if (isset ($_GET['id']))
 	@session_start();//Открытие сессии для сохранения id статьи
 	
 	$_SESSION['idpost'] = $idPost;
-	$select = 'SELECT posts.id AS postid, author.id AS idauthor, post, posttitle, imghead, videoyoutube, viewcount, averagenumber, favouritescount, description, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
+	$select = 'SELECT posts.id AS postid, author.id AS idauthor, post, posttitle, imghead, videoyoutube, viewcount, votecount, averagenumber, favouritescount, description, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND zenpost = "NO" AND posts.id = ';
 
@@ -27,7 +27,8 @@ if (isset ($_GET['id']))
 	try
 	{
 		$sql = $select.$idPost;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	
 	catch (PDOException $e)
@@ -40,18 +41,24 @@ if (isset ($_GET['id']))
 		include 'error.html.php';
 		exit();
 	}
-
-	/*Вывод результата в шаблон*/
-	foreach ($result as $row)
-	{
-		$posts[] =  array ('id' => $row['postid'], 'idauthor' => $row['idauthor'], 'text' => $row['post'], 'posttitle' =>  $row['posttitle'], 'imgalt' =>  $row['imgalt'], 'imghead' => $row['imghead'],
-							'postdate' => $row['postdate'], 'viewcount' => $row['viewcount'], 'averagenumber' => $row['averagenumber'], 'description' => $row['description'],
-							'authorname' => $row['authorname'], 'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid'], 
-						    'videoyoutube' => $row['videoyoutube'], 'favouritescount' => $row['favouritescount']);
-	}
+	
+	$row = $s -> fetch();
+		
+	$articleId = $row['postid'];
+	$authorId = $row['idauthor'];
+	$articleText = $row['post'];
+	$imgHead = $row['imghead'];
+	$imgAlt = $row['imgalt'];
+	$date = $row['postdate'];
+	$viewCount = $row['viewcount'];
+	$averageNumber = $row['averagenumber'];
+	$nameAuthor = $row['authorname'];
+	$categoryName = $row['categoryname'];
+	$categoryId = $row['categoryid'];
+	$favouritesCount = $row['favouritescount'];
 	
 	/*Если страница отсутствует. Ошибка 404*/
-	if (empty ($posts))
+	if (!$row)
 	{
 		$title = 'Ошибка 404!';//Данные тега <title>
 		$headMain = 'Ошибка 404! Запрашиваемая страница отсутствует.';
@@ -76,14 +83,10 @@ if (isset ($_GET['id']))
 					 <script src="/js/bootstrap-markdown.js"></script>
 					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 	
-	/*Микроразметка для Twitter*/
+	/*Микроразметка*/
 	
-	$twitterCard = '<meta name="twitter:card" content="summary_large_image">
-					<meta name="twitter:site" content="@Arseni_Pol">
-					<meta name="twitter:title" content="'.substr($row['posttitle'], 0, 70).'">
-					<meta name="twitter:description" content="'.substr($row['description'], 0, 200).'">
-					<meta name="twitter:image" content="https://'.$_SERVER['SERVER_NAME'].'/images/'.$row['imghead'].'">	
-					<meta name="twitter:image:alt" content="'.$row['imgalt'].'">';
+	$dataMarkup = dataMarkup($row['posttitle'], $row['description'], $row['imghead'], $row['imgalt'], $row['postid'],
+							$row['postdate'], $row['authorname'], $row['averagenumber'], $row['votecount'], 'viewpost');
 	
 	/*Вывод видео в статью*/
 	if ((isset($row['videoyoutube'])) && ($row['videoyoutube'] != ''))

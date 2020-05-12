@@ -18,7 +18,7 @@ if (isset ($_GET['id']))
 	@session_start();//Открытие сессии для сохранения id статьи
 	
 	$_SESSION['idpromotion'] = $idPromotion;
-	$select = 'SELECT promotion.id AS promotionid, author.id AS idauthor, promotion, promotiontitle, imghead, videoyoutube, promotion.www, viewcount, averagenumber, description, imgalt, promotiondate, authorname, category.id AS categoryid, categoryname FROM promotion 
+	$select = 'SELECT promotion.id AS promotionid, author.id AS idauthor, promotion, promotiontitle, imghead, videoyoutube, promotion.www, viewcount, votecount, averagenumber, description, imgalt, promotiondate, authorname, category.id AS categoryid, categoryname FROM promotion 
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND promotion.id = ';
 
@@ -27,7 +27,8 @@ if (isset ($_GET['id']))
 	try
 	{
 		$sql = $select.$idPromotion;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	
 	catch (PDOException $e)
@@ -40,17 +41,24 @@ if (isset ($_GET['id']))
 		include 'error.html.php';
 		exit();
 	}
-
-	/*Вывод результата в шаблон*/
-	foreach ($result as $row)
-	{
-		$promotions[] =  array ('id' => $row['promotionid'], 'idauthor' => $row['idauthor'], 'text' => $row['promotion'], 'promotiontitle' =>  $row['promotiontitle'], 'imgalt' =>  $row['imgalt'], 'imghead' => $row['imghead'],
-							'promotiondate' => $row['promotiondate'], 'viewcount' => $row['viewcount'], 'averagenumber' => $row['averagenumber'], 'description' => $row['description'], 'www' =>  $row['www'],
-							'authorname' => $row['authorname'], 'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid'], 'videoyoutube' => $row['videoyoutube']);
-	}	
+	
+	$row = $s -> fetch();
+		
+	$articleId = $row['promotionid'];
+	$authorId = $row['idauthor'];
+	$articleText = $row['promotion'];
+	$imgHead = $row['imghead'];
+	$imgAlt = $row['imgalt'];
+	$www = $row['www'];
+	$date = $row['promotiondate'];
+	$viewCount = $row['viewcount'];
+	$averageNumber = $row['averagenumber'];
+	$nameAuthor = $row['authorname'];
+	$categoryName = $row['categoryname'];
+	$categoryId = $row['categoryid'];
 	
 	/*Если страница отсутствует. Ошибка 404*/
-	if (empty ($promotions))
+	if (!$row)
 	{
 		$title = 'Ошибка 404!';//Данные тега <title>
 		$headMain = 'Ошибка 404! Запрашиваемая страница отсутствует.';
@@ -74,6 +82,11 @@ if (isset ($_GET['id']))
 					 <script src="/js/jquery-1.min.js"></script>
 					 <script src="/js/bootstrap-markdown.js"></script>
 					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+	
+	/*Микроразметка*/
+	
+	$dataMarkup = dataMarkup($row['promotiontitle'], $row['description'], $row['imghead'], $row['imgalt'], $row['promotionid'],
+							$row['promotiondate'], $row['authorname'], $row['averagenumber'], $row['votecount'], 'viewpromotion');
 	
 	/*Вывод видео в статью*/
 	if ((isset($row['videoyoutube'])) && ($row['videoyoutube'] != ''))

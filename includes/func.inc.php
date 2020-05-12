@@ -529,3 +529,67 @@ function defaultRegFormData()
 					 <script src="/js/bootstrap-markdown.js"></script>
 					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 }
+
+/*Добавление микроразметки*/
+function dataMarkup ($title = '' , $description = '', $imghead = '', $imgalt = '', $id = '', $date = '', 
+					 $author = '', $averagenumber = '', $votecount = '', $articleType) //$articleType - viewpost, viewnews, 																												viewpromotion
+{
+	return '
+	
+			<meta name="twitter:card" content="summary_large_image">
+			<meta name="twitter:site" content="@Arseni_Pol">
+			<meta name="twitter:title" content="'.substr($title, 0, 70).'">
+			<meta name="twitter:description" content="'.substr($description, 0, 200).'">
+			<meta name="twitter:image" content="https://'.$_SERVER['SERVER_NAME'].'/images/'.$imghead.'">	
+			<meta name="twitter:image:alt" content="'.$imgalt.'">
+			
+			
+			<meta name="og:url" content="https://'.$_SERVER['SERVER_NAME'].'/'.$articleType.'/?id='.$id.'">
+			<meta name="og:type" content="article">
+			<meta name="og:title" content="'.$title.'">
+			<meta name="og:description" content="'.substr($description, 0, 200).'">
+			<meta name="og:image" content="https://'.$_SERVER['SERVER_NAME'].'/images/'.$imghead.'">
+			
+			
+			<script type="application/ld+json">
+			{
+				"@context": "http://schema.org",
+				"@type": "Article",
+				"mainEntityOfPage": {
+					"@type": "WebPage",
+					"@id": "https://'.$_SERVER['SERVER_NAME'].'/'.$articleType.'/?id='.$id.'"
+					},
+				"headline": "'.$title.'",
+				"image": {
+					"@type": "ImageObject",
+					"url": "https://'.$_SERVER['SERVER_NAME'].'/images/'.$imghead.'",
+					"width": 800,
+					"height": 600
+					},
+				"datePublished": "'.$date.'",
+				"dateModified": "'.$date.'",
+				"author": {
+					"@type": "Person",
+					"name": "'.$author.'"
+					},
+				"publisher": {
+					"@type": "Organization",
+					"name": "IMAGOZ",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://'.$_SERVER['SERVER_NAME'].'/logomain.jpg",
+						"width": 500,
+						"height": 500
+						}
+					},
+				"description": "'.$description.'",
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"itemReviewed": "Article",
+					"bestRating": 5,
+					"ratingValue": '.$averagenumber.',
+					"reviewCount": '.$votecount.'
+					}
+				}
+			</script>';
+}
