@@ -7,7 +7,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	
 	  <div class = "maincont"> 
 	   <div class = "post" align = "center">
-		  <p><?php htmlecho($premodYes); ?> "<?php htmlecho($posttitle); ?>"?</p>
+		  <h3><?php htmlecho($premodYes); ?> "<?php htmlecho($posttitle); ?>"?</h>
 	   <p>
 	    <form action = "?<?php htmlecho($action); ?> " method = "post">
 		  <input type = "hidden" name = "id" value = "<?php htmlecho($id); ?>">

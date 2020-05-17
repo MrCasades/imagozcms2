@@ -11,3 +11,22 @@ confirm.addEventListener('click', (event) => {
         event.preventDefault()	
     }
 })
+
+//Изменение гонорара
+
+const priceText = document.getElementById('pricetext')
+
+const addBonus = document.getElementById('addbonus')
+
+const defaultPrice = priceText.innerHTML
+
+
+addBonus.addEventListener('input', (event) => {
+
+    if ((!addBonus.value) || (isNaN(addBonus.value))){
+        priceText.innerHTML = defaultPrice
+    }
+    else{
+
+        priceText.innerHTML = parseFloat(defaultPrice) + parseFloat(addBonus.value)}
+})

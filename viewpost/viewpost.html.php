@@ -80,6 +80,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					<p align="center"><?php echo $addFavourites;?></p>
 					<p><?php echo $delAndUpd; ?></p>
 					<p><?php echo $premoderation; ?></p>
+					<div align="center"><?php echo $recommendation; ?></div>
 					<p><strong><a href="https://zen.yandex.ru/imagoz" rel = "nofollow">
 						<img width = "5%" height = "5%" src="./zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
 					</p>

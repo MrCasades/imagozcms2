@@ -34,7 +34,8 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT id, posttitle, imghead FROM posts WHERE id = :idpost';
+		$sql = 'SELECT posts.id, posttitle, pricetext, authorname FROM posts
+				INNER JOIN author ON author.id = idauthor WHERE posts.id = :idpost';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -44,7 +45,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 	{
 		$robots = 'noindex, nofollow';
 		$descr = '';
-		$error = 'Error select book: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		$error = 'Ошибка выбора данных статьи: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
 		include 'error.html.php';
 		exit();
 	}
@@ -60,6 +61,9 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 			  	   <input type = "text" name = "points" value = "100" id = "checknum"> ';
 	$premodYes = 'Опубликовать материал ';
 	$posttitle = $row['posttitle'];
+	$pricetext = $row['pricetext'];
+	$author = $row['authorname'];
+	$editorcomment = '';
 	$id = $row['id'];
 	$button = 'Опубликовать';
 	$scriptJScode = '<script src="script.js"></script>';
@@ -96,6 +100,7 @@ if (isset ($_GET['premodyes']))
 	$price = $row['pricetext'];
 	$idAuthor = (int) $row['idauthor'];
 	$paymentStatus = $row['paymentstatus'];
+	$editorBonus = (float) $_POST['editbonus'];//получение бонуса / вычета редактора
 	
 	$rating = (int) $_POST['points'];//получение оценки редактора
 	
@@ -131,7 +136,7 @@ if (isset ($_GET['premodyes']))
 		
 			/*Обновить счёт автора, рейтинг и счётчик статей*/
 			$sql = 'UPDATE author 
-					SET score = score + '.$price.',
+					SET score = score + '.($price + $editorBonus).',
 					countposts = countposts + 1,
 					rating = rating + '.$rating.' 
 					WHERE id = '.$idAuthor;
@@ -148,9 +153,12 @@ if (isset ($_GET['premodyes']))
 			/*Обновить статус оплаты во избежании повторной оплаты и оценку статьи*/
 			$sql = 'UPDATE posts SET paymentstatus = "YES", 
 									 postdate = SYSDATE(),
+									 editorbonus = '.$editorBonus.',
+									 editorcomment = :editorcomment,
 									 articlerating = articlerating + '.$rating.' WHERE id = :idpost';
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> bindValue(':idpost', $_POST['id']);//отправка значения
+			$s -> bindValue(':editorcomment', $_POST['editorcomment']);//отправка значения
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
 			$pdo->commit();//подтверждение транзакции	

@@ -375,13 +375,13 @@ function convertToPostOrNews($inData, $idData)
 	try
 	{
 		$sql = 'INSERT INTO '.$outData.' SET 
-			'.$dataBD.' = "'.$data.'",
-			'.$datatitleBD.' = "'.$datatitle.'",
-			description = "'.$description.'",
-			imgalt = "'.$imgalt.'",	
-			videoyoutube = "'.$videoyoutube.'",
+			'.$dataBD.' = \''.$data.'\',
+			'.$datatitleBD.' = \''.$datatitle.'\',
+			description = \''.$description.'\',
+			imgalt = \''.$imgalt.'\',	
+			videoyoutube = \''.$videoyoutube.'\',
 			'.$datadateBD.' = SYSDATE(),
-			imghead = "'.$imghead.'", 
+			imghead = \''.$imghead.'\', 
 			idauthor = '.$idauthor.',
 			idcategory = '.$idcategory.',
 			idtask = '.$idtask.' ,
@@ -534,6 +534,12 @@ function defaultRegFormData()
 function dataMarkup ($title = '' , $description = '', $imghead = '', $imgalt = '', $id = '', $date = '', 
 					 $author = '', $averagenumber = '', $votecount = '', $articleType) //$articleType - viewpost, viewnews, 																												viewpromotion
 {
+	if ($votecount == 0) 
+	{
+		$votecount = 1;
+		$averagenumber = 5;
+	}
+	
 	return '
 	
 			<meta name="twitter:card" content="summary_large_image">
@@ -585,10 +591,10 @@ function dataMarkup ($title = '' , $description = '', $imghead = '', $imgalt = '
 				"description": "'.$description.'",
 				"aggregateRating": {
 					"@type": "AggregateRating",
-					"itemReviewed": "Article",
+					"itemReviewed": "Thing",
 					"bestRating": 5,
 					"ratingValue": '.$averagenumber.',
-					"reviewCount": '.$votecount.'
+					"ratingCount": '.$votecount.'
 					}
 				}
 			</script>';

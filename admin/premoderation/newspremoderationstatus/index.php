@@ -34,7 +34,8 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT id, newstitle, imghead FROM newsblock WHERE id = :idnews';
+		$sql = 'SELECT newsblock.id, newstitle, pricetext, authorname FROM newsblock 
+				INNER JOIN author ON author.id = idauthor WHERE newsblock.id = :idnews';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':idnews', $_POST['id']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -44,7 +45,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 	{
 		$robots = 'noindex, nofollow';
 		$descr = '';
-		$error = 'Ошибка выбора новости: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		$error = 'Ошибка выбора данных статьи: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
 		include 'error.html.php';
 		exit();
 	}
@@ -56,10 +57,11 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 	$robots = 'noindex, nofollow';
 	$descr = '';
 	$action = 'premodyes';
-	$pointPanel = '<label for = "points">Оценка статьи </label>
-			  	   <input type = "text" name = "points" value = "100" id = "checknum"> ';
 	$premodYes = 'Опубликовать материал ';
 	$posttitle = $row['newstitle'];
+	$pricetext = $row['pricetext'];
+	$author = $row['authorname'];
+	$editorcomment = '';
 	$id = $row['id'];
 	$button = 'Опубликовать';
 	$scriptJScode = '<script src="script.js"></script>';
@@ -96,6 +98,7 @@ if (isset ($_GET['premodyes']))
 	$price = $row['pricetext'];
 	$idAuthor = (int) $row['idauthor'];
 	$paymentStatus = $row['paymentstatus'];
+	$editorBonus = (float) $_POST['editbonus'];//получение бонуса / вычета редактора
 	
 	$rating = (int) $_POST['points'];//получение оценки редактора
 	
@@ -131,7 +134,7 @@ if (isset ($_GET['premodyes']))
 		
 			/*Обновить счёт автора и счётчик статей*/
 			$sql = 'UPDATE author 
-					SET score = score + '.$price.',
+					SET score = score + '.($price + $editorBonus).',
 					countposts = countposts + 1,
 					rating = rating + '.$rating.' WHERE id = '.$idAuthor;
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
@@ -147,9 +150,12 @@ if (isset ($_GET['premodyes']))
 			/*Обновить статус оплаты во избежании повторной оплаты*/
 			$sql = 'UPDATE newsblock SET paymentstatus = "YES", 
 										 newsdate = SYSDATE(),
+										 editorbonus = '.$editorBonus.',
+										 editorcomment = :editorcomment,
 										 articlerating = articlerating + '.$rating.' WHERE id = :idnews';
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> bindValue(':idnews', $_POST['id']);//отправка значения
+			$s -> bindValue(':editorcomment', $_POST['editorcomment']);//отправка значения
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
 			$pdo->commit();//подтверждение транзакции	
@@ -196,7 +202,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Снять с публик�
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT id, newstitle, imghead FROM newsblock WHERE id = :idnews';
+		$sql = 'SELECT id, newstitle FROM newsblock WHERE id = :idnews';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':idnews', $_POST['id']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
