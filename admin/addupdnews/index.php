@@ -190,8 +190,15 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 }
 
 /*Обновление информации о статье*/
-if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
+if (isset ($_POST['action']) && ($_POST['action'] == 'Upd' || $_POST['action'] == 'Переделать'))
 {
+	if ($_POST['action'] == 'Переделать')
+	{
+		@session_start();//Открытие сессии для сохранения флага переработки
+	
+		$_SESSION['rewrite'] = true;
+	}
+	
 	/*Подключение к базе данных*/
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
@@ -855,6 +862,28 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		}
 	}
 	
+	//Если материал в переработке
+	if ($_SESSION['rewrite'])
+	{
+		/*Вернуть материал в премодерацию*/
+		try
+		{
+			$sql = 'UPDATE newsblock SET refused = "NO" WHERE id = :idnews';
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> bindValue(':idnews', $_POST['id']);//отправка значения
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+
+		}
+		catch (PDOException $e)
+		{
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка отклонения публикации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+	}
+	
 	$idpost_ind = $_POST['id'];//id материала
 	
 	/*Предварительенй просмотр*/
@@ -1069,395 +1098,4 @@ if (isset ($_GET['delete']))
 	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
 	exit();
 }	
-
-/*Переработка материала*/
-
-/*Обновление информации о статье*/
-if (isset ($_POST['action']) && $_POST['action'] == 'Переделать')
-{
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
-	/*Команда SELECT*/
-	try
-	{
-		$sql = 'SELECT id, news, newstitle, idauthor, idcategory, imghead, imgalt, videoyoutube, translittitle, description FROM newsblock WHERE id = :idnews';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idnews', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора новости: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();
-	
-	$title = 'Обновление новости';//Данные тега <title>
-	$headMain = 'Обновление новости';
-	$robots = 'noindex, nofollow';
-	$descr = '';
-	$action = 'rewrite';
-	$text = $row['news'];
-	$newstitle = $row['newstitle'];
-	$description = $row['description'];
-	$imgalt = $row['imgalt'];
-	$videoyoutube = $row['videoyoutube'];
-	$idauthor = 
-	$idcategory = $row['idcategory'];
-	$id = $row['id'];
-	$button = 'Обновить информацию о новости';
-	$errorForm = '';
-	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
-	
-	@session_start();//Открытие сессии для сохранения названия файла изображения
-	
-	$_SESSION['imghead'] = $row['imghead'];
-		
-	/*Выбор автора статьи*/
-	try
-	{
-		$result = $pdo -> query ('SELECT authorname FROM newsblock INNER JOIN author ON idauthor = author.id WHERE newsblock.id = '.$id);
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка вывода author '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	foreach ($result as $row)
-	{
-		$authors_1[] = array('authorname' => $row['authorname']);
-	}
-	
-	$authorPost = $row['authorname'];//возвращает имя автора
-	
-	/*Список рубрик*/
-	try
-	{
-		$result = $pdo -> query ('SELECT id, categoryname FROM category');
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка вывода category '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	foreach ($result as $row)
-	{
-		$categorys_1[] = array('idcategory' => $row['id'], 'categoryname' => $row['categoryname']);
-	}
-	
-	/*Статьи по тематикам*/
-	try
-	{
-		$sql = 'SELECT idmeta FROM metapost WHERE idnews = :idnews';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idnews', $id);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка вывода metapost ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	foreach ($s as $row)
-	{
-		$selectedMeta[] = $row['idmeta'];
-	}
-	
-	/*Список тематик*/
-	try
-	{
-		$result = $pdo -> query ('SELECT id, metaname FROM meta');
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка вывода meta '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	foreach ($result as $row)
-	{
-		$metas_1[] = array('idmeta' => $row['id'],'metaname' => $row['metaname'], 'selected' => in_array($row['id'], $selectedMeta));
-	}
-
-	include 'addupdform.html.php';
-	exit();
-}
-
-/*UPDATE - обновление информации в базе данных*/
-
-if (isset($_GET['rewrite']))//Если есть переменная editform выводится форма
-{
-	if (!is_uploaded_file($_FILES['upload']['tmp_name']))//если файл не загружен, оставить старое имя
-	{
-		$fileName = $_SESSION['imghead'];
-	}
-	
-	else
-	{
-		/*Удаление старого файла изображения*/
-		$fileName = $_SESSION['imghead'];
-		$delFile = $_SERVER['DOCUMENT_ROOT'] . '/images/'.$fileName;//путь к файлу для удаления
-		unlink($delFile);//удаление файла
-		
-		/*Загрузка скрипта добавления файла*/
-		$fileNameScript = 'img-'. time();//имя файла новости/статьи
-		$filePathScript = '/images/';//папка с изображениями для новости/статьи
-		
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
-	}
-	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
-	if (($_POST['category'] == '') || ($_POST['textnews'] == '') || ($_POST['newstitle'] == ''))
-	{
-		$title = 'В форме есть незаполненные поля!';//Данные тега <title>
-		$headMain = 'В форме есть незаполненные поля!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Один или несколько атрибутов не указаны. Выбирете все.';
-		include 'error.html.php';
-		exit();
-	}
-	
-	/*Определение предворительной длины и цены текста*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
-	
-	$text = $_POST['textnews'];
-	$lengthText = lengthText($text);//определение длины текста
-	
-	/*Выбор цены за 1000 знаков*/
-	try
-	{
-		$sql = 'SELECT pricenews, authorbonus FROM newsblock WHERE id = :idnews';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idnews', $_POST['id']);
-		$s -> execute();
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора цены новости '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();
-	
-	$priceNews = $row['pricenews'];//цена за 1000 знаков
-	$bonus = $row['authorbonus'];
-	
-	$fullPrice = priceText($text, $priceNews, $bonus);//полная стоимость статьи
-	
-	try
-	{
-		$sql = 'UPDATE newsblock SET 
-			news = :news,
-			newstitle = :newstitle,	
-			description = :description,
-			imgalt = :imgalt,	
-			videoyoutube = :videoyoutube,
-			imghead = '.'"'.$fileName.'"'.', '.
-			'idcategory = :idcategory,
-			lengthtext = '.$lengthText.', 
-			pricetext = '.$fullPrice.
-			' WHERE id = :idnews';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idnews', $_POST['id']);//отправка значения
-		$s -> bindValue(':news', $_POST['textnews']);//отправка значения
-		$s -> bindValue(':newstitle', $_POST['newstitle']);//отправка значения
-		$s -> bindValue(':description', $_POST['description']);//отправка значения
-		$s -> bindValue(':imgalt', $_POST['imgalt']);//отправка значения
-		$s -> bindValue(':videoyoutube', $_POST['videoyoutube']);//отправка значения
-		$s -> bindValue(':idcategory', $_POST['category']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка обновления информации news'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	try
-	{
-		$sql = 'DELETE FROM metapost WHERE idnews = :idnews';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idnews', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	if (isset ($_POST['metas']))
-	{
-		try
-		{
-			$sql = 'INSERT INTO metapost SET 
-				idnews = :idnews, 
-				idmeta = :idmeta,
-				idpost = 0,
-				idpromotion = 0';
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-
-			foreach	($_POST['metas'] as $idmetas)
-			{		
-				$s -> bindValue(':idnews', $_POST['id']);//отправка значения
-				$s -> bindValue(':idmeta', $idmetas);//отправка значения
-				$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			}
-		}
-		catch (PDOException $e)
-		{
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка обновления информации metapost'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-		}
-	}
-	
-	/*Вернуть материал в премодерацию*/
-	try
-	{
-		$sql = 'UPDATE newsblock SET refused = "NO" WHERE id = :idnews';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idnews', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка отклонения публикации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$idpost_ind = $_POST['id'];//id материала
-	
-	/*Предварительенй просмотр*/
-	
-	$select = 'SELECT newsblock.id AS newsid, author.id AS idauthor, news, newstitle, imghead, viewcount, averagenumber, description, imgalt, newsdate, authorname, category.id AS categoryid, categoryname FROM newsblock 
-			   INNER JOIN author ON idauthor = author.id 
-			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "NO" AND newsblock.id = ';
-
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
-	try
-	{
-		$sql = $select.$idpost_ind ;
-		$result = $pdo->query($sql);
-	}
-	
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Error select news ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-
-	/*Вывод результата в шаблон*/
-	foreach ($result as $row)
-	{
-		$newsIn[] =  array ('id' => $row['newsid'], 'idauthor' => $row['idauthor'],  'textnews' => $row['news'], 'newstitle' =>  $row['newstitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'],
-							'description' => $row['description'], 'newsdate' => $row['newsdate'], 
-							'authorname' => $row['authorname'], 'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid']);
-	}	
-	
-	/*Вывод тематик(тегов)*/
-	
-	/*Команда SELECT*/
-	
-	try
-	{
-		$sql = 'SELECT meta.id, metaname FROM newsblock 
-				INNER JOIN metapost ON newsblock.id = idnews 
-				INNER JOIN meta ON meta.id = idmeta 
-				WHERE newsblock.id = '.$idpost_ind;//Вверху самое последнее значение
-		$result = $pdo->query($sql);
-	}
-	
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора тега ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	/*Вывод результата в шаблон*/
-	foreach ($result as $row)
-	{
-		$metas[] =  array ('id' => $row['id'], 'metaname' => $row['metaname']);
-	}
-	
-	$delAndUpd = "<form action = '/admin/addupdnews/' method = 'post'>
-			
-						Редактировать материал:
-						<input type = 'hidden' name = 'id' value = '".$idpost_ind."'>
-						<input type = 'submit' name = 'action' value = 'Upd' class='btn btn-primary btn-sm'>
-					  </form>";
-	
-	/*Отправка сообщений (тест)*/
-	
-	$titleMessage = 'Ваш материал "'. $_POST['newstitle'].'" находится в премодерации.';
-	$mailMessage = 'Вами был отправлен в премодерацию материал "'. $_POST['newstitle'].'". После успешной проверки Вам будет начислен '.$fullPrice.' балл';
-
-	toEmail_1($titleMessage, $mailMessage);//отправка письма
-	
-	$title = 'Материал в премодерации';//Данные тега <title>
-	$headMain = 'Материал в премодерации';
-	$robots = 'noindex, nofollow';
-	$descr = '';
-	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
-	
-	include 'premodsucc.html.php';
-	exit();
-}
 
