@@ -116,7 +116,19 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		</div>	 
 		 <?php endforeach; ?>
 	   </div>
-
+	  
+	  <div>
+		<h4 align = "center">Новости партнёров</h4>
+	 	 <div id="unit_95706"><a href="http://mirtesen.ru/" >Новости МирТесен</a></div>
+		<script type="text/javascript" charset="utf-8">
+		  (function() {
+			var sc = document.createElement('script'); sc.type = 'text/javascript'; sc.async = true;
+			sc.src = '//news.mirtesen.ru/data/js/95706.js'; sc.charset = 'utf-8';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sc, s);
+		  }());
+		</script>
+	  </div>
+			
 		 <h4 align="center">Комментарии (<?php echo $countPosts; ?>)</h4>
 			<p align="center"><?php echo $addComment; ?></p>
 		<div>

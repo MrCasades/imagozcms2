@@ -56,7 +56,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		  </tr>
 		 </table>
 		</div>
-	 
+	 	 
 	 <h4 align = "center">Топ-5 новостей</h4>
 	 <div class="columns">
 	 <?php if (empty ($newsInTOP))
@@ -105,6 +105,18 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
         t.parentNode.insertBefore(s, t);
     })(this, this.document, "yandexContextAsyncCallbacks");
 </script>
+	 
+	 <div>
+	  <h4 align = "center">Новости партнёров</h4>
+	 	 <div id="unit_95706"><a href="http://mirtesen.ru/" >Новости МирТесен</a></div>
+		<script type="text/javascript" charset="utf-8">
+		  (function() {
+			var sc = document.createElement('script'); sc.type = 'text/javascript'; sc.async = true;
+			sc.src = '//news.mirtesen.ru/data/js/95706.js'; sc.charset = 'utf-8';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sc, s);
+		  }());
+		</script>
+	 </div>	 
 	 
     <div class = "titles_main_padge"><h4 align = "center">Пользователи рекомендуют:</h4></div>	
 

@@ -14,11 +14,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 <table>
 		 <tr>
 		  <td valign="top"><label for = "meta"> Теги:</label></td> 
-		  <?php if (!isset($metas))
+		  <?php if (empty($metas))
 			  {
-				 $noPosts = ' ';
-				 echo $noPosts;
-				 $metas = null;
+				 echo 'Теги отсутствуют';
 		      }
 		 
 		      else
@@ -32,29 +30,28 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 </table>
 		</div>
 		
-		<div>
-		 <?php foreach ($newsIn as $news): ?> 	  
+		<div> 
 			<div  align="justify">
 			
-				<h3><?php echo ($news['newstitle']. 'Post #'.$news['id']); ?></h3>
-					<?php if ($news['imghead'] == '')
+				<h3><?php echo ($articleTitle. 'Post #'.$articleId); ?></h3>
+					<?php if ($imgHead == '')
 					{
 						$img = '';//если картинка в заголовке отсутствует
 						echo $img;
 					}
 						else 
 					{
-						$img = '<img width = "60%" height = "40%" src="/images/'.$news['imghead'].'"'. ' alt="'.$news['imgalt'].'"'.'>';//если картинка присутствует
+						$img = '<img width = "60%" height = "40%" src="/images/'.$imgHead.'"'. ' alt="'.$imgAlt.'"'.'>';//если картинка присутствует
 					}?>
 					<p><?php echo $img;?></p>
-					<p><?php echomarkdown ($news['newstext']); ?></p>
+					<p><?php echomarkdown ($articleText); ?></p>
 					<p align="center"><?php echo $video; ?></p>
 					<p><?php echo $delAndUpd; ?></p>
 					<p align="center"><?php echo $premoderation; ?></p>
 					<p align="center"><?php echo $convertData; ?></p>
 			</div>	
-		 <?php endforeach; ?>
-		</div>	
+		</div>
+		<?php echo $taskData; ?>
 	</div>		
 					
 <?php 

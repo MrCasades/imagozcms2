@@ -19,7 +19,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($posts as $post): ?> 
 		  <div class = "post">
 			  <div class = "posttitle">
-				  <?php echo ($post['postdate']. ' | Автор: <a href="/account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';?>
+				  <?php echo ($post['postdate']. ' | Автор: <a href="/account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';
+				  echo $taskData = ($post['idtask'] == 0) ? ' ' : ' | <strong><a href="/admin/refused/viewtask/?id='.$post['idtask'].'" style="color: red" onclick="viewTask(this.href); return false;" target="_blank" >Просмотр задания</a></strong>';?>
 			  </div>
 			  <div>
 				  <h3 align = "center"><?php echo $post['posttitle'];?></h3>		  	
@@ -53,7 +54,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($newsIn as $news): ?> 
 		  <div class = "post">
 			  <div class = "posttitle">
-				  <?php echo ($news['newsdate']. ' | Автор: <a href="/account/?id='.$news['idauthor'].'" style="color: white" >'.$news['authorname']).'</a>';?>
+				  <?php echo ($news['newsdate']. ' | Автор: <a href="/account/?id='.$news['idauthor'].'" style="color: white" >'.$news['authorname']).'</a>';
+				  echo $taskData = ($news['idtask'] == 0) ? ' ' : ' | <strong><a href="/admin/refused/viewtask/?id='.$news['idtask'].'" style="color: red" onclick="viewTask(this.href); return false;" target="_blank">Просмотр задания</a></strong>';?>
 			  </div>
 			  <div>
 				  <h3 align = "center"><?php echo $news['newstitle'];?></h3>		  	

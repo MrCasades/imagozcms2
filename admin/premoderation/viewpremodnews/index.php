@@ -28,14 +28,18 @@ if (isset ($_GET['news']))
 	@session_start();//Открытие сессии для сохранения id статьи
 	
 	$_SESSION['idnews'] = $idNews;
-	$select = 'SELECT * FROM newsblock WHERE premoderation = "NO" AND refused = "NO" AND id = ';
+	
+	/*Выбор данных статьи*/
+	
+	$select = 'SELECT newsblock.id AS newsid, news, newstitle, imghead, videoyoutube, imgalt, newsdate, idtask FROM newsblock WHERE premoderation = "NO" AND refused = "NO" AND newsblock.id = ';
 
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
 	try
 	{
 		$sql = $select.$idNews;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	
 	catch (PDOException $e)
@@ -48,13 +52,17 @@ if (isset ($_GET['news']))
 		include 'error.html.php';
 		exit();
 	}
-
-	/*Вывод результата в шаблон*/
-	foreach ($result as $row)
-	{
-		$newsIn[] =  array ('id' => $row['id'], 'newstext' => $row['news'], 'newstitle' =>  $row['newstitle'], 'imgalt' =>  $row['imgalt'], 'imghead' => $row['imghead'],
-							'newsdate' => $row['newsdate'], 'videoyoutube' => $row['videoyoutube']);
-	}
+	
+	$row = $s -> fetch();
+	
+	$articleId = $row['newsid'];
+	$articleText = $row['news'];
+	$imgHead = $row['imghead'];
+	$imgAlt = $row['imgalt'];
+	$date = $row['newsdate'];
+	$articleTitle = $row['newstitle'];
+	$idTask = $row['idtask'];
+	$taskData = '';
 	
 	$title = $row['newstitle'];//Данные тега <title>
 	$headMain = $row['newstitle'];	
@@ -70,6 +78,49 @@ if (isset ($_GET['news']))
 	else
 	{
 		$video = '';
+	}
+	
+	/*Выбор данных задания*/
+	if ($idTask != 0)
+	{
+		$select = 'SELECT task.id AS taskid, tasktitle, task.description AS taskdescription, taskdate FROM task WHERE task.id = ';
+	
+		try
+		{
+			$sql = $select.$idTask;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		}
+
+		catch (PDOException $e)
+		{
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка вывода содержимого задания ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+
+		$row = $s -> fetch();
+
+		$taskId = $row['taskid'];
+		$taskTitle = $row['tasktitle'];
+		$taskDescription = $row['taskdescription'];
+		$taskDate = $row['taskdate'];
+	
+	
+		$taskData = '<div class = "post"> 	
+						<div  align="justify">
+			
+							<div class = "posttitle">
+				 			 Дата выдачи: '.$taskDate.
+						'</div>
+						<h3 align="center">Техническое задание #'.$taskId.' "'.$taskTitle.'"</h3>
+						<p>'.markdown2html ($taskDescription).'</p>
+			</div>			
+		</div>';
 	}
 	
 	/*Вывод тематик(тегов)*/

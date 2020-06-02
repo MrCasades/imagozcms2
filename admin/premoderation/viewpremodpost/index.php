@@ -28,14 +28,15 @@ if (isset ($_GET['post']))
 	@session_start();//Открытие сессии для сохранения id статьи
 	
 	$_SESSION['idpost'] = $idPost;
-	$select = 'SELECT * FROM posts WHERE premoderation = "NO" AND refused = "NO" AND id = ';
+	$select = 'SELECT posts.id AS postid, post, posttitle, imghead, videoyoutube, imgalt, postdate, idtask FROM posts WHERE premoderation = "NO" AND refused = "NO" AND posts.id = ';
 
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
 	try
 	{
 		$sql = $select.$idPost;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	
 	catch (PDOException $e)
@@ -48,13 +49,17 @@ if (isset ($_GET['post']))
 		include 'error.html.php';
 		exit();
 	}
+	
+	$row = $s -> fetch();
 
-	/*Вывод результата в шаблон*/
-	foreach ($result as $row)
-	{
-		$posts[] =  array ('id' => $row['id'], 'text' => $row['post'], 'posttitle' =>  $row['posttitle'], 'imgalt' =>  $row['imgalt'], 'imghead' => $row['imghead'],
-							'postdate' => $row['postdate'], 'videoyoutube' => $row['videoyoutube']);
-	}	
+	$articleId = $row['postid'];
+	$articleText = $row['post'];
+	$imgHead = $row['imghead'];
+	$imgAlt = $row['imgalt'];
+	$date = $row['postdate'];
+	$articleTitle = $row['posttitle'];
+	$idTask = $row['idtask'];
+	$taskData = '';
 
 	$title = $row['posttitle'];//Данные тега <title>
 	$headMain = $row['posttitle'];	
@@ -70,6 +75,49 @@ if (isset ($_GET['post']))
 	else
 	{
 		$video = '';
+	}
+	
+	/*Выбор данных задания*/
+	if ($idTask != 0)
+	{
+		$select = 'SELECT task.id AS taskid, tasktitle, task.description AS taskdescription, taskdate FROM task WHERE task.id = ';
+	
+		try
+		{
+			$sql = $select.$idTask;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		}
+
+		catch (PDOException $e)
+		{
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка вывода содержимого задания ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+
+		$row = $s -> fetch();
+
+		$taskId = $row['taskid'];
+		$taskTitle = $row['tasktitle'];
+		$taskDescription = $row['taskdescription'];
+		$taskDate = $row['taskdate'];
+	
+	
+		$taskData = '<div class = "post"> 	
+						<div  align="justify">
+			
+							<div class = "posttitle">
+				 			 Дата выдачи: '.$taskDate.
+						'</div>
+						<h3 align="center">Техническое задание #'.$taskId.' "'.$taskTitle.'"</h3>
+						<p>'.markdown2html ($taskDescription).'</p>
+			</div>			
+		</div>';
 	}
 	
 	/*Вывод тематик(тегов)*/

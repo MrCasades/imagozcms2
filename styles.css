@@ -70,6 +70,15 @@
 	clear:both;
 }
 
+.maincont_for_window {
+	width: 100%;
+	
+	background-color: #ffffff;
+	font-family: 'Arial';
+	/*border: solid 5px #AFEEEE;*/
+	clear:both;
+}
+
 .messenger {
 	width: 50%;
 	position: relative;

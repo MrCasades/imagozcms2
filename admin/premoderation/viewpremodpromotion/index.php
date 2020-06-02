@@ -28,14 +28,15 @@ if (isset ($_GET['promotion']))
 	@session_start();//Открытие сессии для сохранения id статьи
 	
 	$_SESSION['idpost'] = $idPost;
-	$select = 'SELECT * FROM promotion WHERE premoderation = "NO" AND refused = "NO" AND id = ';
+	$select = 'SELECT id, promotion, promotiontitle, imghead, videoyoutube, imgalt, promotiondate FROM promotion WHERE premoderation = "NO" AND refused = "NO" AND id = ';
 
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
 	try
 	{
 		$sql = $select.$idPost;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	
 	catch (PDOException $e)
@@ -48,14 +49,16 @@ if (isset ($_GET['promotion']))
 		include 'error.html.php';
 		exit();
 	}
+	
+	$row = $s -> fetch();
 
-	/*Вывод результата в шаблон*/
-	foreach ($result as $row)
-	{
-		$promotions[] =  array ('id' => $row['id'], 'text' => $row['promotion'], 'promotiontitle' =>  $row['promotiontitle'], 'imgalt' =>  $row['imgalt'], 'imghead' => $row['imghead'],
-							'promotiondate' => $row['promotiondate'], 'videoyoutube' => $row['videoyoutube']);
-	}	
-
+	$articleId = $row['id'];
+	$articleText = $row['promotion'];
+	$imgHead = $row['imghead'];
+	$imgAlt = $row['imgalt'];
+	$date = $row['promotiondate'];
+	$articleTitle = $row['promotiontitle'];
+	
 	$title = $row['promotiontitle'];//Данные тега <title>
 	$headMain = $row['promotiontitle'];	
 	$robots = 'noindex, nofollow';

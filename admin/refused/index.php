@@ -3,7 +3,8 @@
 $title = 'Отклонённые материалы';//Данные тега <title>
 $headMain = 'Отклонённые материалы';
 $robots = 'noindex, nofollow';
-$descr = 'Вданном разделе выводятся материалы которые были отклонены от публикации';
+$descr = 'В данном разделе выводятся материалы которые были отклонены от публикации';
+$scriptJScode = '<script src="script.js"></script>';
 
 /*Загрузка функций для формы входа*/
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
@@ -38,7 +39,7 @@ if (userRole('Автор'))//Для автора
 
 	try
 	{
-		$sql = 'SELECT newsblock.id, newstitle, author.id AS idauthor, newsdate, authorname, reasonrefusal FROM newsblock 
+		$sql = 'SELECT newsblock.id, newstitle, author.id AS idauthor, newsdate, authorname, reasonrefusal, idtask FROM newsblock 
 		INNER JOIN author ON idauthor = author.id 
 		INNER JOIN category ON idcategory = category.id
 		WHERE premoderation = "NO" AND refused = "YES" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
@@ -59,15 +60,14 @@ if (userRole('Автор'))//Для автора
 	/*Вывод результата в шаблон*/
 	foreach ($result as $row)
 	{
-		$newsIn[] =  array ('id' => $row['id'], 'idauthor' => $row['idauthor'], 'newstitle' =>  $row['newstitle'], 'newsdate' =>  $row['newsdate'], 
-								'authorname' =>  $row['authorname'], 'reasonrefusal' =>  $row['reasonrefusal']);
+		$newsIn[] =  array ('id' => $row['id'], 'idauthor' => $row['idauthor'], 'newstitle' =>  $row['newstitle'], 'newsdate' =>  $row['newsdate'], 'authorname' =>  $row['authorname'], 'reasonrefusal' =>  $row['reasonrefusal'], 'idtask' =>  $row['idtask']);
 	}
 
 	/*Вывод стаей*/
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT posts.id, posttitle, author.id AS idauthor, postdate, authorname, reasonrefusal FROM posts 
+		$sql = 'SELECT posts.id, posttitle, author.id AS idauthor, postdate, authorname, reasonrefusal, idtask FROM posts 
 		INNER JOIN author ON idauthor = author.id 
 		INNER JOIN category ON idcategory = category.id
 		WHERE premoderation = "NO" AND refused = "YES" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
@@ -88,8 +88,7 @@ if (userRole('Автор'))//Для автора
 	/*Вывод результата в шаблон*/
 	foreach ($result as $row)
 	{
-		$posts[] =  array ('id' => $row['id'], 'idauthor' => $row['idauthor'], 'posttitle' =>  $row['posttitle'], 'postdate' =>  $row['postdate'], 
-								'authorname' =>  $row['authorname'], 'reasonrefusal' =>  $row['reasonrefusal']);
+		$posts[] =  array ('id' => $row['id'], 'idauthor' => $row['idauthor'], 'posttitle' =>  $row['posttitle'], 'postdate' =>  $row['postdate'], 'authorname' =>  $row['authorname'], 'reasonrefusal' =>  $row['reasonrefusal'], 'idtask' =>  $row['idtask']);
 	}
 	
 	/*Вывод Промоушен*/
