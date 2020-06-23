@@ -5,7 +5,13 @@
 	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/styles.css';?>" rel= "stylesheet" type="text/css">
 	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/css/mybootstap.css';?>" rel= "stylesheet" type="text/css">
 	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/css/bootstrap-markdown.min.css';?>" rel= "stylesheet" type="text/css">
-	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/favicon.ico';?>" rel="icon" type="image/x-icon">	
+	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/favicon.ico';?>" rel="icon" type="image/x-icon">
+	
+	<?php 
+        //канонический адрес
+        if (empty ($canonicalURL)) $canonicalURL = '';
+    
+        echo $canonicalURL; ?>
 	
 	<meta charset = "utf-8"/>
 	<meta name="robots" content="<?php echo $robots; ?>"/>
@@ -18,6 +24,12 @@
 	
 	
 	<script src='https://www.google.com/recaptcha/api.js'></script>
+	
+	<?php 
+        //Микроразметка
+        if (empty ($jQuery)) $jQuery = '';
+    
+        echo $jQuery; ?>
 		
 	<?php 
         //Микроразметка

@@ -21,9 +21,15 @@ if (isset ($_GET['id']))
 	$select = 'SELECT newsblock.id AS newsid, author.id AS idauthor, news, newstitle, imghead, videoyoutube, viewcount, votecount, averagenumber, favouritescount, description, imgalt, newsdate, authorname, category.id AS categoryid, categoryname FROM newsblock 
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND newsblock.id = ';
+	
+	/*Канонический адрес*/
+	if(!empty($_GET['utm_referrer']))
+	{
+		$canonicalURL = '<link rel="canonical" href="//'.$_SERVER['SERVER_NAME'].'/viewnews/?id='.$idNews.'"/>';
+	}
 
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
+		
 	try
 	{
 		$sql = $select.$idNews;
@@ -78,6 +84,7 @@ if (isset ($_GET['id']))
 	$robots = 'all';
 	$descr = $row['description'];
 	$authorComment = '';
+	$jQuery = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
 	$scriptJScode = '<script src="script.js"></script>
 					 <script src="/js/jquery-1.min.js"></script>
 					 <script src="/js/bootstrap-markdown.js"></script>
@@ -127,211 +134,30 @@ if (isset ($_GET['id']))
 
 		if ($favourites != '')
 		{
-			$addFavourites = '<form action=" " metod "post">
+			$addFavourites = '<form action=" " metod "post" id = "ajax_form_fav">
+								<input type = "hidden" name = "idauthor" value = "'.(authorID($_SESSION['email'], $_SESSION['password'])).'">
 								<input type = "hidden" name = "id" value = "'.$idNews.'">
-								<input type = "hidden" name = "delfav" value = "Убрать из избранного">
-								<input type="image" src="/viewnews/like_2.gif" alt="Убрать из избранного" title="Убрать из избранного">  
-							 </form>';
+								<input type = "hidden" name = "val_fav" value = "delfav">
+								<input type="image" src="/viewnews/like_2.gif" alt="Убрать из избранного" title="Убрать из избранного" id = "btn_fav">  
+							 </form>
+							 <strong><p id = "result_form_fav"></p></strong>';
 		}
 
 		else
 		{
-			$addFavourites = '<form action=" " metod "post">
+			$addFavourites = '<form action=" " metod "post" id = "ajax_form_fav">
+								<input type = "hidden" name = "idauthor" value = "'.(authorID($_SESSION['email'], $_SESSION['password'])).'">
 								<input type = "hidden" name = "id" value = "'.$idNews.'">
-								<input type = "hidden" name = "addfav" value = "Добавить в избранное">
-								<input type="image" src="/viewnews/like_1.gif" alt="Добавить в избранное" title="Добавить в избранное"> 
-							 </form>';
+								<input type = "hidden" name = "val_fav" value = "addfav">
+								<input type="image" src="/viewnews/like_1.gif" alt="Добавить в избранное" title="Добавить в избранное" id = "btn_fav"> 
+							 </form>
+							 <strong><p id = "result_form_fav"></p></strong>';
 		}
 	}
 	
 	else
 	{
 		$addFavourites = '';
-	}
-	
-	/*Добавление / удаление из избранного*/
-
-	/*Добавить в ибранное*/
-
-	if (isset($_GET['addfav']))
-	{
-		$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
-		$favData = 'SELECT id, news, newstitle, newsdate, imghead, imgalt, idauthor, idcategory FROM newsblock WHERE id = '.$_SESSION['idnews'];//подготовка данных для избранного
-		
-		/*Выбор материала для избранного*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-		
-		try
-		{
-			$pdo->beginTransaction();//инициация транзакции
-			
-			$sql = $favData;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$row = $s -> fetch();
-		
-			$post = implode(' ', array_slice(explode(' ', strip_tags($row['news'])), 0, 50));
-			$postTitle = $row['newstitle'];
-			$postDate = $row['newsdate'];
-			$imgHead = $row['imghead'];
-			$imgAlt = $row['imgalt'];
-			$idAuthorPost = $row['idauthor'];
-			$idCategory = $row['idcategory'];
-			$url = '<a href="/viewnews/?id='.$row['id'].'" class="btn btn-primary">Далее</a>';
-			
-			$sql = $SELECTCONTEST;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$row = $s -> fetch();
-		
-			$contestOn = $row['conteston'];//проверка на включение конкурса
-			
-			$pdo->commit();//подтверждение транзакции
-		}
-		
-		catch (PDOException $e)
-		{
-			$pdo->rollBack();//отмена транзакции
-			
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка выбора данных для избранного ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-		}
-
-		/*Вставка материала для избранного*/
-		try
-		{
-			$sql = 'INSERT favourites SET 
-					idauthor = '.(int)(authorID($_SESSION['email'], $_SESSION['password'])).',
-					idnews = '.$_SESSION['idnews'].',
-					post = \''.$post.'\',
-					title = \''.$postTitle.'\',
-					date = \''.$postDate.'\',
-					imghead = \''.$imgHead.'\',
-					imgalt = \''.$imgAlt.'\',
-					idauthorpost = '.$idAuthorPost.',
-					idcategory = '.$idCategory.',
-					adddate = SYSDATE(),
-					url = \''.$url.'\'';
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-		}
-
-		catch (PDOException $e)
-		{
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка добавления избранного'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-
-		}
-		
-		/*Обновление значения счётчика избранного*/
-
-		$updateCount = 'UPDATE newsblock SET favouritescount = favouritescount + 1 WHERE id = ';
-
-		try
-		{
-			$sql = $updateCount.$idNews;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-		}
-
-		catch (PDOException $e)
-		{
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка счётчика ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-		}
-		
-		if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('add', 'favouritespoints');//если конкурс включен
-
-		header ('Location: ../viewnews/?id='.$_SESSION['idnews']."#bottom");//перенаправление обратно в контроллер index.php
-		exit();	
-	}
-	
-	/*Удаление из избранного*/
-	if (isset($_GET['delfav']))
-	{
-		$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
-		$delFav = 'DELETE FROM favourites WHERE 
-					idauthor = '.(int)(authorID($_SESSION['email'], $_SESSION['password'])).' AND
-					idnews = '.$_SESSION['idnews'];
-		
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-
-		try
-		{
-			$pdo->beginTransaction();//инициация транзакции
-			
-			$sql = $delFav;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$sql = $SELECTCONTEST;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$row = $s -> fetch();
-		
-			$contestOn = $row['conteston'];//проверка на включение конкурса
-			
-			$pdo->commit();//подтверждение транзакции
-		}
-
-		catch (PDOException $e)
-		{
-			$pdo->rollBack();//отмена транзакции
-			
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка удаления избранного'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-
-		}
-		
-		/*Обновление значения счётчика избранного*/
-
-		$updateCount = 'UPDATE newsblock SET favouritescount = favouritescount - 1 WHERE id = ';
-
-		try
-		{
-			$sql = $updateCount.$idNews;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-		}
-
-		catch (PDOException $e)
-		{
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка счётчика ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-		}
-		
-		if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('del', 'favouritespoints');//если конкурс включен
-
-		header ('Location: ../viewnews/?id='.$_SESSION['idnews']."#bottom");//перенаправление обратно в контроллер index.php
-		exit();	
 	}
 	
 	/*Обновление значения счётчика*/

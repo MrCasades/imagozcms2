@@ -11,7 +11,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 <title>Hi-Tech новости, игры, наука, интернет в отражении на imagoz.ru</title>
 
-<lastBuildDate>'.date("D, j M Y G:i:s", time()).' +0300</lastBuildDate>
+<lastBuildDate>'.date(DATE_RFC822, strtotime($lastBuild)).'</lastBuildDate>
 
 <language>ru</language>
 
@@ -28,8 +28,6 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 '?>
 	
 	
-
-
 	<?php foreach ($newsMain as $newsMain_3): ?>
 	
 <?php $content .= ' <item>
@@ -46,39 +44,13 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 </description>
 
-<link>https://'.$_SERVER['SERVER_NAME'].'/viewnews/?id='.$newsMain_3['id'].htmlspecialchars('&', ENT_XML1).'</link>
+<link>https://'.$_SERVER['SERVER_NAME'].'/viewnews/?utm_referrer=smi.today'.htmlspecialchars('&', ENT_XML1).'id='.$newsMain_3['id'].htmlspecialchars('&', ENT_XML1).'</link>
 
-<pubDate>'.date("D, j M Y G:i:s", strtotime($newsMain_3['newsdate'])).' +0300</pubDate>
+<pubDate>'.date(DATE_RFC822, strtotime($newsMain_3['newsdate'])).'</pubDate>
 
 <category>технологии</category>
 
 </item> ';?>
-
-<?php endforeach; ?>
-
-<?php foreach ($posts as $post): ?>
-
-<?php $content .= ' <item>
-
-<title>'. $post['posttitle'].'</title>
-
-<description>
-
-<![CDATA[<img src="https://'.$_SERVER['SERVER_NAME'].'/images/'.$post['imghead'].'"> '.
-	
-	markdown2html(implode(' ', array_slice(explode(' ', strip_tags($post['text'])), 0, 50))).' [...]
-
-]]>
-
-</description>
-
-<link>https://'.$_SERVER['SERVER_NAME'].'/viewpost/?id='.$post['id'].htmlspecialchars('&', ENT_XML1).'</link>
-
-<pubDate>'.date("D, j M Y G:i:s", strtotime($post['postdate'])).' +0300</pubDate>
-
-<category>технологии</category>
-
-</item>';?>
 
 <?php endforeach; ?>
 

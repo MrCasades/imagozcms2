@@ -20,7 +20,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				<td>
 				<input type = "hidden" name = "idauthor" value = "<?php echo $author['idauthor']; ?>">
 				<input type = "submit" name = "action" value = "Upd" class="btn btn-primary btn-sm">
-				<input type = "submit" name = "action" value = "Del" class="btn btn-primary btn-sm" id = "delauthor">
+				<input type = "submit" name = "action" value = "Del" class="btn btn-primary btn-sm" id = "delauthor" onclick = "return confirm('Вы уверены?')">
 				</td>
 			   </div>
 		      </form>

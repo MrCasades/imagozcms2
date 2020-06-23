@@ -63,3 +63,125 @@ if (removeContest)
 								 }
 							}, false)
 }
+
+/* AJAX JQuery */
+
+//Добавление-удаление из избранного
+$( document ).ready(function() {
+    $("#btn_fav").click(
+		function(){
+			sendAjaxForm('result_form_fav', 'ajax_form_fav', 'favourites.inc.php');
+			console.log('OK1');
+			
+			if ($("#val_fav").attr('value') === 'delfav'){
+				$("#val_fav").attr('value', 'addfav');
+				$("#btn_fav").attr('src', '/viewnews/like_1.gif');
+				
+			} else {
+				$("#val_fav").attr('value', 'delfav');
+				$("#btn_fav").attr('src', '/viewnews/like_2.gif');
+			}
+			
+			return false; 
+		}
+	);
+});
+
+//Функция AJAX
+function sendAjaxForm(result_form, ajax_form, url) {
+    $.ajax({
+        url:     url, //url страницы (action_ajax_form.php)
+        type:     "POST", //метод отправки
+        //dataType: "html", //формат данных
+        data: $("#"+ajax_form).serialize(),  // Сеарилизуем объект
+        success: function(response) { //Данные отправлены успешно
+        	//result = $.parseJSON(response);
+			//$('#'+ajax_form).html('Ожидание...');
+			//$('#'+ajax_form).html('');
+        	$('#'+result_form).html(' ');
+			console.log('OK');
+    	},
+    	error: function(response) { // Данные не отправлены
+            $('#result_form').html('Ошибка. Данные не отправлены.');
+			console.log('no');
+    	}
+ 	});
+}
+
+/*
+//AJAX
+function XmlHttp()
+{
+	//const xmlhttp
+	
+	//Объект для старых браузеров
+	try 
+	{
+		const xmlhttp = new ActiveXObject("Msxml2.XMLHTTP")
+	}
+	catch(e)
+	{
+		try 
+		{
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+		} 
+		catch (E) 
+		{
+			xmlhttp = false
+		}
+	}
+	
+	//Объект для новых браузеров
+	if (!xmlhttp && typeof XMLHttpRequest!='undefined')
+	{
+		xmlhttp = new XMLHttpRequest()
+	}
+	
+	return xmlhttp
+}
+ 
+function ajax(param)
+{
+                if (window.XMLHttpRequest) req = new XmlHttp();
+                method=(!param.method ? "POST" : param.method.toUpperCase());
+ 
+                if(method=="GET")
+                {
+                               send=null;
+                               param.url=param.url+"&ajax=true";
+                }
+                else
+                {
+                               send="";
+                               for (var i in param.data) send+= i+"="+param.data[i]+"&";
+                               // send=send+"ajax=true"; // если хотите передать сообщение об успехе
+                }
+ 
+                req.open(method, param.url, true);
+                if(param.statbox)document.getElementById(param.statbox).innerHTML = '<img src="wait.gif">';
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.send(send);
+                req.onreadystatechange = function()
+                {
+                               if (req.readyState == 4 && req.status == 200) //если ответ положительный
+                               {
+                                               if(param.success)param.success(req.responseText);
+                               }
+                }
+}
+*/
+//Оценка статьи
+/*
+const vote_5 = document.querySelector('#v5')
+
+if (vote_5)
+{
+	vote_5.addEventListener('click', () => ajax({
+                                                               url:" ",
+                                                               statbox:"status",
+                                                               method:"POST",
+                                                               data: vote_5.value,
+                                                               success:function(data){document.getElementById("status").innerHTML=data;}
+
+                                               }))
+}*/

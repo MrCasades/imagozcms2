@@ -12,7 +12,7 @@ try
 	$sql = 'SELECT newsblock.id AS newsid, author.id AS idauthor, news, newstitle, imghead, description, imgalt, newsdate, authorname, category.id AS categoryid, categoryname FROM newsblock 
 			INNER JOIN author ON idauthor = author.id 
 			INNER JOIN category ON idcategory = category.id 
-			WHERE premoderation = "YES" ORDER BY newsdate DESC LIMIT 100';//Вверху самое последнее значение
+			WHERE premoderation = "YES" ORDER BY newsdate DESC LIMIT 15';//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
 
@@ -39,15 +39,11 @@ foreach ($result as $row)
 	}
 }
 
-/*Вывод стаей*/
-/*Команда SELECT*/
 try
 {
-	$sql = 'SELECT posts.id AS postid, author.id AS idauthor, post, posttitle, imghead, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
-			INNER JOIN author ON idauthor = author.id 
-			INNER JOIN category ON idcategory = category.id 
-			WHERE premoderation = "YES" ORDER BY postdate DESC LIMIT 1000';//Вверху самое последнее значение
-	$result = $pdo->query($sql);
+	$sql = 'SELECT newsdate FROM newsblock WHERE premoderation = "YES" ORDER BY newsdate DESC LIMIT 1';//Вверху самое последнее значение
+	$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+	$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 }
 
 catch (PDOException $e)
@@ -56,21 +52,15 @@ catch (PDOException $e)
 	$headMain = 'Ошибка данных!';
 	$robots = 'noindex, nofollow';
 	$descr = '';
-	$error = 'Ошибка вывода статей на главной странице ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+	$error = 'Ошибка вывода новостей на главной странице ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
 	include 'error.html.php';
 	exit();
 }
 
-/*Вывод результата в шаблон*/
-foreach ($result as $row)
-{
-	if (($row['categoryname'] != 'Наше сообщество') && ($row['categoryname'] != 'Изображение дня'))
-	{
-		$posts[] =  array ('id' => $row['postid'], 'idauthor' => $row['idauthor'], 'text' => $row['post'], 'posttitle' =>  $row['posttitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'],
-							'postdate' =>  $row['postdate'], 'authorname' =>  $row['authorname'], 
-							'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid']);
-	}
-}
+$row = $s -> fetch();
+
+$lastBuild = $row['newsdate'];
+
 
 include 'rsssmi.html.php';
 exit();

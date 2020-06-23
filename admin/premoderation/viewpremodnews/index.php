@@ -62,7 +62,7 @@ if (isset ($_GET['news']))
 	$date = $row['newsdate'];
 	$articleTitle = $row['newstitle'];
 	$idTask = $row['idtask'];
-	$taskData = '';
+	$taskData = '<strong>Материал админа или супер-автора.</strong>';
 	
 	$title = $row['newstitle'];//Данные тега <title>
 	$headMain = $row['newstitle'];	

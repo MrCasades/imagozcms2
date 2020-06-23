@@ -63,3 +63,47 @@ if (removeContest)
 								 }
 							}, false)
 }
+
+/* AJAX JQuery */
+
+//Добавление-удаление из избранного
+$( document ).ready(function() {
+    $("#btn_fav").click(
+		function(){
+			sendAjaxForm('result_form_fav', 'ajax_form_fav', 'favourites.inc.php');
+			console.log('OK1');
+			
+			if ($("#val_fav").attr('value') === 'delfav'){
+				$("#val_fav").attr('value', 'addfav');
+				$("#btn_fav").attr('src', '/viewnews/like_1.gif');
+				
+			} else {
+				$("#val_fav").attr('value', 'delfav');
+				$("#btn_fav").attr('src', '/viewnews/like_2.gif');
+			}
+			
+			return false; 
+		}
+	);
+});
+
+ 
+function sendAjaxForm(result_form, ajax_form, url) {
+    $.ajax({
+        url:     url, //url страницы (action_ajax_form.php)
+        type:     "POST", //метод отправки
+        //dataType: "html", //формат данных
+        data: $("#"+ajax_form).serialize(),  // Сеарилизуем объект
+        success: function(response) { //Данные отправлены успешно
+        	//result = $.parseJSON(response);
+			//$('#'+ajax_form).html('Ожидание...');
+			//$('#'+ajax_form).html('');
+        	$('#'+result_form).html(' ');
+			console.log('OK');
+    	},
+    	error: function(response) { // Данные не отправлены
+            $('#result_form').html('Ошибка. Данные не отправлены.');
+			console.log('no');
+    	}
+ 	});
+}

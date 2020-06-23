@@ -59,7 +59,7 @@ if (isset ($_GET['post']))
 	$date = $row['postdate'];
 	$articleTitle = $row['posttitle'];
 	$idTask = $row['idtask'];
-	$taskData = '';
+	$taskData = '<strong>Материал админа или супер-автора.</strong>';
 
 	$title = $row['posttitle'];//Данные тега <title>
 	$headMain = $row['posttitle'];	
