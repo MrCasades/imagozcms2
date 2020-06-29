@@ -23,7 +23,7 @@ if (isset ($_GET['id']))
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND newsblock.id = ';
 	
 	/*Канонический адрес*/
-	if(!empty($_GET['utm_referrer']))
+	if(!empty($_GET['utm_referrer']) || !empty($_GET['page']))
 	{
 		$canonicalURL = '<link rel="canonical" href="//'.$_SERVER['SERVER_NAME'].'/viewnews/?id='.$idNews.'"/>';
 	}
@@ -137,8 +137,8 @@ if (isset ($_GET['id']))
 			$addFavourites = '<form action=" " metod "post" id = "ajax_form_fav">
 								<input type = "hidden" name = "idauthor" value = "'.(authorID($_SESSION['email'], $_SESSION['password'])).'">
 								<input type = "hidden" name = "id" value = "'.$idNews.'">
-								<input type = "hidden" name = "val_fav" value = "delfav">
-								<input type="image" src="/viewnews/like_2.gif" alt="Убрать из избранного" title="Убрать из избранного" id = "btn_fav">  
+								<input type = "hidden" id = "val_fav" name = "val_fav" value = "delfav">
+								<input type="image" src="like_2.gif" alt="Убрать из избранного" title="Убрать из избранного" id = "btn_fav">  
 							 </form>
 							 <strong><p id = "result_form_fav"></p></strong>';
 		}
@@ -148,8 +148,8 @@ if (isset ($_GET['id']))
 			$addFavourites = '<form action=" " metod "post" id = "ajax_form_fav">
 								<input type = "hidden" name = "idauthor" value = "'.(authorID($_SESSION['email'], $_SESSION['password'])).'">
 								<input type = "hidden" name = "id" value = "'.$idNews.'">
-								<input type = "hidden" name = "val_fav" value = "addfav">
-								<input type="image" src="/viewnews/like_1.gif" alt="Добавить в избранное" title="Добавить в избранное" id = "btn_fav"> 
+								<input type = "hidden" id = "val_fav" name = "val_fav" value = "addfav">
+								<input type="image" src="like_1.gif" alt="Добавить в избранное" title="Добавить в избранное" id = "btn_fav"> 
 							 </form>
 							 <strong><p id = "result_form_fav"></p></strong>';
 		}
@@ -294,79 +294,15 @@ if (isset ($_GET['id']))
 		$votePanel = '<form action=" " metod "post" id = "confirmlike">
 					  
 					  Оцените статью: 
-						<input type = "hidden" name = "id" value = "'.$_SESSION['idnews'].'">
-						<input type = "submit" name = "vote" value = "5" class="btn btn-primary btn-sm"> 
-						<input type = "submit" name = "vote" value = "4" class="btn btn-primary btn-sm"> 
-						<input type = "submit" name = "vote" value = "3" class="btn btn-primary btn-sm"> 
-						<input type = "submit" name = "vote" value = "2" class="btn btn-primary btn-sm"> 
-						<input type = "submit" name = "vote" value = "1" class="btn btn-primary btn-sm"> 
-					  </form>';
-	}
-	
-	/*Оценка статьи*/
-	if (isset($_GET['vote']))
-	{
-		$vote = $_GET['vote'];//значение оценки
-		$averageNumber = 0;//среднее значение
-		
-		$updateVoteCount = 'UPDATE newsblock SET votecount = votecount + 1 WHERE id = '.$_SESSION['idnews'];//обновление числа проголосовавших
-		$updateTotalNumber = 'UPDATE newsblock SET totalnumber = totalnumber + '.$vote.' WHERE id = '.$_SESSION['idnews'];//обновление общего числа
-		$updateAverageNumber = 'UPDATE newsblock SET averagenumber = totalnumber/votecount WHERE id = '.$_SESSION['idnews'];//обновление среднего значения в БД
-		$insertToVotedAuthor ='INSERT INTO votedauthor SET idpromotion = 0, idpost = 0, idnews = '.$_SESSION['idnews'].', idauthor = '.$_SESSION['idauthor'].', vote = '.$vote;//обновление таблицы проголосовавшего автора
-		$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
-							
-		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-		
-		try
-		{
-			$pdo->beginTransaction();//инициация транзакции
-			
-			$sql = $updateVoteCount;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$sql = $updateTotalNumber;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$sql = $updateAverageNumber;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$sql = $insertToVotedAuthor;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$sql = $SELECTCONTEST;
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-			$row = $s -> fetch();
-		
-			$contestOn = $row['conteston'];//проверка на включение конкурса
-			
-			$pdo->commit();//подтверждение транзакции			
-		}
-		
-		catch (PDOException $e)
-		{
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$pdo->rollBack();//отмена транзакции
-			$error = 'Error transaction 1 newsblock '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();		
-		}
-		
-		/*Добавление конкурсных очков автору*/
-		
-		if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('add', 'votingpoints');//если конкурс включен
-		
-		header ('Location: ../viewnews/?id='.$_SESSION['idnews']);//перенаправление обратно в контроллер index.php
-		exit();
+						<input type = "hidden" name = "id" id = "idarticle" value = "'.$_SESSION['idnews'].'">
+						<input type = "hidden" name = "idauthor" id = "idauthor" value = "'.$selectedAuthor.'">
+						<input type = "submit" name = "vote" id = "btn_vot_5" value = "5" class="btn btn-primary btn-sm"> 
+						<input type = "submit" name = "vote" id = "btn_vot_4" value = "4" class="btn btn-primary btn-sm"> 
+						<input type = "submit" name = "vote" id = "btn_vot_3" value = "3" class="btn btn-primary btn-sm"> 
+						<input type = "submit" name = "vote" id = "btn_vot_2" value = "2" class="btn btn-primary btn-sm"> 
+						<input type = "submit" name = "vote" id = "btn_vot_1" value = "1" class="btn btn-primary btn-sm"> 
+					  </form>
+					  <strong><p id = "result_form_vot"></p></strong>';
 	}
 	
 	/*Вывод кнопок "Обновить" | "Удалить"*/

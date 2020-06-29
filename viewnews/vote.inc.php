@@ -1,16 +1,15 @@
 <?php
 
-
 /*Оценка статьи*/
 if (isset($_GET['vote']))
 {
 	$vote = $_GET['vote'];//значение оценки
 	$averageNumber = 0;//среднее значение
 		
-	$updateVoteCount = 'UPDATE posts SET votecount = votecount + 1 WHERE id = '.$_POST['id'];//обновление числа проголосовавших
-	$updateTotalNumber = 'UPDATE posts SET totalnumber = totalnumber + '.$vote.' WHERE id = '.$_POST['id'];//обновление общего числа
-	$updateAverageNumber = 'UPDATE posts SET averagenumber = totalnumber/votecount WHERE id = '.$_POST['id'];//обновление среднего значения в БД
-	$insertToVotedAuthor ='INSERT INTO votedauthor SET idpromotion = 0, idnews = 0, idpost = '.$_POST['id'].', idauthor = '.$_POST['idauthor'].', vote = '.$vote;//обновление таблицы проголосовавшего автора
+	$updateVoteCount = 'UPDATE newsblock SET votecount = votecount + 1 WHERE id = '.$_POST['id'];//обновление числа проголосовавших
+	$updateTotalNumber = 'UPDATE newsblock SET totalnumber = totalnumber + '.$vote.' WHERE id = '.$_POST['id'];//обновление общего числа
+	$updateAverageNumber = 'UPDATE newsblock SET averagenumber = totalnumber/votecount WHERE id = '.$_POST['id'];//обновление среднего значения в БД
+	$insertToVotedAuthor ='INSERT INTO votedauthor SET idpromotion = 0, idpost = 0, idnews = '.$_POST['id'].', idauthor = '.$_POST['idauthor'].', vote = '.$vote;//обновление таблицы проголосовавшего автора
 	$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
 							
 	/*Подключение к базе данных*/
@@ -35,11 +34,11 @@ if (isset($_GET['vote']))
 		$sql = $insertToVotedAuthor;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-		
+			
 		$sql = $SELECTCONTEST;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
+		
 		$row = $s -> fetch();
 		
 		$contestOn = $row['conteston'];//проверка на включение конкурса
@@ -49,13 +48,12 @@ if (isset($_GET['vote']))
 		
 	catch (PDOException $e)
 	{
-		$pdo->rollBack();//отмена транзакции
-			
 		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
 		$headMain = 'Ошибка данных!';
 		$robots = 'noindex, nofollow';
 		$descr = '';
-		$error = 'Error transaction при голосовании '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
+		$pdo->rollBack();//отмена транзакции
+		$error = 'Error transaction 1 newsblock '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
 		include 'error.html.php';
 		exit();		
 	}
@@ -63,5 +61,5 @@ if (isset($_GET['vote']))
 	/*Добавление конкурсных очков автору*/
 		
 	if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('add', 'votingpoints');//если конкурс включен
-	}
+}
 ?>

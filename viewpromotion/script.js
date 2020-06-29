@@ -63,3 +63,103 @@ if (removeContest)
 								 }
 							}, false)
 }
+
+//Оценка статьи
+
+$( document ).ready(function() {
+		$("#btn_vot_5").click(
+			function(){
+				$("#confirmlike").hide();
+				const url = 'vote.inc.php?vote=' + $("#btn_vot_5").attr('value');
+				//$("#btn_vot").attr('src', ' ');
+				sendAjaxForm('result_form_vot', 'confirmlike', url);
+				$("#result_form_vot").html('Ваш голос принят!');
+
+				console.log('OK1');
+				console.log(url);
+
+				return false; 
+			}
+		);
+	
+	$("#btn_vot_4").click(
+			function(){
+				$("#confirmlike").hide();
+				const url = 'vote.inc.php?vote=' + $("#btn_vot_4").attr('value');
+				//$("#btn_vot").attr('src', ' ');
+				sendAjaxForm('result_form_vot', 'confirmlike', url);
+				$("#result_form_vot").html('Ваш голос принят!');
+
+				console.log('OK1');
+				console.log(url);
+
+				return false; 
+			}
+		);
+	
+	$("#btn_vot_3").click(
+			function(){
+				$("#confirmlike").hide();
+				const url = 'vote.inc.php?vote=' + $("#btn_vot_3").attr('value');
+				//$("#btn_vot").attr('src', ' ');
+				sendAjaxForm('result_form_vot', 'confirmlike', url);
+				$("#result_form_vot").html('Ваш голос принят!');
+
+				console.log('OK1');
+				console.log(url);
+
+				return false; 
+			}
+		);
+	
+	$("#btn_vot_2").click(
+			function(){
+				$("#confirmlike").hide();
+				const url = 'vote.inc.php?vote=' + $("#btn_vot_2").attr('value');
+				//$("#btn_vot").attr('src', ' ');
+				sendAjaxForm('result_form_vot', 'confirmlike', url);
+				$("#result_form_vot").html('Ваш голос принят!');
+
+				console.log('OK1');
+				console.log(url);
+
+				return false; 
+			}
+		);
+	
+	$("#btn_vot_1").click(
+			function(){
+				$("#confirmlike").hide();
+				const url = 'vote.inc.php?vote=' + $("#btn_vot_1").attr('value');
+				//$("#btn_vot").attr('src', ' ');
+				sendAjaxForm('result_form_vot', 'confirmlike', url);
+				$("#result_form_vot").html('Ваш голос принят!');
+
+				console.log('OK1');
+				console.log(url);
+
+				return false; 
+			}
+		);
+});
+
+//Функция AJAX
+function sendAjaxForm(result_form, ajax_form, url) {
+    $.ajax({
+        url:     url, //url страницы (action_ajax_form.php)
+        type:     "POST", //метод отправки
+        //dataType: "html", //формат данных
+        data: $("#"+ajax_form).serialize(),  // Сеарилизуем объект
+        success: function(response) { //Данные отправлены успешно
+        	//result = $.parseJSON(response);
+			//$('#'+ajax_form).html('Ожидание...');
+			//$('#'+ajax_form).html('');
+        	//$('#'+result_form).html(' ');
+			console.log('OK');
+    	},
+    	error: function(response) { // Данные не отправлены
+            $('#result_form').html('Ошибка. Данные не отправлены.');
+			console.log('no');
+    	}
+ 	});
+}
