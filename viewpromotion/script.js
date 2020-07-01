@@ -22,20 +22,6 @@ if (confirmOk)
 											
 }
 
-//Вывод сообщения о подтверждении голосования.
-
-const confirmLike = document.querySelector('#confirmlike')
-
-if (confirmLike)
-{
- 	confirmLike.addEventListener('click', (event) => {confLk = confirm('Вы уверены, что хотите проголосовать за данный материал')
-								 if (confLk === false)
-								 {
-									 event.preventDefault();
-								 }
-							}, false)
-}
-
 //Вывод сообщения о подтверждении удаления объекта.
 
 const confirmDel = document.querySelector('#delobject')
@@ -68,77 +54,72 @@ if (removeContest)
 
 $( document ).ready(function() {
 		$("#btn_vot_5").click(
-			function(){
-				$("#confirmlike").hide();
-				const url = 'vote.inc.php?vote=' + $("#btn_vot_5").attr('value');
-				//$("#btn_vot").attr('src', ' ');
-				sendAjaxForm('result_form_vot', 'confirmlike', url);
-				$("#result_form_vot").html('Ваш голос принят!');
-
-				console.log('OK1');
-				console.log(url);
-
-				return false; 
+			function(event){
+				confLk = confirm('Вы уверены, что хотите проголосовать за данный материал?')
+				if (confLk === false){
+					event.preventDefault();
+				}
+				
+				else{
+					voteClick('btn_vot_5');
+					event.preventDefault();
+				}
 			}
 		);
 	
 	$("#btn_vot_4").click(
-			function(){
-				$("#confirmlike").hide();
-				const url = 'vote.inc.php?vote=' + $("#btn_vot_4").attr('value');
-				//$("#btn_vot").attr('src', ' ');
-				sendAjaxForm('result_form_vot', 'confirmlike', url);
-				$("#result_form_vot").html('Ваш голос принят!');
-
-				console.log('OK1');
-				console.log(url);
-
-				return false; 
+			function(event){
+				confLk = confirm('Вы уверены, что хотите проголосовать за данный материал?')
+				if (confLk === false){
+					event.preventDefault();
+				}
+				
+				else{
+					voteClick('btn_vot_4');
+					event.preventDefault();
+				}
 			}
 		);
 	
 	$("#btn_vot_3").click(
-			function(){
-				$("#confirmlike").hide();
-				const url = 'vote.inc.php?vote=' + $("#btn_vot_3").attr('value');
-				//$("#btn_vot").attr('src', ' ');
-				sendAjaxForm('result_form_vot', 'confirmlike', url);
-				$("#result_form_vot").html('Ваш голос принят!');
-
-				console.log('OK1');
-				console.log(url);
-
-				return false; 
+			function(event){
+				confLk = confirm('Вы уверены, что хотите проголосовать за данный материал?')
+				if (confLk === false){
+					event.preventDefault();
+				}
+				
+				else{
+					voteClick('btn_vot_3');
+					event.preventDefault();
+				}
 			}
 		);
 	
 	$("#btn_vot_2").click(
-			function(){
-				$("#confirmlike").hide();
-				const url = 'vote.inc.php?vote=' + $("#btn_vot_2").attr('value');
-				//$("#btn_vot").attr('src', ' ');
-				sendAjaxForm('result_form_vot', 'confirmlike', url);
-				$("#result_form_vot").html('Ваш голос принят!');
-
-				console.log('OK1');
-				console.log(url);
-
-				return false; 
+			function(event){
+				confLk = confirm('Вы уверены, что хотите проголосовать за данный материал?')
+				if (confLk === false){
+					event.preventDefault();
+				}
+				
+				else{
+					voteClick('btn_vot_2');
+					event.preventDefault();
+				}
 			}
 		);
 	
 	$("#btn_vot_1").click(
-			function(){
-				$("#confirmlike").hide();
-				const url = 'vote.inc.php?vote=' + $("#btn_vot_1").attr('value');
-				//$("#btn_vot").attr('src', ' ');
-				sendAjaxForm('result_form_vot', 'confirmlike', url);
-				$("#result_form_vot").html('Ваш голос принят!');
-
-				console.log('OK1');
-				console.log(url);
-
-				return false; 
+			function(event){
+				confLk = confirm('Вы уверены, что хотите проголосовать за данный материал?')
+				if (confLk === false){
+					event.preventDefault();
+				}
+				
+				else{
+					voteClick('btn_vot_1');
+					event.preventDefault();
+				}
 			}
 		);
 });
@@ -162,4 +143,19 @@ function sendAjaxForm(result_form, ajax_form, url) {
 			console.log('no');
     	}
  	});
+}
+
+//Обработка действия кнопки для голосования
+
+function voteClick(btn){
+				$("#confirmlike").hide();
+				const url = 'vote.inc.php?vote=' + $("#"+btn).attr('value');
+				//$("#btn_vot").attr('src', ' ');
+				sendAjaxForm('result_form_vot', 'confirmlike', url);
+				$("#result_form_vot").html('Ваш голос принят!');
+
+				console.log('OK1');
+				console.log(url);
+
+				return false; 
 }
