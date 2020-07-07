@@ -167,8 +167,6 @@ if (isset ($_GET['id']))
 	/*Подключение к базе данных*/
 	if (isset($_SESSION['loggIn']))
 	{
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-		
 		$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));;//id автора
 	}
 		
@@ -176,14 +174,7 @@ if (isset ($_GET['id']))
 	{
 		$selectedAuthor = 0;//id автора
 	}
-	
-	@session_start();//Открытие сессии для сохранения id автора
-	
-	$_SESSION['idauthor'] = $selectedAuthor;
-	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
+
 	$votedPost = (int)$_SESSION['idpromotion'];
 	
 	try
@@ -277,15 +268,44 @@ if (isset ($_GET['id']))
 	}	
 	
 	/*Вывод кнопки "Рекомендовать статью"*/
-	if (isset($_SESSION['loggIn']))
+	if (isset($_SESSION['loggIn']) && ((userRole('Администратор')) || (userRole('Автор')) || (userRole('Рекламодатель'))))
 	{
-		$recommendation = "<form action = '?' method = 'post'>
-						<input type = 'hidden' name = 'id' value = '".$_SESSION['idpromotion']."'>
-						<input type = 'submit' name = 'action' value = 'Рекомендовать статью' class='btn btn-primary btn-sm'>
-					  </form>";
+		/*Команда SELECT выбор цены промоушена*/
+	try
+	{
+		$sql = 'SELECT promotionprice FROM promotionprice WHERE id = 2';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'ошибка выбора цены рекомендации: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+		}
+
+		$row = $s -> fetch();
+
+		$recommendationPrice = $row['promotionprice'];
+	
+		$recommendation = '<form action = "" method = "post" id = "ajax_form_recomm">
+						<input type = "hidden" name = "id" id = "idarticle" value = "'.$_SESSION['idpromotion'].'">
+						<input type = "hidden" name = "recommprice" id = "recommprice" value = "'.$recommendationPrice.'">
+						<input type = "hidden" name = "idauthor" id = "idauthor" value = "'.$selectedAuthor.'">
+						<input type = "submit" id = "btn_recomm" name = "action" value = "Рекомендовать статью" class="btn btn-primary btn-sm">
+					  </form>
+					  <strong><p id = "result_form_recomm"></p></strong>';
 	}
 	
-	else
+	elseif (isset($_SESSION['loggIn']) && ((!userRole('Администратор')) || (!userRole('Автор')) || (!userRole('Рекламодатель'))))
+	{
+		$recommendation = '<strong>Получите статус рекламодателя в профиле, чтобы получить возможность рекомендовать статью.</strong>';
+	}
+	
+	elseif (!isset($_SESSION['loggIn']))
 	{
 		$recommendation = '<strong>Вы можете <a href="/admin/registration/?log">авторизироваться</a> в системе или 
 						 <a href="/admin/registration/?reg">зарегестрироваться</a> для того, чтобы рекомендовать статью на главной странице!</strong>';
@@ -668,164 +688,3 @@ if (isset ($_GET['delete']))
 	header ('Location: ../viewpromotion/?id='.$_SESSION['idpromotion']);//перенаправление обратно в контроллер index.php
 	exit();
 }	
-
-/*Скрипт рекомендации статьи*/
-if (isset ($_POST['action']) && $_POST['action'] == 'Рекомендовать статью')
-{	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
-	/*Команда SELECT выбор цены промоушена*/
-	try
-	{
-		$sql = 'SELECT promotionprice FROM promotionprice WHERE id = 2';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'ошибка выбора цены рекомендации: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();
-	
-	$recommendationPrice = $row['promotionprice'];
-	
-	@session_start();//Открытие сессии для сохранения id задания
-
-	$_SESSION['promotionprice'] = $recommendationPrice;
-	
-	/*Возвращение id автора*/
-	
-	$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
-	
-	@session_start();//Открытие сессии для сохранения id задания
-
-	$_SESSION['idauthor'] = $selectedAuthor;
-	
-	/*Команда SELECT выбор счёа автора для сравнения*/
-	try
-	{
-		$sql = 'SELECT score FROM author WHERE id = '.$selectedAuthor;
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Error select book: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();
-	
-	$score = $row['score'];
-	
-	if ($recommendationPrice > $score)//Если на счету нет достаточной суммы для написания статьи.
-	{
-		$title = 'Ошибка доступа';//Данные тега <title>
-		$headMain = 'Ошибка доступа';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = '<p>Для того, чтобы рекомендовать статью на Вашем счету должно быть сумма больше или равная '.$recommendationPrice.'. Пополните счёт в своём профиле!</p>
-				  <p><em>Чтобы получить возможность пополнять счёт, получите статус рекламодателя в профиле.</em></p>';
-		
-		unset ($_SESSION['promotionprice']);
-			
-		include 'error.html.php';
-		exit();
-	}
-	
-	else
-	{
-		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-		
-		/*Команда SELECT*/
-		try
-		{
-			$sql = 'SELECT id, promotiontitle FROM promotion WHERE id = :idpromotion';
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> bindValue(':idpromotion', $_POST['id']);//отправка значения
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-		}
-
-		catch (PDOException $e)
-		{
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка выбора id и заголовка promotion : ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-		}
-
-		$row = $s -> fetch();
-
-		$title = 'Рекомендовать материал';//Данные тега <title>
-		$headMain = 'Рекомендация материала';
-		$action = 'recomm';
-		$posttitle = $row['promotiontitle'];;
-		$id = $row['id'];
-		$button = 'Рекомендовать';
-		$scriptJScode = '<script src="script.js"></script>
-					 	 <script src="/js/jquery-1.min.js"></script>
-					 	 <script src="/js/bootstrap-markdown.js"></script>
-					     <script src="/js/bootstrap.min.js"></script>';//добавить код JS
-
-		include 'reccomendationok.html.php';
-		
-	}
-}	
-
-if (isset ($_GET['recomm']))
-{
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-
-	try
-	{
-		$pdo->beginTransaction();//инициация транзакции
-			
-		$sql = 'UPDATE promotion SET 
-			recommendationdate = SYSDATE()
-			WHERE id = :idpromotion';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idpromotion', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-			
-		$sql = 'UPDATE author SET score  = score - '.$_SESSION['promotionprice'].'
-								  WHERE id = '.$_SESSION['idauthor'];
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-		
-		$pdo->commit();//подтверждение транзакции
-	}
-
-	catch (PDOException $e)
-	{
-		$pdo->rollBack();//отмена транзакции
-			
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка обновления информации о рекомендации'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-
-	header ('Location: ../viewpromotion/?id='.$_SESSION['idpromotion']);//перенаправление обратно в контроллер index.php
-	exit();
-		
-}
-	

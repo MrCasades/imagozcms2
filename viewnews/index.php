@@ -222,8 +222,6 @@ if (isset ($_GET['id']))
 	/*Подключение к базе данных*/
 	if (isset($_SESSION['loggIn']))
 	{
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-		
 		$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));;//id автора	
 	}
 		
@@ -231,13 +229,6 @@ if (isset ($_GET['id']))
 	{
 		$selectedAuthor = 0;//id автора
 	}
-	
-	@session_start();//Открытие сессии для сохранения id автора
-	
-	$_SESSION['idauthor'] = $selectedAuthor;
-	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
 	$votedNews = (int)$_SESSION['idnews'];
 	

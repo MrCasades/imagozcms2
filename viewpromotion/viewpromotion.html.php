@@ -66,7 +66,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				  <hr>
 				    <p class="like"> 
 				     <img width = "5%" height = "5%" src="/viewpromotion/view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($viewCount); ?> 
-				     <img width = "3%" height = "3%" src="/viewpromotion/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($averageNumber); ?>
+				     <img width = "3%" height = "3%" src="/viewpromotion/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho (round($averageNumber, 2, PHP_ROUND_HALF_DOWN)); ?>
 					</p>
 					<?php if ($imgHead == '')
 					{

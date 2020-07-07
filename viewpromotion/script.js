@@ -124,6 +124,39 @@ $( document ).ready(function() {
 		);
 });
 
+//Рекомендация статьи
+$( document ).ready(function() {
+    $("#btn_recomm").click(
+		function(event){
+			confRecomm = confirm('Вы уверены, что хотите рекомендовать данную статью? С Вашего счёта будут списаны средства в размере '+ $("#recommprice").attr('value') + ' баллов!')
+			if (confRecomm === false){
+				event.preventDefault();
+			}
+			
+			else{
+				//Если средств на счету недостаточно
+				if (parseInt($("#score").html()) < parseInt($("#recommprice").attr('value'))){
+					alert('На счёте недостаточно средств!');
+					
+					$("#ajax_form_recomm").html('');
+				}
+				
+				else {
+					//$("#btn_fav").attr('src', ' ');
+					sendAjaxForm('result_form_recomm', 'ajax_form_recomm', 'reccomendation.inc.php');
+					console.log('OK1');
+					
+					$("#score").html(parseInt($("#score").html()) - parseInt($("#recommprice").attr('value')))//изменение счёта
+
+					$("#ajax_form_recomm").html('Вы успешно рекомендовали статью! Она в данный момент на 1-м месте!');
+				}
+
+				return false; 
+			}
+		}
+	);
+});
+
 //Функция AJAX
 function sendAjaxForm(result_form, ajax_form, url) {
     $.ajax({
