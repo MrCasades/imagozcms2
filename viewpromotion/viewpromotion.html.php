@@ -152,6 +152,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 							 $updAnddel = '<form action = "?" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$comment ['id'].'">
+									<input type = "hidden" name = "idarticle" value = "'.$comment ['idarticle'].'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Редактировать">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Del">
 								</div>

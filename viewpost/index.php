@@ -15,9 +15,6 @@ if (isset ($_GET['id']))
 {
 	$idPost = $_GET['id'];
 	
-	@session_start();//Открытие сессии для сохранения id статьи
-	
-	$_SESSION['idpost'] = $idPost;
 	$select = 'SELECT posts.id AS postid, author.id AS idauthor, post, posttitle, imghead, videoyoutube, viewcount, votecount, averagenumber, favouritescount, description, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND zenpost = "NO" AND posts.id = ';
@@ -28,6 +25,7 @@ if (isset ($_GET['id']))
 		$canonicalURL = '<link rel="canonical" href="//'.$_SERVER['SERVER_NAME'].'/viewpost/?id='.$idPost.'"/>';
 	}
 
+	/*Подключение к базе данных*/
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
 	try
@@ -75,9 +73,7 @@ if (isset ($_GET['id']))
 		exit();
 	}
 	
-	@session_start();//Открытие сессии для сохранения categoryid
-	
-	$_SESSION['categoryid'] = $row['categoryid'];
+	$categoryID = $row['categoryid'];//Сохранение id сатегории
 	
 	$title = $row['posttitle'].' | imagoz.ru';//Данные тега <title>
 	$headMain = $row['posttitle'];
@@ -227,7 +223,7 @@ if (isset ($_GET['id']))
 		$selectedAuthor = 0;//id автора
 	}
 	
-	$votedPost = (int)$_SESSION['idpost'];
+	$votedPost = (int)$idPost;
 	
 	try
 	{
@@ -272,7 +268,7 @@ if (isset ($_GET['id']))
 	}
 	
 	/*Условия вывода панели голосования*/
-	if (($votedAuthor == $selectedAuthor) && ($votedPost == $_SESSION['idpost']) || (!isset($_SESSION['loggIn'])))
+	if (($votedAuthor == $selectedAuthor) && ($votedPost == $idPost) || (!isset($_SESSION['loggIn'])))
 	{
 		$votePanel = '';
 	}
@@ -282,7 +278,7 @@ if (isset ($_GET['id']))
 		$votePanel = '<form action=" " metod "post" id = "confirmlike">
 					  
 					  Оцените статью: 
-						<input type = "hidden" name = "id" id = "idarticle" value = "'.$_SESSION['idpost'].'">
+						<input type = "hidden" name = "id" id = "idarticle" value = "'.$idPost.'">
 						<input type = "hidden" name = "idauthor" id = "idauthor" value = "'.$selectedAuthor.'">
 						<input type = "submit" name = "vote" id = "btn_vot_5" value = "5" class="btn btn-primary btn-sm"> 
 						<input type = "submit" name = "vote" id = "btn_vot_4" value = "4" class="btn btn-primary btn-sm"> 
@@ -300,7 +296,7 @@ if (isset ($_GET['id']))
 		$delAndUpd = "<form action = '/admin/addupdpost/' method = 'post'>
 			
 						Действия с материалом:
-						<input type = 'hidden' name = 'id' value = '".$_SESSION['idpost']."'>
+						<input type = 'hidden' name = 'id' value = '".$idPost."'>
 						<input type = 'submit' name = 'action' value = 'Upd' class='btn btn-primary btn-sm'>
 						<input type = 'submit' name = 'action' value = 'Del' class='btn btn-primary btn-sm'>
 					  </form>";
@@ -308,7 +304,7 @@ if (isset ($_GET['id']))
 		$premoderation = "<form action = '/admin/premoderation/postpremoderationstatus/' method = 'post'>
 			
 						Статус публикации:
-						<input type = 'hidden' name = 'id' value = '".$_SESSION['idpost']."'>
+						<input type = 'hidden' name = 'id' value = '".$idPost."'>
 						<input type = 'submit' name = 'action' value = 'Снять с публикации' class='btn btn-primary btn-sm'>
 					  </form>";				
 	}
@@ -344,7 +340,7 @@ if (isset ($_GET['id']))
 		$recommendationPrice = $row['promotionprice'];
 	
 		$recommendation = '<form action = "" method = "post" id = "ajax_form_recomm">
-						<input type = "hidden" name = "id" id = "idarticle" value = "'.$_SESSION['idpost'].'">
+						<input type = "hidden" name = "id" id = "idarticle" value = "'.$idPost.'">
 						<input type = "hidden" name = "recommprice" id = "recommprice" value = "'.$recommendationPrice.'">
 						<input type = "hidden" name = "idauthor" id = "idauthor" value = "'.$selectedAuthor.'">
 						<input type = "submit" id = "btn_recomm" name = "action" value = "Рекомендовать статью" class="btn btn-primary btn-sm">
@@ -364,13 +360,10 @@ if (isset ($_GET['id']))
 	}
 	
 	/*Вывод похожих материалов*/
-	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
+
 	try
 	{
-		$sql = 'SELECT id, posttitle, imghead, imgalt FROM posts WHERE idcategory = '.$_SESSION['categoryid'].' AND premoderation = "YES" ORDER BY rand() LIMIT 6';
+		$sql = 'SELECT id, posttitle, imghead, imgalt FROM posts WHERE idcategory = '.$categoryID.' AND premoderation = "YES" ORDER BY rand() LIMIT 6';
 		$result = $pdo->query($sql);
 	}
 	
@@ -391,11 +384,7 @@ if (isset ($_GET['id']))
 		$similarPosts[] =  array ('id' => $row['id'], 'posttitle' =>  $row['posttitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt']);
 	}	
 	
-	/*Вывод комментариев*/
-	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
+	/*Вывод комментариев*/	
 	/*Постраничный вывод информации*/
 		
 	$page = isset($_GET["page"]) ? (int) $_GET["page"] : 1;// помещаем номер страницы из массива GET в переменую $page
@@ -404,7 +393,7 @@ if (isset ($_GET['id']))
 
 	try
 	{
-		$sql = 'SELECT comments.id, comment, commentdate, subcommentcount, authorname, avatar, author.id AS idauthor FROM comments 
+		$sql = 'SELECT comments.id, comment, commentdate, subcommentcount, authorname, avatar, author.id AS idauthor, idpost FROM comments 
 		INNER JOIN author 
 		ON idauthor = author.id 
 		WHERE idpost = '.$idPost.' 
@@ -427,7 +416,7 @@ if (isset ($_GET['id']))
 	foreach ($result as $row)
 	{
 		$comments[] =  array ('id' => $row['id'], 'text' => $row['comment'], 'date' => $row['commentdate'], 'idauthor' => $row['idauthor'],
-							  'authorname' => $row['authorname'], 'subcommentcount' => $row['subcommentcount'], 'avatar' => $row['avatar']);
+							  'authorname' => $row['authorname'], 'subcommentcount' => $row['subcommentcount'], 'avatar' => $row['avatar'], 'idarticle' => $row['idpost']);
 	}
 	
 	/*Форма добавления комментария / Получение имени автора для вывода меню редактирования или удаления комментария*/
@@ -437,6 +426,7 @@ if (isset ($_GET['id']))
 		$authorName = authorLogin ($_SESSION['email'], $_SESSION['password']);//имя автора вошедшего в систему
 		$addComment = '<form action = "?'.$action.'" method = "post" align="center">
 						 <div>
+						 	<input type = "hidden" name = "idarticle" value = "'.$idPost.'">
 							<textarea class = "descr" id = "comment" name = "comment" data-provide="markdown" rows="10" placeholder = "Напишите свой комментарий!"></textarea>	
 						 </div>
 						  <div>
@@ -521,6 +511,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 	$action = 'editform';	
 	$text = $row['comment'];
 	$id = $row['id'];
+	$idArticle = $_POST['idarticle'];
 	$button = 'Обновить комментарий';
 	$scriptJScode = '<script src="script.js"></script>
 					 <script src="/js/jquery-1.min.js"></script>
@@ -566,7 +557,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 			comment = :comment,	
 			commentdate = SYSDATE(),
 			idauthor = '.$selectedAuthor.','.
-			'idpost = '.$_SESSION['idpost'];
+			'idpost = '.$_POST['idarticle'];
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':comment', $_POST['comment']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -598,7 +589,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	/*Если конкурс включён, происходит изменение конкурсного счёта*/	
 	if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('add', 'commentpoints');//если конкурс включен
 	
-	header ('Location: ../viewpost/?id='.$_SESSION['idpost']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewpost/?id='.$_POST['idarticle']);//перенаправление обратно в контроллер index.php
 	exit();	
 }
 	
@@ -630,7 +621,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		include 'error.html.php';
 		exit();
 	}
-	header ('Location: ../viewpost/?id='.$_SESSION['idpost']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewpost/?id='.$_POST['idarticle']);//перенаправление обратно в контроллер index.php
 	exit();
 }
 
@@ -666,6 +657,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 	$title = 'Удаление комментария';//Данные тега <title>
 	$headMain = 'Удаление комментария';
 	$action = 'delete';
+	$idArticle = $_POST['idarticle'];
 	$posttitle = 'Комментарий';
 	$id = $row['id'];
 	$button = 'Удалить';
@@ -740,6 +732,6 @@ if (isset ($_GET['delete']))
 		exit();
 	}
 	
-	header ('Location: ../viewpost/?id='.$_SESSION['idpost']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewpost/?id='.$_POST['idarticle']);//перенаправление обратно в контроллер index.php
 	exit();
 }	

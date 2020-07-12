@@ -9,6 +9,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	 <div class = "post" align="center">
 		<p>Удалить материал "<?php htmlecho($posttitle); ?>"?</p>
 		<p><form action = "?<?php htmlecho($action); ?> " method = "post">
+		  <input type = "hidden" name = "idarticle" value = "<?php htmlecho($idArticle); ?>">
 		  <input type = "hidden" name = "id" value = "<?php htmlecho($id); ?>">
 		  <input type = "submit" name = "delete" class="btn btn-primary btn-sm" value = "<?php htmlecho($button); ?>">
 		</form></p>

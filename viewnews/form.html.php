@@ -13,6 +13,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	<form action = "?<?php htmlecho($action); ?> " method = "post">
 	 <div>
 		<label for = "comment">Введите текст комментария</label><br>
+		<input type = "hidden" name = "idarticle" value = "<?php htmlecho($idArticle); ?>">
 		<textarea class = "descr" id = "comment" name = "comment" data-provide="markdown" rows="10"><?php htmlecho($text);?></textarea>	
 	 </div>
 	 <hr/>	

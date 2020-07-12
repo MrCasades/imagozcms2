@@ -15,9 +15,6 @@ if (isset ($_GET['id']))
 {
 	$idNews = $_GET['id'];
 	
-	@session_start();//Открытие сессии для сохранения id статьи
-	
-	$_SESSION['idnews'] = $idNews;
 	$select = 'SELECT newsblock.id AS newsid, author.id AS idauthor, news, newstitle, imghead, videoyoutube, viewcount, votecount, averagenumber, favouritescount, description, imgalt, newsdate, authorname, category.id AS categoryid, categoryname FROM newsblock 
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND newsblock.id = ';
@@ -28,6 +25,7 @@ if (isset ($_GET['id']))
 		$canonicalURL = '<link rel="canonical" href="//'.$_SERVER['SERVER_NAME'].'/viewnews/?id='.$idNews.'"/>';
 	}
 
+	/*Подключение к базе данных*/
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 		
 	try
@@ -75,9 +73,7 @@ if (isset ($_GET['id']))
 		exit();
 	}
 	
-	@session_start();//Открытие сессии для сохранения categoryid
-	
-	$_SESSION['categoryid'] = $row['categoryid'];
+	$categoryID = $row['categoryid'];//Сохранение id сатегории	
 	
 	$title = $row['newstitle'].' | imagoz.ru';//Данные тега <title>
 	$headMain = $row['newstitle'];
@@ -230,7 +226,7 @@ if (isset ($_GET['id']))
 		$selectedAuthor = 0;//id автора
 	}
 	
-	$votedNews = (int)$_SESSION['idnews'];
+	$votedNews = (int)$idNews;
 	
 	try
 	{
@@ -275,7 +271,7 @@ if (isset ($_GET['id']))
 	}
 	
 	/*Условия вывода панели голосования*/
-	if (($votedAuthor == $selectedAuthor) && ($votedNews == $_SESSION['idnews']) || (!isset($_SESSION['loggIn'])))
+	if (($votedAuthor == $selectedAuthor) && ($votedNews == $idNews) || (!isset($_SESSION['loggIn'])))
 	{
 		$votePanel = '';
 	}
@@ -285,7 +281,7 @@ if (isset ($_GET['id']))
 		$votePanel = '<form action=" " metod "post" id = "confirmlike">
 					  
 					  Оцените статью: 
-						<input type = "hidden" name = "id" id = "idarticle" value = "'.$_SESSION['idnews'].'">
+						<input type = "hidden" name = "id" id = "idarticle" value = "'.$idNews.'">
 						<input type = "hidden" name = "idauthor" id = "idauthor" value = "'.$selectedAuthor.'">
 						<input type = "submit" name = "vote" id = "btn_vot_5" value = "5" class="btn btn-primary btn-sm"> 
 						<input type = "submit" name = "vote" id = "btn_vot_4" value = "4" class="btn btn-primary btn-sm"> 
@@ -303,7 +299,7 @@ if (isset ($_GET['id']))
 		$delAndUpd = "<form action = '/admin/addupdnews/' method = 'post'>
 			
 						Действия с материалом:
-						<input type = 'hidden' name = 'id' value = '".$_SESSION['idnews']."'>
+						<input type = 'hidden' name = 'id' value = '".$idNews."'>
 						<input type = 'submit' name = 'action' value = 'Upd' class='btn btn-primary btn-sm'>
 						<input type = 'submit' name = 'action' value = 'Del' class='btn btn-primary btn-sm'>
 					  </form>";
@@ -311,7 +307,7 @@ if (isset ($_GET['id']))
 		$premoderation = "<form action = '/admin/premoderation/newspremoderationstatus/' method = 'post'>
 			
 						Статус публикации:
-						<input type = 'hidden' name = 'id' value = '".$_SESSION['idnews']."'>
+						<input type = 'hidden' name = 'id' value = '".$idNews."'>
 						<input type = 'submit' name = 'action' value = 'Снять с публикации' class='btn btn-primary btn-sm'>
 					  </form>";					  
 	}
@@ -324,12 +320,9 @@ if (isset ($_GET['id']))
 
 	/*Вывод похожих материалов*/
 	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
 	try
 	{
-		$sql = 'SELECT id, newstitle, imghead, imgalt FROM newsblock WHERE idcategory = '.$_SESSION['categoryid'].' AND premoderation = "YES" ORDER BY rand() LIMIT 6';
+		$sql = 'SELECT id, newstitle, imghead, imgalt FROM newsblock WHERE idcategory = '.$categoryID.' AND premoderation = "YES" ORDER BY rand() LIMIT 6';
 		$result = $pdo->query($sql);
 	}
 	
@@ -351,10 +344,6 @@ if (isset ($_GET['id']))
 	}		
 	
 	/*Вывод комментариев*/
-	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
 	/*Постраничный вывод информации*/
 		
 	$page = isset($_GET["page"]) ? (int) $_GET["page"] : 1;// помещаем номер страницы из массива GET в переменую $page
@@ -363,7 +352,7 @@ if (isset ($_GET['id']))
 
 	try
 	{
-		$sql = 'SELECT comments.id, comment, commentdate, subcommentcount, authorname, avatar, author.id AS idauthor FROM comments 
+		$sql = 'SELECT comments.id, comment, commentdate, subcommentcount, authorname, avatar, author.id AS idauthor, idnews FROM comments 
 		INNER JOIN author 
 		ON idauthor = author.id 
 		WHERE idnews = '.$idNews.' 
@@ -386,7 +375,7 @@ if (isset ($_GET['id']))
 	foreach ($result as $row)
 	{
 		$comments[] =  array ('id' => $row['id'], 'text' => $row['comment'], 'date' => $row['commentdate'], 'idauthor' => $row['idauthor'], 
-							  'authorname' => $row['authorname'], 'subcommentcount' => $row['subcommentcount'], 'avatar' => $row['avatar']);
+							  'authorname' => $row['authorname'], 'subcommentcount' => $row['subcommentcount'], 'avatar' => $row['avatar'], 'idarticle' => $row['idnews']);
 	}
 	
 	/*Форма добавления комментария / Получение имени автора для вывода меню редактирования или удаления комментария*/
@@ -396,6 +385,7 @@ if (isset ($_GET['id']))
 		$authorName = authorLogin ($_SESSION['email'], $_SESSION['password']);//имя автора вошедшего в систему
 		$addComment = '<form action = "?'.$action.'" method = "post" align="center">
 						 <div>
+						    <input type = "hidden" name = "idarticle" value = "'.$idNews.'">
 							<textarea class = "descr" id = "comment" name = "comment" data-provide="markdown" rows="10" placeholder = "Напишите свой комментарий!"></textarea>	
 						 </div>
 						  <div>
@@ -466,6 +456,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 	$action = 'editform';	
 	$text = $row['comment'];
 	$id = $row['id'];
+	$idArticle = $_POST['idarticle'];
 	$button = 'Обновить комментарий';
 	$scriptJScode = '<script src="script.js"></script>
 					 <script src="/js/jquery-1.min.js"></script>
@@ -511,7 +502,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 			comment = :comment,	
 			commentdate = SYSDATE(),
 			idauthor = '.$selectedAuthor.','.
-			'idnews = '.$_SESSION['idnews'];
+			'idnews = '.$_POST['idarticle'];
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':comment', $_POST['comment']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -543,7 +534,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	/*Если конкурс включён, происходит изменение конкурсного счёта*/
 	if (($contestOn == 'YES') && (!userRole('Автор')) && (!userRole('Администратор'))) delOrAddContestScore('add', 'commentpoints');//если конкурс включен
 	
-	header ('Location: ../viewnews/?id='.$_SESSION['idnews']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewnews/?id='.$_POST['idarticle']);//перенаправление обратно в контроллер index.php
 	exit();	
 }
 	
@@ -575,7 +566,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		include 'error.html.php';
 		exit();
 	}
-	header ('Location: ../viewnews/?id='.$_SESSION['idnews']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewnews/?id='.$_POST['idarticle']);//перенаправление обратно в контроллер index.php
 	exit();
 }
 
@@ -613,6 +604,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 	$robots = 'noindex, follow';
 	$descr = '';
 	$action = 'delete';
+	$idArticle = $_POST['idarticle'];
 	$posttitle = 'Комментарий';
 	$id = $row['id'];
 	$button = 'Удалить';
@@ -684,7 +676,7 @@ if (isset ($_GET['delete']))
 		exit();
 	}
 	
-	header ('Location: ../viewnews/?id='.$_SESSION['idnews']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewnews/?id='.$_POST['idarticle']);//перенаправление обратно в контроллер index.php
 	exit();
 }	
 	
