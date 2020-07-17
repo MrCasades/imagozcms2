@@ -427,44 +427,7 @@ if (isset ($_GET['id']))
 /*Обновление комментария*/
 if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать')
 {		
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-
-	try
-	{
-		$sql = 'SELECT * FROM comments  
-		WHERE id = :idcomment';//Вверху самое последнее значение
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора комментария для обновления ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();	
-	
-	$title = 'Редактирование комментария | imagoz.ru';//Данные тега <title>
-	$headMain = 'Редактирование комментария';
-	$robots = 'noindex, follow';
-	$descr = 'Форма редактирования комментария';
-	$action = 'editform';	
-	$text = $row['comment'];
-	$id = $row['id'];
-	$idArticle = $_POST['idarticle'];
-	$button = 'Обновить комментарий';
-	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+	updCommentData($_POST['id'], $_POST['idarticle']);
 	
 	include 'form.html.php';
 	exit();

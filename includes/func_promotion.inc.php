@@ -533,3 +533,46 @@ function dataMarkup ($title = '' , $description = '', $imghead = '', $imgalt = '
 				}
 			</script>';
 }
+
+/*Данные для обновления комментариев*/
+function updCommentData($id, $idArticle)
+{
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	try
+	{
+		$sql = 'SELECT * FROM comments  
+		WHERE id = :idcomment';//Вверху самое последнее значение
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idcomment', $id);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+		$headMain = 'Ошибка данных!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка выбора комментария для обновления ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s -> fetch();	
+	
+	$GLOBALS ['title'] = 'Редактирование комментария | imagoz.ru';//Данные тега <title>
+	$GLOBALS ['headMain'] = 'Редактирование комментария';
+	$GLOBALS ['robots'] = 'noindex, follow';
+	$GLOBALS ['descr'] = 'Форма редактирования комментария';
+	$GLOBALS ['action'] = 'editform';	
+	$GLOBALS ['text'] = $row['comment'];
+	$GLOBALS ['id'] = $row['id'];
+	$GLOBALS ['idArticle'] = $idArticle;
+	$GLOBALS ['button'] = 'Обновить комментарий';
+	$GLOBALS ['scriptJScode'] = '<script src="script.js"></script>
+					 <script src="/js/jquery-1.min.js"></script>
+					 <script src="/js/bootstrap-markdown.js"></script>
+					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+}
