@@ -560,70 +560,14 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 
 if (isset($_GET['editform']))//Если есть переменная editform выводится форма
 {
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
-	try
-	{
-		$sql = 'UPDATE comments SET 
-			comment = :comment
-			WHERE id = :idcomment';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
-		$s -> bindValue(':comment', $_POST['comment']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-		
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка обновления информации comment'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	header ('Location: ../viewpost/?id='.$_POST['idarticle']);//перенаправление обратно в контроллер index.php
-	exit();
+	updComment($_POST['id'], $_POST['comment'], $_POST['idarticle'], 'post');
 }
 
 /*DELETE - удаление комментария*/
 
 if (isset ($_POST['action']) && $_POST['action'] == 'Del')	
 {	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
-	/*Команда SELECT*/
-	try
-	{
-		$sql = 'SELECT id FROM comments WHERE id = :idcomment';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора id и заголовка newsblock : ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();
-	
-	$title = 'Удаление комментария';//Данные тега <title>
-	$headMain = 'Удаление комментария';
-	$action = 'delete';
-	$idArticle = $_POST['idarticle'];
-	$posttitle = 'Комментарий';
-	$id = $row['id'];
-	$button = 'Удалить';
+	delCommentData($_POST['id'], $_POST['idarticle']);
 	
 	include 'delete.html.php';
 }

@@ -642,3 +642,73 @@ function updCommentData($id, $idArticle)
 					 <script src="/js/bootstrap-markdown.js"></script>
 					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
 }
+
+/*Обновление комментариев*/
+function updComment($id, $comment, $idArticle, $type) //news, post, promotion
+{
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	try
+	{
+		$sql = 'UPDATE comments SET 
+			comment = :comment
+			WHERE id = :idcomment';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idcomment', $id);//отправка значения
+		$s -> bindValue(':comment', $comment);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+		
+	catch (PDOException $e)
+	{
+		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+		$headMain = 'Ошибка данных!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка обновления информации comment'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	header ('Location: ../view'.$type.'/?id='.$idArticle);//перенаправление обратно в контроллер index.php
+	exit();
+}
+
+/*Данные для удаления комментариев*/
+function delCommentData($id, $idArticle)
+{
+	/*Подключение к базе данных*/
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	/*Команда SELECT*/
+	try
+	{
+		$sql = 'SELECT id FROM comments WHERE id = :idcomment';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':idcomment', $id);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+	}
+
+	catch (PDOException $e)
+	{
+		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+		$headMain = 'Ошибка данных!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка выбора id и заголовка newsblock : ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+	
+	$row = $s -> fetch();
+	
+	$GLOBALS ['title'] = 'Удаление комментария';//Данные тега <title>
+	$GLOBALS ['headMain'] = 'Удаление комментария';
+	$GLOBALS ['robots'] = 'noindex, follow';
+	$GLOBALS ['descr'] = 'Форма удаления комментария';
+	$GLOBALS ['action'] = 'delete';
+	$GLOBALS ['idArticle'] = $idArticle;
+	$GLOBALS ['posttitle'] = 'Комментарий';
+	$GLOBALS ['id'] = $row['id'];
+	$GLOBALS ['button'] = 'Удалить';
+}
