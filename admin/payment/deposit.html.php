@@ -15,7 +15,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	 <table>
 		 <tr>
 		  <div>
-			<th>Введите сумму: </th><td><input type="input" name="sum"  data-type="number" value="52"></td>
+			<th>Введите сумму: </th><td><input type="input" name="sum"  data-type="number" value="99"></td>
 		  </div>
 		</tr>
 		 <tr>

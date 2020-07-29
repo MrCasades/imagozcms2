@@ -14,7 +14,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	<table>	
 	 <div>
 	   <tr>
-		<td><label for = "paysystem"> Рубрика:</label></td>
+		<td><label for = "paysystem"> Платёжная система:</label></td>
 		<td>
 		<select name = "paysystem" id = "paysystem">
 		  <option value = "">Выбрать: </option>
