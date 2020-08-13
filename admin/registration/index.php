@@ -1,7 +1,10 @@
 <?php
 
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
+
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+include_once MAIN_FILE . '/includes/access.inc.php';
 
 /*КЛЮЧИ*/
 define('SITE_KEY', '6Le8cswUAAAAANIKzxmwHehiR6-jKRJnUeqw5JRB');
@@ -22,14 +25,14 @@ if (isset($_GET['log']))
 	if (!loggedIn())
 	{
 		$errLogin = $GLOBALS['loginError'];
-		include $_SERVER['DOCUMENT_ROOT'].'/admin/login.html.php';
+		include MAIN_FILE.'/admin/login.html.php';
 		exit();
 	}	
 	
 	elseif ($_SESSION['loggIn'] = TRUE)
 	{
 		$loggood = 'Вы успешно вошли в систему!';
-		include $_SERVER['DOCUMENT_ROOT'].'/admin/accessgood.html.php';
+		include MAIN_FILE.'/admin/accessgood.html.php';
 		exit();
 	}
 }
@@ -38,9 +41,9 @@ if (isset($_GET['log']))
 if (isset($_GET['reg']))
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	/*Загрузка функций в шаблон*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	include_once MAIN_FILE . '/includes/func.inc.php';
 	
 	defaultRegFormData();//данные для формы регистрации по умолчанию
 	
@@ -70,7 +73,7 @@ if (isset($_GET['reg']))
 	}
 	
 		
-	include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
+	include MAIN_FILE.'/admin/registration/registration.html.php';
 	exit();
 }
 
@@ -78,10 +81,10 @@ if (isset ($_GET['addform']))
 {
 	
 	/*Загрузка функций в шаблон*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	include_once MAIN_FILE . '/includes/func.inc.php';
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Проверка на дубль E-mail*/
 	try
@@ -134,7 +137,7 @@ if (isset ($_GET['addform']))
 		
 		$errLog = 'Пароли должны совпадать!';
 		
-		include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
+		include MAIN_FILE.'/admin/registration/registration.html.php';
 		exit();
 	}
 	
@@ -244,7 +247,7 @@ if (isset ($_GET['addform']))
 				
 				$errLog = 'Проверка не пройдена';
 				
-				include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
+				include MAIN_FILE.'/admin/registration/registration.html.php';
 				exit();
 			}
 		}
@@ -255,7 +258,7 @@ if (isset ($_GET['addform']))
 			
 			$errLog = 'Проверка не пройдена';
 			
-			include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
+			include MAIN_FILE.'/admin/registration/registration.html.php';
 			exit();
 		}
 	}

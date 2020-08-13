@@ -45,7 +45,7 @@ function markdown2html ($text)
 	$text = html ($text);// Преобр. форматирование на уровне обычн текста в HTML
 	
 	/*Загрузка библиотеки Markdown*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/markdown.php';
+	include_once 'markdown.php';
 	//include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/MarkdownInterface.inc.php';
 
 	/*Полужирный текст*/
@@ -250,7 +250,7 @@ function convertToPostOrNews($inData, $idData)
 {
 	/*Выбор входных данных статьи*/
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include 'db.inc.php';
 	
 	try
 	{
@@ -419,7 +419,7 @@ function SiteVerify($url)
 function delOrAddContestScore($type, $pointsName)//$type - add or del, $pointsName - votingpoints, commentpoints or favouritespoints
 {
 	/*Загрузка функций для формы входа*/
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+	require_once 'access.inc.php';
 			
 			
 	$selectPoints = 'SELECT '.$pointsName.' FROM contest WHERE id = 1';//тип добавляемых конкурсных очков
@@ -436,13 +436,13 @@ function delOrAddContestScore($type, $pointsName)//$type - add or del, $pointsNa
 	}
 		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include 'db.inc.php';
 		
 	/*Выбор idauthor в зависимости от аргументов*/
 	if (($type == 'del') && ($pointsName == 'commentpoints'))
 	{
 		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include 'db.inc.php';
 			
 		try
 		{
@@ -460,7 +460,7 @@ function delOrAddContestScore($type, $pointsName)//$type - add or del, $pointsNa
 			$descr = '';
 			$error = 'Ошибка выбора idauthor для contest '.$e -> getMessage();// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e;// вывод сообщения об ошибке в переменой $e
 			include 'error.html.php';
-				exit();		
+			exit();		
 		}	
 			
 		$row = $s -> fetch();
@@ -604,7 +604,7 @@ function dataMarkup ($title = '' , $description = '', $imghead = '', $imgalt = '
 function updCommentData($id, $idArticle)
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include 'db.inc.php';
 	
 	try
 	{
@@ -638,16 +638,16 @@ function updCommentData($id, $idArticle)
 	$GLOBALS ['idArticle'] = $idArticle;
 	$GLOBALS ['button'] = 'Обновить комментарий';
 	$GLOBALS ['scriptJScode'] = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 }
 
 /*Обновление комментариев*/
 function updComment($id, $comment, $idArticle, $type) //news, post, promotion
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include 'db.inc.php';
 	
 	try
 	{
@@ -678,7 +678,7 @@ function updComment($id, $comment, $idArticle, $type) //news, post, promotion
 function delCommentData($id, $idArticle)
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include 'db.inc.php';
 	
 	/*Команда SELECT*/
 	try

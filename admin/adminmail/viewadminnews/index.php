@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../../includes/path.inc.php';
 
 $title = 'Новости администрации';//Данные тега <title>
 $headMain = 'Новости администрации';
@@ -6,7 +8,7 @@ $robots = 'noindex, nofollow';
 $descr = '';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка формы входа*/
 if (!loggedIn())
@@ -28,7 +30,7 @@ if ((!userRole('Администратор')) && (!userRole('Автор')))
 /*Вывод всех сообщений*/
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Постраничный вывод информации*/
 		

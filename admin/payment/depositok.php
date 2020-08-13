@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 if ((isset($_POST['operation_id'])) && ($_POST['unaccpted'] == false))
 {
@@ -7,7 +9,7 @@ if ((isset($_POST['operation_id'])) && ($_POST['unaccpted'] == false))
 	$idOperation = $_POST['operation_id'];
 		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	try
 	{

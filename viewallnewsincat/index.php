@@ -1,10 +1,12 @@
 <?php 
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 	
 if (loggedIn())
 {
@@ -26,7 +28,7 @@ if (isset ($_GET['id']))
 	$limit = ' ORDER BY newsdate DESC LIMIT ';		
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Постраничный вывод информации*/
 		
@@ -57,6 +59,13 @@ if (isset ($_GET['id']))
 		$newsIn[] =  array ('id' => $row['newsid'], 'idauthor' => $row['authorid'], 'textnews' => $row['news'], 'newstitle' =>  $row['newstitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'],
 						'newsdate' =>  $row['newsdate'], 'authorname' =>  $row['authorname'], 
 						'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid']);
+	}
+	
+	/*Если страница отсутствует. Ошибка 404*/
+	if (!$row)
+	{
+		header ('Location: ../page-not-found/');//перенаправление обратно в контроллер index.php
+		exit();	
 	}
 
 	if (isset ($row['categoryname']))		//если статьи в рубрике есть!	

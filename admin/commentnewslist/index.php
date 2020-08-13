@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 $title = 'Каталог комментариев к новостям | imagoz.ru';//Данные тега <title>
 $headMain = 'Все комментарии к новостям';
@@ -6,16 +8,13 @@ $robots = 'noindex, follow';
 $descr = 'В данном разделе отображаются все комментарии к новостям портала';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Определение нахождения пользователя в системе*/
 if (loggedIn())
 {
 	/*Если loggedIn = TRUE, выводится имя пользователя иначе меню авторизации*/
 }
-
-/*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
 /*Постраничный вывод информации*/
 		
@@ -24,7 +23,7 @@ $onPage = 10;// количество статей на страницу
 $shift = ($page - 1) * $onPage;// (номер страницы - 1) * статей на страницу
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Вывод комментариев к новостям*/
 /*Команда SELECT*/

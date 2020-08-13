@@ -1,9 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../../includes/path.inc.php';
+
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -30,7 +33,7 @@ if (isset ($_GET['post']))
 	$_SESSION['idpost'] = $idPost;
 	$select = 'SELECT posts.id AS postid, post, posttitle, imghead, videoyoutube, imgalt, postdate, idtask FROM posts WHERE premoderation = "NO" AND refused = "NO" AND posts.id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -153,14 +156,14 @@ if (isset ($_GET['post']))
 	
 	if ((isset($_SESSION['loggIn'])) && (userRole('Администратор')))
 	{
-		$delAndUpd = "<form action = '/admin/addupdpost/' method = 'post'>
+		$delAndUpd = "<form action = '../../../admin/addupdpost/' method = 'post'>
 			
 						Действия с материалом:
 						<input type = 'hidden' name = 'id' value = '".$_SESSION['idpost']."'>
 						<input type = 'submit' name = 'action' value = 'Upd' class='btn btn-primary btn-sm'>
 						<input type = 'submit' name = 'action' value = 'Del' class='btn btn-primary btn-sm'>
 					  </form>";
-		$premoderation = "<form action = '/admin/premoderation/postpremoderationstatus/' method = 'post'>
+		$premoderation = "<form action = '../../../admin/premoderation/postpremoderationstatus/' method = 'post'>
 			
 						Статус публикации:
 						<input type = 'hidden' name = 'id' value = '".$_SESSION['idpost']."'>

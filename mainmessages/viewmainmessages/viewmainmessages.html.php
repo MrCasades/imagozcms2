@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont">
 	
@@ -51,7 +51,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						$stylePost = 'posttitle_from';
 						$textColor = '#1E90FF';
 						$typeMessage = '<strong>Вы ответили </strong>';	
-						$deleteForm = '<div align = "right"><form action = "\mainmessages\addupdmainmessage\ " method = "post">
+						$deleteForm = '<div align = "right"><form action = "..\..\mainmessages\addupdmainmessage\ " method = "post">
 										<input type = "hidden" name = "idmessage" value = "'.$mainmessage['idmess'].'">
 						<input type = "submit" name = "action" value = "X" class="btn btn-danger btn-sm">
 		      		</form></div>';
@@ -60,7 +60,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						
 				<div class = "post">
 				  <div class = "<?php echo $stylePost;?>">
-				    <?php echo ($typeMessage.$messDate. ' | Автор: <a href="/account/?id='.$idAuthor.'" style="color: '.$textColor.'" >'.$authorName).'</a>';?>
+				    <?php echo ($typeMessage.$messDate. ' | Автор: <a href="../../account/?id='.$idAuthor.'" style="color: '.$textColor.'" >'.$authorName).'</a>';?>
 				  </div>
 					<?php echo $deleteForm;?>
 				   <div class = "newstext">
@@ -71,7 +71,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					}
 						else 
 					{
-						$img = '<p align="center"><img width = "60%" height = "40%" src="/formessages/'.$mainmessage['imghead'].'"></p>';//если картинка присутствует
+						$img = '<p align="center"><img width = "60%" height = "40%" src="../../formessages/'.$mainmessage['imghead'].'"></p>';//если картинка присутствует
 					}?>	
 					<p><?php echo $img;?></p>
 				    <p align = "center"><?php echomarkdown ($messText); ?></p>
@@ -114,4 +114,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

@@ -1,25 +1,23 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont_for_view"> 
 			<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
 			<script src="//yastatic.net/share2/share.js"></script>
 			<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,twitter,lj"></div></div>
 		<hr/>
-		<p align = "center"> <a href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/admin/commentnewslist/';?>" class="btn btn-primary btn-sm">Комментарии новостей</a> | 
-		<a href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/admin/commentpostlist/';?>" class="btn btn-primary btn-sm">Комментарии статей</a> |
-		<a href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/admin/commentpromotionlist/';?>" class="btn btn-info">Комментарии промоушен статей</a></p>
+		<p align = "center"> <a href="<?php echo '//'.MAIN_URL.'/admin/commentnewslist/';?>" class="btn btn-primary btn-sm">Комментарии новостей</a> | 
+		<a href="<?php echo '//'.MAIN_URL.'/admin/commentpostlist/';?>" class="btn btn-primary btn-sm">Комментарии статей</a> |
+		<a href="<?php echo '//'.MAIN_URL.'/admin/commentpromotionlist/';?>" class="btn btn-info">Комментарии промоушен статей</a></p>
 		
 		<div>
-		<?php if (!isset($promotionComments))
+		<?php if (empty ($promotionComments))
 				{
-					$noComments = '<p align="center">Комментарии отсутствуют!</p>';
-					echo $noComments;
-					$promotionComments = null;
+					echo '<p align="center">Комментарии отсутствуют!</p>';
 				}
 				
 			  else
@@ -27,7 +25,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				foreach ($promotionComments as $promotionComment): ?> 	   		
 				<div class = "post">
 				 <div class = "posttitle">
-				    Дата комментария: <?php echo ($promotionComment['date']. ' | Автор: <a href="/account/?id='.$promotionComment['idauthor'].'" style="color: white" >'.$promotionComment['authorname']).'</a>';?>
+				    Дата комментария: <?php echo ($promotionComment['date']. ' | Автор: <a href="../../account/?id='.$promotionComment['idauthor'].'" style="color: white" >'.$promotionComment['authorname']).'</a>';?>
 				  </div>	
 					<p><?php 
 				   
@@ -42,7 +40,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						 }
 						 if (($authorName == $promotionComment['authorname']) || (userRole('Администратор')))
 						 {
-							 $updAnddel = '<form action = "?" method = "post">
+							 $updAnddel = '<form action = "../../viewpromotion/" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$promotionComment ['id'].'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Редактировать">
@@ -58,14 +56,14 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						 echo $updAnddel;?></p>
 				  <p>
 					<table cellpadding = "3 %">
-						<td><img width = "90 px" height = "90 px" src="/avatars/<?php echo $promotionComment['avatar'];?>" alt="<?php echo $promotionComment['authorname'];?>"></td>
+						<td><img width = "90 px" height = "90 px" src="../../avatars/<?php echo $promotionComment['avatar'];?>" alt="<?php echo $promotionComment['authorname'];?>"></td>
 						<td ><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($promotionComment['text'])), 0, 50))); ?> [...]</td>
 					</table>	
 				  </p>
-				  <p><img width = "3%" height = "3%" src="<?php echo '//'.$_SERVER['SERVER_NAME'];?>/answers.jpg" alt="Ответы на комментарий" title="Количество ответов"> 
+				  <p><img width = "3%" height = "3%" src="<?php echo '//'.MAIN_URL;?>/answers.jpg" alt="Ответы на комментарий" title="Количество ответов"> 
 					  <strong>[<?php echo $promotionComment['subcommentcount']; ?>]</strong></p>
-				  <a href="/viewwallpost/?id=<?php echo $promotionComment['id']; ?>" class="btn btn-primary btn-sm">Открыть</a>
-				  <div><strong>К материалу:</strong> <a href="/viewpromotion/?id=<?php htmlecho ($promotionComment['idpromotion']); ?>"><?php htmlecho ($promotionComment['promotiontitle']); ?></a></div>	
+				  <a href="../../viewwallpost/?id=<?php echo $promotionComment['id']; ?>" class="btn btn-primary btn-sm">Открыть</a>
+				  <div><strong>К материалу:</strong> <a href="../../viewpromotion/?id=<?php htmlecho ($promotionComment['idpromotion']); ?>"><?php htmlecho ($promotionComment['promotiontitle']); ?></a></div>	
 				</div>	  		   
 				<?php endforeach; ?> 
 				
@@ -89,4 +87,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

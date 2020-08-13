@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont"> 
 		
@@ -16,7 +16,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		<p><?php echo $mainMessagesForm; ?></p>
 		
 		 <?php foreach ($authors as $author): ?> 
-		   <p><img width = "150 px" height = "150 px" src="/avatars/<?php echo $author['avatar'];?>" alt="<?php echo $author['authorname'];?>"></p>
+		   <p><img width = "150 px" height = "150 px" src="../avatars/<?php echo $author['avatar'];?>" alt="<?php echo $author['authorname'];?>"></p>
 		   <p><?php if (($authorRole == 'Автор') || ($authorRole == 'Администратор'))//если пользователю присвоен определённый статус, то выводятся его ранг
 				
 				{
@@ -76,8 +76,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($favourite['date']. ' | Автор: <a href="/account/?id='.$favourite['idauthorpost'].'" style="color: white" >'.$favourite['authorname']).'</a>';?>
-					<p>Рубрика: <a href="viewcategory/?id=<?php echo $favourite['categoryid']; ?>" style="color: white"><?php echo $favourite['categoryname'];?></a></p> 
+				    <?php echo ($favourite['date']. ' | Автор: <a href="../account/?id='.$favourite['idauthorpost'].'" style="color: white" >'.$favourite['authorname']).'</a>';?>
+					<p>Рубрика: <a href="../viewcategory/?id=<?php echo $favourite['idcategory']; ?>" style="color: white"><?php echo $favourite['categoryname'];?></a></p> 
 				  </div>
 				  	 
 				   <div class = "newstext">
@@ -90,7 +90,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						}
 						 else 
 						{
-							$img = '<img width = "90%" height = "90%" src="/images/'.$favourite['imghead'].'"'. ' alt="'.$favourite['imgalt'].'"'.'>';//если картинка присутствует
+							$img = '<img width = "90%" height = "90%" src="../images/'.$favourite['imghead'].'"'. ' alt="'.$favourite['imgalt'].'"'.'>';//если картинка присутствует
 						}?>
 					  <p><?php echo $img;?></p>
 				     </div>
@@ -106,7 +106,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 <div>
 		  <?php if (($authorRole == 'Автор') || ($authorRole == 'Администратор'))//если пользователю присвоен определённый статус, то выводятся написанные им материалы
 				{
-					include $_SERVER['DOCUMENT_ROOT']. '/account/postandnews.inc.html.php';
+					include MAIN_FILE . '/account/postandnews.inc.html.php';
 				}?>
 		</div>
 	
@@ -123,7 +123,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				foreach ($comments as $comment): ?> 	   		
 				<div class = "post">
 				 <div class = "posttitle">
-				    Дата записи: <?php echo ($comment['date']. ' | Автор: <a href="/account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
+				    Дата записи: <?php echo ($comment['date']. ' | Автор: <a href="../account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
 				  </div>
 				  <p><?php 
 				   
@@ -159,13 +159,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						}
 							else 
 						{
-							$img = '<p align="center"><img width = "40%" height = "20%" src="/images/'.$comment['imghead'].'"'. ' alt="'.$comment['imgalt'].'"'.'></p>';//если картинка присутствует
+							$img = '<p align="center"><img width = "40%" height = "20%" src="../images/'.$comment['imghead'].'"'. ' alt="'.$comment['imgalt'].'"'.'></p>';//если картинка присутствует
 						}?>
 					<p><?php echo $img;?></p>
 				  <p><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($comment['text'])), 0, 50))); ?> [...]</p>
-				  <p><img width = "5%" height = "5%" src="<?php echo '//'.$_SERVER['SERVER_NAME'];?>/answers.jpg" alt="Ответы на комментарий" title="Количество ответов"> 
+				  <p><img width = "5%" height = "5%" src="<?php echo '//'.MAIN_URL;?>/answers.jpg" alt="Ответы на комментарий" title="Количество ответов"> 
 					  <strong>[<?php echo $comment['subcommentcount']; ?>]</strong></p>
-				  <a href="/viewwallpost/?id=<?php echo $comment['id']; ?>" class="btn btn-primary btn-sm">Открыть</a>   
+				  <a href="../viewwallpost/?id=<?php echo $comment['id']; ?>" class="btn btn-primary btn-sm">Открыть</a>   
 				</div>	  		   
 				<?php endforeach; ?> 
 				
@@ -177,11 +177,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					 // если текущая старница
 					 if($i == $page)
 					 {
-						 echo "<a href='/account/?id=".$idAuthor."&page=$i' class='btn btn-info'>$i</a> ";
+						 echo "<a href='../account/?id=".$idAuthor."&page=$i' class='btn btn-info'>$i</a> ";
 					 } 
 					 else 
 					 {
-						 echo "<a href='/account/?id=".$idAuthor."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
+						 echo "<a href='../account/?id=".$idAuthor."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
 					 }
 				 }?>
 				 </div>				
@@ -194,4 +194,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

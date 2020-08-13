@@ -1,10 +1,12 @@
 <?php 
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 $title = 'Все сообщения | imagoz.ru';
 $headMain = 'Все сообщения';
@@ -23,7 +25,7 @@ else
 	$robots = 'noindex, nofollow';
 	$descr = '';
 	$error = 'Доступ запрещен';
-	include '../admin/accessfail.html.php';
+	include '//'.MAIN_URL.'/admin/accessfail.html.php';
 	exit();
 }
 
@@ -35,7 +37,7 @@ $selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//i
 /*Вывод имён пользователей для диалогов*/
 			
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Вывод имён пользователей с непрочитанными сообщениями*/
 /*Команда SELECT*/

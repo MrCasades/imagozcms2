@@ -1,7 +1,9 @@
 ﻿<?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -14,8 +16,8 @@ else
 	$headMain = 'Нельзя добавить сообщение';
 	$robots = 'noindex, nofollow';
 	$descr = '';
-	$error = 'Для того, чтобы отправлять сообщения пользователю Вам нужно <a href="/admin/registration/?log">авторизироваться</a> в системе или пройти 
-						 <a href="/admin/registration/?reg">регистрацию</a>!';
+	$error = 'Для того, чтобы отправлять сообщения пользователю Вам нужно <a href="//'.MAIN_URL.'/admin/registration/?log">авторизироваться</a> в системе или пройти 
+						 <a href="//'.MAIN_URL.'/admin/registration/?reg">регистрацию</a>!';
 	include 'error.html.php';
 	exit();
 }
@@ -37,9 +39,9 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Написать сообщ
 	$errorForm = '';
 	$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 
 
 	include 'addupdform.html.php';
@@ -53,13 +55,13 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	$filePathScript = '/formessages/';//папка с изображениями для новости/статьи
 	
 	/*Загрузка функций для формы входа*/
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+	require_once MAIN_FILE . '/includes/access.inc.php';
 	
 	/*Загрузка скрипта добавления файла*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+	include MAIN_FILE . '/includes/uploadfile.inc.php';
 		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Возвращение id автора*/
 	
@@ -80,9 +82,9 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 		$errorForm = '';
 		$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
 		$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 		
 		@session_start();//Открытие сессии для сохранения id автора
 	
@@ -176,7 +178,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 if (isset ($_POST['action']) && $_POST['action'] == 'X')
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -246,11 +248,11 @@ if (isset ($_GET['delete']))
 {
 	/*Удаление изображения заголовка*/
 	$fileName = $_SESSION['imghead'];
-	$delFile = $_SERVER['DOCUMENT_ROOT'] . '/formessages/'.$fileName;//путь к файлу для удаления
+	$delFile = MAIN_FILE . '/formessages/'.$fileName;//путь к файлу для удаления
 	unlink($delFile);//удаление файла
 		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{
@@ -268,6 +270,6 @@ if (isset ($_GET['delete']))
 		exit();
 	}
 	
-	header ('Location: //'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }	

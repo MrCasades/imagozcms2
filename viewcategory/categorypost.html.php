@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont_for_view"> 
 		<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -12,11 +12,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	  <div class = "post">
 		<div class = "posttitle"><h3 align = "center">Поседние новости</h3></div>
 		 <?php 
-		 if (!isset($newsIn))
+		 if (empty ($newsIn))
 		 {
-			 $noNews = '<p align = "center">Новости в рубрике отсутствуют!</p>';
-			 echo $noNews;
-			 $newsIn = null;
+			 echo '<p align = "center">Новости в рубрике отсутствуют!</p>';
 		 }
 			
 		 else
@@ -24,20 +22,18 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($newsIn as $news): ?> 
 		  
 			<div>
-				<strong><?php htmlecho ($news['newsdate']); ?> </strong><a href="/viewnews/?id=<?php htmlecho ($news['id']); ?>"><?php htmlecho ($news['newstitle']); ?></a>  
+				<strong><?php htmlecho ($news['newsdate']); ?> </strong><a href="../viewnews/?id=<?php htmlecho ($news['id']); ?>"><?php htmlecho ($news['newstitle']); ?></a>  
 			</div>			
 		 <?php endforeach; ?>
-		 <div class="for_allposts_link"><p align = "center"><a href="/viewallnewsincat/?id=<?php echo $idCategory;?>" style="color: white">Все новости рубрики</a></p></div>
+		 <div class="for_allposts_link"><p align = "center"><a href="../viewallnewsincat/?id=<?php echo $idCategory;?>" style="color: white">Все новости рубрики</a></p></div>
 		</div>   
 		
 		<div>	
 		<h3 align = "center">Промоушен</h3>
 		 <?php 
-		 if (!isset($promotions))
+		 if (empty ($promotions))
 		 {
-			 $noPosts = '<p align = "center">Статьи в рубрике отсутствуют!</p>';
-			 echo $noPosts;
-			 $promotions = null;
+			 echo '<p align = "center">Статьи в рубрике отсутствуют!</p>';
 		 }
 			
 		 else
@@ -47,8 +43,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			<div>
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($promotion['promotiondate']. ' | Автор: <a href="/account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
-					<p>Рубрика: <a href="/viewcategory/?id=<?php echo $promotion['categoryid']; ?>" style="color: white"><?php echo $promotion['categoryname'];?></a>
+				    <?php echo ($promotion['promotiondate']. ' | Автор: <a href="../account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
+					<p>Рубрика: <a href="../viewcategory/?id=<?php echo $promotion['categoryid']; ?>" style="color: white"><?php echo $promotion['categoryname'];?></a>
 					   <?php if ($promotion['www'] != '')//если автор приложил ссылку
 						{
 							$link = '| <a href="//'.$promotion['www'].'" style="color: white" rel = "nofollow">Ссылка на ресурс</a>';
@@ -65,27 +61,25 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						}
 						 else 
 						{
-							$img = '<img width = "90%" height = "90%" src="/images/'.$promotion['imghead'].'"'. ' alt="'.$promotion['imgalt'].'"'.'>';//если картинка присутствует
+							$img = '<img width = "90%" height = "90%" src="../images/'.$promotion['imghead'].'"'. ' alt="'.$promotion['imgalt'].'"'.'>';//если картинка присутствует
 						}?>
 					  <p><?php echo $img;?></p>
 				     </div>
 					<p align = "justify"><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($promotion['text'])), 0, 50))); ?> [...]</p>
-					<a href="/viewpromotion/?id=<?php htmlecho ($promotion['id']); ?>" class="btn btn-primary">Далее</a>
+					<a href="../viewpromotion/?id=<?php htmlecho ($promotion['id']); ?>" class="btn btn-primary">Далее</a>
 				   </div>	
 				 </div>
 			</div>	   	
 		 <?php endforeach; ?> 
-		 <div class="for_allposts_link"><p align = "center"><a href="/viewallpromotionincat/?id=<?php echo $idCategory; ?>" style="color: white">Все статьи рубрики</a></p></div>
+		 <div class="for_allposts_link"><p align = "center"><a href="../viewallpromotionincat/?id=<?php echo $idCategory; ?>" style="color: white">Все статьи рубрики</a></p></div>
 	  </div>	 
 		
 	  <div>	
 		<h5 align = "center">Последние статьи</h5>
 		 <?php 
-		 if (!isset($posts))
+		 if (empty ($posts))
 		 {
-			 $noPosts = '<p align = "center">Статьи в рубрике отсутствуют!</p>';
-			 echo $noPosts;
-			 $posts = null;
+			 echo '<p align = "center">Статьи в рубрике отсутствуют!</p>';
 		 }
 			
 		 else
@@ -95,8 +89,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			<div>
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($post['postdate']. ' | Автор: <a href="/account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';?>
-					<p>Рубрика: <a href="/viewcategory/?id=<?php echo $post['categoryid']; ?>" style="color: white"><?php echo $post['categoryname'];?></a></p>
+				    <?php echo ($post['postdate']. ' | Автор: <a href="../account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';?>
+					<p>Рубрика: <a href="../viewcategory/?id=<?php echo $post['categoryid']; ?>" style="color: white"><?php echo $post['categoryname'];?></a></p>
 				  </div>
 				   <div class = "newstext">
 				    <h3 align = "center"><?php htmlecho ($post['posttitle']); ?></h3>
@@ -108,20 +102,20 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						}
 						 else 
 						{
-							$img = '<img width = "90%" height = "90%" src="/images/'.$post['imghead'].'"'. ' alt="'.$post['imgalt'].'"'.'>';//если картинка присутствует
+							$img = '<img width = "90%" height = "90%" src="../images/'.$post['imghead'].'"'. ' alt="'.$post['imgalt'].'"'.'>';//если картинка присутствует
 						}?>
 					  <p><?php echo $img;?></p>
 				     </div>
 					<p align = "justify"><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($post['text'])), 0, 50))); ?> [...]</p>
-					<a href="/viewpost/?id=<?php htmlecho ($post['id']); ?>" class="btn btn-primary">Далее</a>
+					<a href="../viewpost/?id=<?php htmlecho ($post['id']); ?>" class="btn btn-primary">Далее</a>
 				   </div>	
 				 </div>
 			</div>	   	
 		 <?php endforeach; ?> 
-		 <div class="for_allposts_link"><p align = "center"><a href="/viewallpostsincat/?id=<?php echo $idCategory; ?>" style="color: white">Все статьи рубрики</a></p></div>
+		 <div class="for_allposts_link"><p align = "center"><a href="../viewallpostsincat/?id=<?php echo $idCategory; ?>" style="color: white">Все статьи рубрики</a></p></div>
 	  </div>	 
 	</div>		
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

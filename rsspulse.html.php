@@ -1,6 +1,6 @@
 <? 
 	/*Загрузка функций в шаблон*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	include_once MAIN_FILE . '/includes/func.inc.php';
 
 $content = '<?xml version="1.0" encoding="UTF-8"?>
 

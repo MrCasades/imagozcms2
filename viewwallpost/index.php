@@ -1,9 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
+
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -25,7 +28,7 @@ if (isset ($_GET['id']))
 				WHERE comments.id = ';
 				
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{
@@ -121,9 +124,9 @@ if (isset ($_GET['addcomment']))
 	$id = '';
 	$button = 'Добавить ответ';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="../js/jquery-1.min.js"></script>
+					 <script src="../js/bootstrap-markdown.js"></script>
+					 <script src="../js/bootstrap.min.js"></script>';//добавить код JS
 	
 	if (isset($_SESSION['loggIn']))
 	{
@@ -139,8 +142,8 @@ if (isset ($_GET['addcomment']))
 		$headMain = 'Ошибка добавления ответа';
 		$robots = 'noindex, follow';
 		$descr = '';
-		$commentError = '<a href="/admin/registration/?log">Авторизируйтесь</a> в системе или 
-						 <a href="/admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы написать ответ!';//Вывод сообщения в случае невхода в систему
+		$commentError = '<a href="../admin/registration/?log">Авторизируйтесь</a> в системе или 
+						 <a href="../admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы написать ответ!';//Вывод сообщения в случае невхода в систему
 		
 		include 'commentfail.html.php';
 		exit();
@@ -151,7 +154,7 @@ if (isset ($_GET['addcomment']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать')
 {		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{
@@ -184,9 +187,9 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 	$id = $row['id'];
 	$button = 'Обновить ответ';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="../js/jquery-1.min.js"></script>
+					 <script src="../js/bootstrap-markdown.js"></script>
+					 <script src="../js/bootstrap.min.js"></script>';//добавить код JS
 	
 	include 'subcommentform.html.php';
 	exit();
@@ -196,17 +199,14 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 if (isset($_GET['addform']))//Если есть переменная addform выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
+	
+	$selectComment = 'SELECT id FROM author WHERE authorname = ';//запрос, возвращающий id
+	$authorComment = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
 		
 	/*Возвращение id автора*/
 	try
 	{
-		$selectComment = 'SELECT id FROM author WHERE authorname = ';//запрос, возвращающий id
-		$authorComment = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
-		
-		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
 		$sql = $selectComment.'"'.$authorComment.'"';
 		$result = $pdo->query($sql);
 	}
@@ -276,7 +276,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 		exit();
 	}
 	
-	header ('Location: /viewwallpost/?id='.$_SESSION['idcomment']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewwallpost/?id='.$_SESSION['idcomment']);//перенаправление обратно в контроллер index.php
 	exit();	
 }
 	
@@ -285,7 +285,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 if (isset($_GET['editform']))//Если есть переменная editform выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -308,7 +308,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		include 'error.html.php';
 		exit();
 	}
-	header ('Location: /viewwallpost/?id='.$_SESSION['idcomment']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewwallpost/?id='.$_SESSION['idcomment']);//перенаправление обратно в контроллер index.php
 	exit();
 }
 
@@ -317,7 +317,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 if (isset ($_POST['action']) && $_POST['action'] == 'Del')	
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -356,7 +356,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 if (isset ($_GET['delete']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -400,6 +400,6 @@ if (isset ($_GET['delete']))
 		exit();
 	}
 	
-	header ('Location: /viewwallpost/?id='.$_SESSION['idcomment']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../viewwallpost/?id='.$_SESSION['idcomment']);//перенаправление обратно в контроллер index.php
 	exit();
 }	

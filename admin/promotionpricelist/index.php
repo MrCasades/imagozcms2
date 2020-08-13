@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 $title = 'Цена промоушена';//Данные тега <title>
 $headMain = 'Цена промоушена';
@@ -6,7 +8,7 @@ $robots = 'noindex, nofollow';
 $descr = '';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка формы входа*/
 if (!loggedIn())
@@ -37,7 +39,7 @@ $button = 'Добавить категорию цены';
 if (isset ($_GET['addform']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -66,7 +68,7 @@ if (isset ($_GET['addform']))
 if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -103,7 +105,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'))
 if (isset ($_GET['editform']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -134,7 +136,7 @@ if (isset ($_GET['editform']))
 if (isset ($_POST['action']) && ($_POST['action'] == 'Del'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	
@@ -158,7 +160,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Del'))
 }	
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Команда SELECT*/
 try

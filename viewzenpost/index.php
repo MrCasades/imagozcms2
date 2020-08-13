@@ -1,9 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
+
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -22,7 +25,7 @@ if (isset ($_GET['id']))
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "YES" AND zenpost = "YES" AND posts.id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -130,7 +133,7 @@ if (isset ($_GET['id']))
 	/*Подключение к базе данных*/
 	if (isset($_SESSION['loggIn']))
 	{
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		MAIN_FILE . '/includes/db.inc.php';
 		
 		$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));;//id автора
 	}
@@ -145,7 +148,7 @@ if (isset ($_GET['id']))
 	$_SESSION['idauthor'] = $selectedAuthor;
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	$votedPost = (int)$_SESSION['idpost'];
 	
@@ -223,7 +226,7 @@ if (isset ($_GET['id']))
 		$insertToVotedAuthor ='INSERT INTO votedauthor SET idpromotion = 0, idnews = 0, idpost = '.$_SESSION['idpost'].', idauthor = '.$_SESSION['idauthor'].', vote = '.$vote;//обновление таблицы проголосовавшего автора
 							
 		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include MAIN_FILE . '/includes/db.inc.php';
 		
 		try
 		{
@@ -269,7 +272,7 @@ if (isset ($_GET['id']))
 	
 	if ((isset($_SESSION['loggIn'])) && (userRole('Администратор')))
 	{
-		$delAndUpd = "<form action = '/admin/addupdpost/' method = 'post'>
+		$delAndUpd = "<form action = '../admin/addupdpost/' method = 'post'>
 			
 						Действия с материалом:
 						<input type = 'hidden' name = 'id' value = '".$_SESSION['idpost']."'>
@@ -277,7 +280,7 @@ if (isset ($_GET['id']))
 						<input type = 'submit' name = 'action' value = 'Del' class='btn btn-primary btn-sm'>
 					  </form>";
 		
-		$premoderation = "<form action = '/admin/premoderation/postpremoderationstatus/' method = 'post'>
+		$premoderation = "<form action = '../admin/premoderation/postpremoderationstatus/' method = 'post'>
 			
 						Статус публикации:
 						<input type = 'hidden' name = 'id' value = '".$_SESSION['idpost']."'>
@@ -302,14 +305,14 @@ if (isset ($_GET['id']))
 	
 	else
 	{
-		$recommendation = '<strong>Вы можете <a href="/admin/registration/?log">авторизироваться</a> в системе или 
-						 <a href="/admin/registration/?reg">зарегестрироваться</a> для того, чтобы рекомендовать статью на главной странице!</strong>';
+		$recommendation = '<strong>Вы можете <a href="../admin/registration/?log">авторизироваться</a> в системе или 
+						 <a href="../admin/registration/?reg">зарегестрироваться</a> для того, чтобы рекомендовать статью на главной странице!</strong>';
 	}
 	
 	/*Вывод похожих материалов*/
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -337,7 +340,7 @@ if (isset ($_GET['id']))
 	/*Вывод комментариев*/
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Постраничный вывод информации*/
 		
@@ -443,7 +446,7 @@ if (isset ($_GET['addcomment']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать')
 {		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{
@@ -484,7 +487,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 if (isset($_GET['addform']))//Если есть переменная addform выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	/*Возвращение id автора*/
 	try
@@ -550,7 +553,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 if (isset($_GET['editform']))//Если есть переменная editform выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -582,7 +585,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 if (isset ($_POST['action']) && $_POST['action'] == 'Del')	
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -619,7 +622,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 if (isset ($_GET['delete']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Удаление комментариев*/
 	try
@@ -669,7 +672,7 @@ if (isset ($_GET['delete']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Рекомендовать статью')
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT выбор цены промоушена*/
 	try
@@ -743,7 +746,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Рекомендовать 
 	else
 	{
 		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include MAIN_FILE . '/includes/db.inc.php';
 		
 		/*Команда SELECT*/
 		try
@@ -782,7 +785,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Рекомендовать 
 if (isset ($_GET['recomm']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{

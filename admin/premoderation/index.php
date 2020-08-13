@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 $title = 'Премодерация материалов';//Данные тега <title>
 $headMain = 'Материалы в премодерации';
@@ -6,7 +8,7 @@ $robots = 'noindex, nofollow';
 $descr = 'Вданном разделе выводятся материалы для премодерации';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка формы входа*/
 if (!loggedIn())
@@ -26,7 +28,7 @@ if (!userRole('Администратор'))
 if (isset ($_GET['news']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	/*Вывод новостей*/
 	/*Команда SELECT*/
@@ -65,7 +67,7 @@ if (isset ($_GET['news']))
 if (isset ($_GET['posts']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Вывод стаей*/
 	/*Команда SELECT*/
@@ -101,7 +103,7 @@ if (isset ($_GET['posts']))
 if (isset ($_GET['promotion']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Вывод стаей*/
 	/*Команда SELECT*/

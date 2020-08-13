@@ -1,7 +1,9 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -42,9 +44,9 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 	$button = 'Добавить задание';
 	$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	@session_start();//Открытие сессии для сохранения id автора
 	
@@ -53,7 +55,7 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 	/*Вывод информации для формы добавления*/
 
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Список типов*/
 	try
@@ -102,7 +104,7 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -138,9 +140,9 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Upd')
 	$button = 'Обновить информацию о задании';
 	$errorForm = '';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	/*Выбор автора статьи*/
 	try
@@ -210,7 +212,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 
 {
 	/*Загрузка функций для формы входа*/
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+	require_once MAIN_FILE . '/includes/access.inc.php';
 	
 	/*Возвращение id автора*/
 	
@@ -229,7 +231,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	}
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -271,7 +273,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 if (isset($_GET['editform']))//Если есть переменная editform выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	if (($_POST['idtasktype'] == '') || ($_POST['description'] == '') || ($_POST['tasktitle'] == ''))
 	{
@@ -310,7 +312,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		exit();
 	}
 	
-	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }
 
@@ -319,7 +321,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -356,7 +358,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 if (isset ($_GET['delete']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -374,6 +376,6 @@ if (isset ($_GET['delete']))
 		exit();
 	}
 	
-	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }	

@@ -1,7 +1,7 @@
 <?php 
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка кнопки добавления статьи*/
 if (!isset($_SESSION['loggIn']) || (!userRole('Администратор')) && (!userRole('Автор')) && (!userRole('Рекламодатель') && (!userRole('Супер-автор'))))//Если не выполнен вход в систему или роль не администратор
@@ -24,7 +24,7 @@ elseif (userRole('Администратор'))
 	/*Подсчёт количества непрочитанных сообщений обратной связи*/
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -82,8 +82,8 @@ elseif (userRole('Администратор'))
 							  </div>
 								<p><h6 align="center">'.$messageTitle.'</h6></p>';
 	
-		$lastTags = '<p><a href="/admin/adminmail/viewadminnews/viewnews/?idadminnews='.$idnews.'" class="btn btn-primary btn-sm">Подробнее</a> | 
-								   <a href="/admin/adminmail/viewadminnews/" class="btn btn-info btn-sm">Все сообщения</a> </p>
+		$lastTags = '<p><a href="//'.MAIN_URL.'/admin/adminmail/viewadminnews/viewnews/?idadminnews='.$idnews.'" class="btn btn-primary btn-sm">Подробнее</a> | 
+								   <a href="//'.MAIN_URL.'/admin/adminmail/viewadminnews/" class="btn btn-info btn-sm">Все сообщения</a> </p>
 					 </div>';
 	}
 	
@@ -170,7 +170,7 @@ elseif (userRole('Администратор'))
 		
 	$scoreTitle = 'Размер счёта: <span id = "score">'.round($row['score'], 2, PHP_ROUND_HALF_DOWN).'</span>';//размер счёта
 	
-	$payForms = '<div align = "center"><form action = "/admin/payment/" method = "post">
+	$payForms = '<div align = "center"><form action = "//'.MAIN_URL.'/admin/payment/" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Вывести средства">
@@ -178,22 +178,22 @@ elseif (userRole('Администратор'))
 								</div>
 							</form></div>';
 	
-	$addPost = "<p align='center'><a href='/admin/addupdpost/?add' class='btn btn-primary btn-sm'>Добавить статью</a> | 
-	<a href='/admin/addupdnews/?add' class='btn btn-primary btn-sm'>Добавить новость</a> |
-	<a href='/admin/addupdpromotion/?add' class='btn btn-primary btn-sm'>Добавить промоушен</a> |
-	<a href='/admin/viewalltask/' class='btn btn-primary btn-sm'>Получить задание</a> |
-	<a href='/admin/addtask/?add' class='btn btn-primary btn-sm'>Добавить задание</a> |
-	<a href='/admin/viewallauthortask/' class='btn btn-primary btn-sm'>Мои задания</a> |
-	<a href='/admin/' class='btn btn-primary btn-sm'>Редактирование списков</a> |</p>
+	$addPost = "<p align='center'><a href='//".MAIN_URL."/admin/addupdpost/?add' class='btn btn-primary btn-sm'>Добавить статью</a> | 
+	<a href='//".MAIN_URL."/admin/addupdnews/?add' class='btn btn-primary btn-sm'>Добавить новость</a> |
+	<a href='//".MAIN_URL."/admin/addupdpromotion/?add' class='btn btn-primary btn-sm'>Добавить промоушен</a> |
+	<a href='//".MAIN_URL."/admin/viewalltask/' class='btn btn-primary btn-sm'>Получить задание</a> |
+	<a href='//".MAIN_URL."/admin/addtask/?add' class='btn btn-primary btn-sm'>Добавить задание</a> |
+	<a href='//".MAIN_URL."/admin/viewallauthortask/' class='btn btn-primary btn-sm'>Мои задания</a> |
+	<a href='//".MAIN_URL."/admin/' class='btn btn-primary btn-sm'>Редактирование списков</a> |</p>
 	
-	<p align='center'><a href='/admin/premoderation/?posts' class='btn btn-primary btn-sm'>Премодерация статей (".$premodPosts.")</a> |
-	<a href='/admin/premoderation/?news' class='btn btn-primary btn-sm'>Премодерация новостей (".$premodNews.")</a> | 
-	<a href='/admin/premoderation/?promotion' class='btn btn-primary btn-sm'>Премодерация промоушена (".$premodPromotion.")</a> | 
-	<a href='/admin/payment/viewallpayments/' class='btn btn-primary btn-sm'>Заявки на выплату (".$paymentsCount.")</a> |
-	<a href='/admin/refused/' class='btn btn-danger btn-sm'>Отклонённые задания</a> |
-	<a href='/admin/adminmail/viewallmessages/' class='btn btn-primary btn-sm'>Обратная связь (".$unread.")</a> |</p> 
+	<p align='center'><a href='//".MAIN_URL."/admin/premoderation/?posts' class='btn btn-primary btn-sm'>Премодерация статей (".$premodPosts.")</a> |
+	<a href='//".MAIN_URL."/admin/premoderation/?news' class='btn btn-primary btn-sm'>Премодерация новостей (".$premodNews.")</a> | 
+	<a href='//".MAIN_URL."/admin/premoderation/?promotion' class='btn btn-primary btn-sm'>Премодерация промоушена (".$premodPromotion.")</a> | 
+	<a href='//".MAIN_URL."/admin/payment/viewallpayments/' class='btn btn-primary btn-sm'>Заявки на выплату (".$paymentsCount.")</a> |
+	<a href='//".MAIN_URL."/admin/refused/' class='btn btn-danger btn-sm'>Отклонённые задания</a> |
+	<a href='//".MAIN_URL."/admin/adminmail/viewallmessages/' class='btn btn-primary btn-sm'>Обратная связь (".$unread.")</a> |</p> 
 	
-	<p align='center'><a href='/viewallzenposts/' class='btn btn-primary btn-sm'>Каталог Дзен-статей</a></p>";
+	<p align='center'><a href='//".MAIN_URL."/viewallzenposts/' class='btn btn-primary btn-sm'>Каталог Дзен-статей</a></p>";
 	
 	$forAuthors = '';
 	if (empty ($superUser)) $superUser = '';//если нет значения у переменной, отсутствует ранг супер-автора
@@ -202,7 +202,7 @@ elseif (userRole('Администратор'))
 elseif (userRole('Администратор') || userRole('Автор'))
 {
 	/*Если присвоен ранг супер-автора*/
-	if (userRole('Супер-автор')) $superUser = "<a href='/admin/superuserpanel/' class='btn btn-danger btn-sm'>
+	if (userRole('Супер-автор')) $superUser = "<a href='//".MAIN_URL."/admin/superuserpanel/' class='btn btn-danger btn-sm'>
 												<strong>МЕНЮ СУПЕР-АВТОРА</strong></a>";
 	
 	/*Счётчики*/
@@ -211,7 +211,7 @@ elseif (userRole('Администратор') || userRole('Автор'))
 	$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Подсчёт количества заданий*/
 	try
@@ -323,7 +323,7 @@ elseif (userRole('Администратор') || userRole('Автор'))
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		}
-
+//".MAIN_URL."
 		catch (PDOException $e)
 		{
 			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
@@ -348,8 +348,8 @@ elseif (userRole('Администратор') || userRole('Автор'))
 							  </div>
 								<p><h6 align="center">'.$messageTitle.'</h6></p>';
 	
-		$lastTags = '<p><a href="/admin/adminmail/viewadminnews/viewnews/?idadminnews='.$idnews.'" class="btn btn-primary btn-sm">Подробнее</a> | 
-								   <a href="/admin/adminmail/viewadminnews/" class="btn btn-info btn-sm">Все сообщения</a> </p>
+		$lastTags = '<p><a href="//'.MAIN_URL.'/admin/adminmail/viewnews/?idadminnews='.$idnews.'" class="btn btn-primary btn-sm">Подробнее</a> | 
+								   <a href="//'.MAIN_URL.'/admin/adminmail/viewadminnews/" class="btn btn-info btn-sm">Все сообщения</a> </p>
 					 </div>';
 	}
 	
@@ -383,7 +383,7 @@ elseif (userRole('Администратор') || userRole('Автор'))
 		
 	$scoreTitle = 'Размер счёта: <span id = "score">'.round($row['score'], 2, PHP_ROUND_HALF_DOWN).'</span>';//размер счёта
 	
-	$payForms = '<div align = "center"><form action = "/admin/payment/" method = "post">
+	$payForms = '<div align = "center"><form action = "//'.MAIN_URL.'/admin/payment/" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Вывести средства">
@@ -391,12 +391,12 @@ elseif (userRole('Администратор') || userRole('Автор'))
 								</div>
 							</form></div>';
 	
-	$addPost = "| <a href='/admin/addupdpromotion/?add' class='btn btn-warning btn-sm'><strong>НАПИСАТЬ РЕКЛАМНУЮ СТАТЬЮ</strong></a> |	
-				<a href='/admin/viewallauthortask/#bottom' class='btn btn-primary btn-sm'><strong>МОИ ЗАДАНИЯ (".$myTasks.")</strong></a> |	
-				<a href='/admin/viewalltask/#bottom' class='btn btn-info btn-sm'><strong>ПОЛУЧИТЬ ЗАДАНИЕ</strong></a> |
-				<a href='/admin/authorpremoderation/#bottom' class='btn btn-success btn-sm'><strong>В ПРЕМОДЕРАЦИИ (".$allPosts.")</strong></a> |
-				<a href='/admin/refused/#bottom' class='btn btn-danger btn-sm'><strong>ОТКЛОНЁННЫЕ МАТЕРИАЛЫ (".$allRefused.")</strong></a> |";
-	$forAuthors = "<strong><a href='/admin/adminmail/viewadminnews/viewnews/?idadminnews=17'>ДЛЯ АВТОРОВ! ОБЯЗАТЕЛЬНО К ПРОЧТЕНИЮ!</a></strong>";
+	$addPost = "| <a href='//".MAIN_URL."/admin/addupdpromotion/?add' class='btn btn-warning btn-sm'><strong>НАПИСАТЬ РЕКЛАМНУЮ СТАТЬЮ</strong></a> |	
+				<a href='//".MAIN_URL."/admin/viewallauthortask/#bottom' class='btn btn-primary btn-sm'><strong>МОИ ЗАДАНИЯ (".$myTasks.")</strong></a> |	
+				<a href='//".MAIN_URL."/admin/viewalltask/#bottom' class='btn btn-info btn-sm'><strong>ПОЛУЧИТЬ ЗАДАНИЕ</strong></a> |
+				<a href='//".MAIN_URL."/admin/authorpremoderation/#bottom' class='btn btn-success btn-sm'><strong>В ПРЕМОДЕРАЦИИ (".$allPosts.")</strong></a> |
+				<a href='//".MAIN_URL."/admin/refused/#bottom' class='btn btn-danger btn-sm'><strong>ОТКЛОНЁННЫЕ МАТЕРИАЛЫ (".$allRefused.")</strong></a> |";
+	$forAuthors = "<strong><a href='//".MAIN_URL."/admin/adminmail/viewnews/?idadminnews=17'>ДЛЯ АВТОРОВ! ОБЯЗАТЕЛЬНО К ПРОЧТЕНИЮ!</a></strong>";
 	if (empty ($superUser)) $superUser = '';//если нет значения у переменной, отсутствует ранг супер-автора
 }
 
@@ -408,7 +408,7 @@ elseif (userRole('Администратор') || userRole('Автор') || user
 	$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	
 	/*Подсчёт количества материалов в премодерации*/
@@ -482,7 +482,7 @@ elseif (userRole('Администратор') || userRole('Автор') || user
 		
 	$scoreTitle = 'Размер счёта: <span id = "score">'.round($row['score'], 2, PHP_ROUND_HALF_DOWN).'</span>';//размер счёта
 	
-	$payForms = '<div align = "center"><form action = "/admin/payment/" method = "post">
+	$payForms = '<div align = "center"><form action = "//'.MAIN_URL.'/admin/payment/" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Вывести средства">
@@ -498,9 +498,9 @@ elseif (userRole('Администратор') || userRole('Автор') || user
 	$firstTags = '';
 	$lastTags = '';
 	
-	$addPost = "| <a href='/admin/addupdpromotion/?add' class='btn btn-warning btn-sm'><strong>НАПИСАТЬ РЕКЛАМНУЮ СТАТЬЮ</strong></a> |	
-				<a href='/admin/authorpremoderation/#bottom' class='btn btn-success btn-sm'><strong>В ПРЕМОДЕРАЦИИ (".$mypremodPromotions.")</strong></a> |
-				<a href='/admin/refused/#bottom' class='btn btn-danger btn-sm'><strong>ОТКЛОНЁННЫЕ МАТЕРИАЛЫ (".$myrefusedPromotions.")</strong></a> |";
+	$addPost = "| <a href='//".MAIN_URL."/admin/addupdpromotion/?add' class='btn btn-warning btn-sm'><strong>НАПИСАТЬ РЕКЛАМНУЮ СТАТЬЮ</strong></a> |	
+				<a href='//".MAIN_URL."/admin/authorpremoderation/#bottom' class='btn btn-success btn-sm'><strong>В ПРЕМОДЕРАЦИИ (".$mypremodPromotions.")</strong></a> |
+				<a href='//".MAIN_URL."/admin/refused/#bottom' class='btn btn-danger btn-sm'><strong>ОТКЛОНЁННЫЕ МАТЕРИАЛЫ (".$myrefusedPromotions.")</strong></a> |";
 	$forAuthors = '';
 	
 	if (empty ($superUser)) $superUser = '';//если нет значения у переменной, отсутствует ранг супер-автора

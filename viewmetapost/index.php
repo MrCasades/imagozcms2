@@ -1,9 +1,9 @@
 <?php
-/*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -22,7 +22,7 @@ if (isset ($_GET['metaid']))
 	$shift = ($page - 1) * $onPage;// (номер страницы - 1) * статей на страницу
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{
@@ -53,6 +53,13 @@ if (isset ($_GET['metaid']))
 							'postdate' =>  $row['postdate'], 'authorname' =>  $row['authorname'], 
 							'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid'],
 							'metaname' => $row['metaname']);
+	}
+	
+	/*Если страница отсутствует. Ошибка 404*/
+	if (!$row)
+	{
+		header ('Location: ../page-not-found/');//перенаправление обратно в контроллер index.php
+		exit();	
 	}
 	
 	if (isset($metas_1))

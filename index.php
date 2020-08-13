@@ -1,12 +1,15 @@
 <?php
 
+/*Загрузка главного пути*/
+include_once __DIR__ . '/includes/path.inc.php';
+
 $title = 'Hi-Tech новости, игры, наука, интернет в отражении на imagoz.ru';//Данные тега <title>
 $headMain = '';
 $robots = 'all';
 $descr = 'Портал IMAGOZ. Место где мы рассматриваем мир Hi-Tech, игровую индустрию, науку и технику в оригинальном авторском отражении!';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Определение нахождения пользователя в системе*/
 if (loggedIn())
@@ -15,7 +18,7 @@ if (loggedIn())
 }
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Последняя рекомендованная новость*/
 /*Команда SELECT*/
@@ -50,9 +53,6 @@ foreach ($result as $row)
 
 /*Вывод новостей*/
 /*Команда SELECT*/
-
-/*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
 try
 {

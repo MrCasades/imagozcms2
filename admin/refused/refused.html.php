@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont_for_view">
 		<div>
@@ -19,8 +19,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($posts as $post): ?> 
 		  <div class = "post">
 			  <div class = "posttitle">
-				  <?php echo ($post['postdate']. ' | Автор: <a href="/account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';
-				  echo $taskData = ($post['idtask'] == 0) ? ' ' : ' | <strong><a href="/admin/refused/viewtask/?id='.$post['idtask'].'" style="color: red" onclick="viewTask(this.href); return false;" target="_blank" >Просмотр задания</a></strong>';?>
+				  <?php echo ($post['postdate']. ' | Автор: <a href="../../account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';
+				  echo $taskData = ($post['idtask'] == 0) ? ' ' : ' | <strong><a href="../../admin/refused/viewtask/?id='.$post['idtask'].'" style="color: red" onclick="viewTask(this.href); return false;" target="_blank" >Просмотр задания</a></strong>';?>
 			  </div>
 			  <div>
 				  <h3 align = "center"><?php echo $post['posttitle'];?></h3>		  	
@@ -30,7 +30,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			  </div>
 			  <div>
 				  <p align="justify"><?php echomarkdown ($post['reasonrefusal']);?></p>
-				  <form action = "/admin/addupdpost/" method = "post">
+				  <form action = "../../admin/addupdpost/" method = "post">
 						<input type = "hidden" name = "id" value = "<?php echo $post['id'];?>">
 						<input type = "submit" name = "action" value = "Переделать" class="btn btn-primary">
 						<input type = "submit" name = "action" value = "Del" class="btn btn-danger btn-sm">
@@ -54,8 +54,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($newsIn as $news): ?> 
 		  <div class = "post">
 			  <div class = "posttitle">
-				  <?php echo ($news['newsdate']. ' | Автор: <a href="/account/?id='.$news['idauthor'].'" style="color: white" >'.$news['authorname']).'</a>';
-				  echo $taskData = ($news['idtask'] == 0) ? ' ' : ' | <strong><a href="/admin/refused/viewtask/?id='.$news['idtask'].'" style="color: red" onclick="viewTask(this.href); return false;" target="_blank">Просмотр задания</a></strong>';?>
+				  <?php echo ($news['newsdate']. ' | Автор: <a href="../../account/?id='.$news['idauthor'].'" style="color: white" >'.$news['authorname']).'</a>';
+				  echo $taskData = ($news['idtask'] == 0) ? ' ' : ' | <strong><a href="../../admin/refused/viewtask/?id='.$news['idtask'].'" style="color: red" onclick="viewTask(this.href); return false;" target="_blank">Просмотр задания</a></strong>';?>
 			  </div>
 			  <div>
 				  <h3 align = "center"><?php echo $news['newstitle'];?></h3>		  	
@@ -65,7 +65,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			  </div>
 			  <div>
 				  <p align="justify"><?php echomarkdown ($news['reasonrefusal']);?></p>
-				  <form action = "/admin/addupdnews/" method = "post">
+				  <form action = "../../admin/addupdnews/" method = "post">
 						<input type = "hidden" name = "id" value = "<?php echo $news['id'];?>">
 						<input type = "submit" name = "action" value = "Переделать" class="btn btn-primary">
 						<input type = "submit" name = "action" value = "Del" class="btn btn-danger btn-sm">
@@ -89,7 +89,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($promotions as $promotion): ?> 
 		  <div class = "post">
 			  <div class = "posttitle">
-				  <?php echo ($promotion['promotiondate']. ' | Автор: <a href="/account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
+				  <?php echo ($promotion['promotiondate']. ' | Автор: <a href="../../account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
 			  </div>
 			  <div>
 				  <h3 align = "center"><?php echo $promotion['promotiontitle'];?></h3>		  	
@@ -99,7 +99,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			  </div>
 			  <div>
 				  <p align="justify"><?php echomarkdown ($promotion['reasonrefusal']);?></p>
-				  <form action = "/admin/addupdpromotion/" method = "post">
+				  <form action = "../../admin/addupdpromotion/" method = "post">
 						<input type = "hidden" name = "id" value = "<?php echo $promotion['id'];?>">
 						<input type = "submit" name = "action" value = "Переделать" class="btn btn-primary">
 						<input type = "submit" name = "action" value = "Del" class="btn btn-danger btn-sm">
@@ -113,4 +113,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
   		
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>		
+include_once MAIN_FILE . '/footer.inc.php';?>		

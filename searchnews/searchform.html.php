@@ -1,15 +1,15 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont_for_view">
 	<div class = "post">
-	<p> <a href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/searchpost/';?>" class="btn btn-primary btn-sm">Поиск статей</a> | 
-		<a href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/searchpromotion/';?>" class="btn btn-primary btn-sm">Поиск промоушен-статей</a> |
-		<a href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/searchnews/';?>" class="btn btn-info">Поиск новостей</a></p>
+	<p> <a href="<?php echo '//'.MAIN_URL.'/searchpost/';?>" class="btn btn-primary btn-sm">Поиск статей</a> | 
+		<a href="<?php echo '//'.MAIN_URL.'/searchpromotion/';?>" class="btn btn-primary btn-sm">Поиск промоушен-статей</a> |
+		<a href="<?php echo '//'.MAIN_URL.'/searchnews/';?>" class="btn btn-info">Поиск новостей</a></p>
 	<form action = " " method = "get">
 	<p>Список статей по параметрам:</p>
 	 <table>
@@ -47,5 +47,5 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>
 

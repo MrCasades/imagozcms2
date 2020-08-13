@@ -25,7 +25,7 @@ else
 }
 		
 $fileName = $fileNameScript . $ext;//присвоение имени файла
-$filePath = $_SERVER['DOCUMENT_ROOT'] . $filePathScript . $fileName;//путь загрузки
+$filePath = MAIN_FILE . $filePathScript . $fileName;//путь загрузки
 		
 if (!is_uploaded_file($_FILES['upload']['tmp_name']) or !copy($_FILES['upload']['tmp_name'], $filePath))
 {

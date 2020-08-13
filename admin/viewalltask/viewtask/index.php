@@ -1,7 +1,9 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Определение нахождения пользователя в системе*/
 if (loggedIn())
@@ -39,7 +41,7 @@ if (isset ($_GET['id']))
 			   INNER JOIN rang ON task.idrang = rang.id
 			   WHERE taskstatus = "NO" AND task.id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -73,7 +75,7 @@ if (isset ($_GET['id']))
 	$descr = '';
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Выбор id ранга автора*/
 	try
@@ -102,7 +104,7 @@ if (isset ($_GET['id']))
 	
 	if ((isset($_SESSION['loggIn'])) && (userRole('Администратор')))
 	{
-		$delAndUpd = "<form action = '/admin/addtask/' method = 'post'>
+		$delAndUpd = "<form action = '../../../admin/addtask/' method = 'post'>
 			
 						Действия с материалом:
 						<input type = 'hidden' name = 'id' value = '".$_SESSION['idtask']."'>
@@ -120,7 +122,7 @@ if (isset ($_GET['id']))
 	{
 		if ($authorRang >= $taskRang)
 		{
-			$changeTaskStatus = "<form action = '/admin/viewalltask/viewtask/taskstatus/' method = 'post'>
+			$changeTaskStatus = "<form action = '../../../admin/viewalltask/taskstatus/' method = 'post'>
 									<input type = 'hidden' name = 'id' value = '".$_SESSION['idtask']."'>
 									<input type = 'submit' name = 'action' value = 'Взять задание' class='btn btn-primary btn-sm'>
 								 </form>";	

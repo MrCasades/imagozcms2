@@ -1,10 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 $title = 'Диалог';//Данные тега <title>
 $headMain = 'Диалог';
@@ -14,7 +16,7 @@ $descr = '';
 /*Загрузка формы входа*/
 if (!loggedIn())
 {
-	include '../login.html.php';
+	include '../../login.html.php';
 	exit();
 }
 
@@ -26,9 +28,9 @@ $padgeTitle = 'Новая категория';// Переменные для ф�
 $action = 'addform';
 $button = 'Ответить';
 $scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 /*Имя и текст для формы*/
 $authorPost = authorLogin($_SESSION['email'], $_SESSION['password']);
@@ -37,16 +39,16 @@ $text = '';
 if (isset($_GET['addform']))//Если есть переменная addform выводится форма
 {
 	$fileNameScript = 'formess-'. time();//имя файла новости/статьи
-	$filePathScript = '/formessages/';//папка с изображениями для сообщений
+	$filePathScript = 'formessages/';//папка с изображениями для сообщений
 	
 	/*Загрузка функций для формы входа*/
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+	require_once MAIN_FILE . '/includes/access.inc.php';
 	
 	/*Загрузка скрипта добавления файла*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+	include MAIN_FILE . '/includes/uploadfile.inc.php';
 		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*INSERT - добавление информации в базу данных и списание средств со счёта*/
 	
@@ -95,7 +97,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 if (isset ($_POST['action']) && ($_POST['action'] == 'Del'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	
@@ -132,7 +134,7 @@ if (isset($_GET['id']))
 	$_SESSION['toDialog'] = $toDialog;
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try

@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Вывод текста о сотрудничестве*/
 
@@ -8,7 +10,7 @@ $robots = 'all';
 $descr = 'Информация для желающих стать автором на портале imagoz.ru';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 	
 if (loggedIn())
 {

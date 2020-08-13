@@ -12,7 +12,7 @@
 		foreach ($categorys as $category): ?> 
 		  
 		<div>  
-			<a href="/viewcategory/?id=<?php echo $category['id']; ?>" class="btn btn-primary btn-sm btn-block"> <strong><?php echomarkdown ($category['category']); ?></strong></a><br>  	
+			<a href="../viewcategory/?id=<?php echo $category['id']; ?>" class="btn btn-primary btn-sm btn-block"> <strong><?php echomarkdown ($category['category']); ?></strong></a><br>  	
 		</div>	   	
 	 <?php endforeach; ?> 
 
@@ -29,9 +29,9 @@
 		foreach ($postsTOP as $postTOP): ?> 
 		  
 		<div class = "fortop5">  
-          <img width = "10%" height = "10%" src="<?php echo 'http://'.$_SERVER['SERVER_NAME'];?>/view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($postTOP['viewcount']); ?> 
-		  <img width = "8%" height = "8%" src="<?php echo 'http://'.$_SERVER['SERVER_NAME'];?>/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($postTOP['averagenumber']); ?>			
-			<a href="/viewpost/?id=<?php echo $postTOP['id']; ?>"> <?php echomarkdown ($postTOP['posttitle']); ?></a>
+          <img width = "10%" height = "10%" src="./view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($postTOP['viewcount']); ?> 
+		  <img width = "8%" height = "8%" src="./like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($postTOP['averagenumber']); ?>			
+			<a href="../viewpost/?id=<?php echo $postTOP['id']; ?>"> <?php echomarkdown ($postTOP['posttitle']); ?></a>
 		</div>	   	
 	 <?php endforeach; ?> 	 
 </div>

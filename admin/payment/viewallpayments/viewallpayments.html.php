@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont">
 		<div>
@@ -19,11 +19,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			    <th>Просмотр</th>
 		  </tr> 
 		  
-		   <?php if (!isset($payments))
+		   <?php if (empty ($payments))
 		 {
-			 $noPosts = '<p align = "center">Заявки отсутствуют</p>';
-			 echo $noPosts;
-			 $payments = null;
+			 echo '<p align = "center">Заявки отсутствуют</p>';
 		 }
 		 
 		 else
@@ -37,7 +35,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			    <td><?php echo $payment['payment'];?></td>
 			    <td><?php echo $payment['paysystemname'];?></td>
 				<td><?php echo $payment['ewallet'];?></td>
-				<td><a href="/admin/payment/viewallpayments/viewpayment/?id=<?php echo $payment['id'];?>">Просмотр</a></td>
+				<td><a href="../../../admin/payment/viewpayment/?id=<?php echo $payment['id'];?>">Просмотр</a></td>
 		  </tr> 				
 		 <?php endforeach; ?> 
 		</table>
@@ -46,4 +44,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>	
+include_once MAIN_FILE . '/footer.inc.php';?>	

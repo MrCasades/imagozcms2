@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 $title = 'Катра сайта imagoz.ru';//Данные тега <title>
 $headMain = 'Катра сайта';
@@ -6,10 +8,10 @@ $robots = 'all';
 $descr = 'Катра сайта imagoz.ru - ключ ко всем материалам портала!';
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -17,7 +19,7 @@ if (loggedIn())
 }
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Выбор материалов из базы данных*/
 

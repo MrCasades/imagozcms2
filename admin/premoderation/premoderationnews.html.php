@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont">
 		<div>
@@ -16,11 +16,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				<th>E-mail</th>				
 		  </tr> 
 		  
-		   <?php if (!isset($newsIn))
+		   <?php if (empty ($newsIn))
 		 {
-			 $noPosts = '<p align = "center">Материалы для премодерации отсутствуют</p>';
-			 echo $noPosts;
-			 $newsIn = null;
+			 echo '<p align = "center">Материалы для премодерации отсутствуют</p>';
 		 }
 		 
 		 else
@@ -29,7 +27,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		  <tr>
 				<td><?php echo '# '.$news['id'];?></td>
 				<td><?php echo $news['newsdate'];?></td>
-				<td><a href="/admin/premoderation/viewpremodnews/?news=<?php echo $news['id'];?>"><?php echo $news['newstitle'];?></a></td>
+				<td><a href="../../admin/premoderation/viewpremodnews/?news=<?php echo $news['id'];?>"><?php echo $news['newstitle'];?></a></td>
 				<td><?php echo $news['authorname'];?></td>
 				<td><?php echo $news['email'];?></td>
 		  </tr> 				
@@ -40,4 +38,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>	
+include_once MAIN_FILE . '/footer.inc.php';?>	

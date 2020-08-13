@@ -1,7 +1,9 @@
 ﻿<?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -29,9 +31,9 @@ if ((!userRole('Администратор')) && (!userRole('Автор')) && (!
 /*Вывод ссылок на разделы администрирования списков*/
 if (userRole('Администратор'))
 {
-	$addAuthor = '<a href="/admin/authorlist/">Редактировать список авторов</a>';
-	$addCatigorys = '<a href="/admin/categorylist/">Редактировать рубрики</a>';
-	$addMetas = '| <a href="/admin/metalist/" class="btn btn-primary-sm">Редактировать список тегов</a>';
+	$addAuthor = '<a href="//'.MAIN_URL.'/admin/authorlist/">Редактировать список авторов</a>';
+	$addCatigorys = '<a href="//'.MAIN_URL.'/admin/categorylist/">Редактировать рубрики</a>';
+	$addMetas = '| <a href="//'.MAIN_URL.'/admin/metalist/" class="btn btn-primary-sm">Редактировать список тегов</a>';
 }
 
 else
@@ -45,7 +47,7 @@ else
 if (isset($_GET['add']))//Если есть переменная add выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT выбор цены промоушена*/
 	try
@@ -148,9 +150,9 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 		$errorForm = '';
 		$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
 		$scriptJScode = '<script src="script.js"></script>
-						 <script src="/js/jquery-1.min.js"></script>
-						 <script src="/js/bootstrap-markdown.js"></script>
-						 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 	 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+						 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+						 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 
 		if (isset($_POST['id']))
 		{
@@ -173,7 +175,7 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 		/*Вывод информации для формы добавления*/
 
 		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include MAIN_FILE . '/includes/db.inc.php';
 
 		/*Список рубрик*/
 		try
@@ -230,7 +232,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'|| $_POST['action'] ==
 	}
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -268,9 +270,9 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'|| $_POST['action'] ==
 	$button = 'Обновить информацию о статье';
 	$errorForm ='';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	@session_start();//Открытие сессии для сохранения названия файла изображения
 	
@@ -370,13 +372,13 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	$filePathScript = '/images/';//папка с изображениями для новости/статьи
 	
 	/*Загрузка функций для формы входа*/
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+	require_once MAIN_FILE . '/includes/access.inc.php';
 	
 	/*Загрузка скрипта добавления файла*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+	include MAIN_FILE . '/includes/uploadfile.inc.php';
 		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Возвращение id автора*/
 	
@@ -396,9 +398,9 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 		$authorPost = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
 		$errorForm = 'Один или несколько атрибутов не указаны. Выбирете все!';
 		$scriptJScode = '<script src="script.js"></script>
-					 	 <script src="/js/jquery-1.min.js"></script>
-						 <script src="/js/bootstrap-markdown.js"></script>
-						 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 	 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 	 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 	 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 		
 		@session_start();//Открытие сессии для сохранения id автора
 	
@@ -542,7 +544,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "NO" AND promotion.id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -599,7 +601,7 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 		$metas[] =  array ('id' => $row['id'], 'metaname' => $row['metaname']);
 	}
 	
-	$delAndUpd = "<form action = '/admin/addupdpromotion/' method = 'post'>
+	$delAndUpd = "<form action = '../../admin/addupdpromotion/' method = 'post'>
 			
 						Редактировать материал:
 						<input type = 'hidden' name = 'id' value = '".$idpost_ind."'>
@@ -618,9 +620,9 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	$robots = 'noindex, nofollow';
 	$descr = '';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	unset($_SESSION['promotionprice']);//закрытие сессии
 	
@@ -641,18 +643,18 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 	{
 		/*Удаление старого файла изображения*/
 		$fileName = $_SESSION['imghead'];
-		$delFile = $_SERVER['DOCUMENT_ROOT'] . '/images/'.$fileName;//путь к файлу для удаления
+		$delFile = MAIN_FILE . '/images/'.$fileName;//путь к файлу для удаления
 		unlink($delFile);//удаление файла
 		
 		$fileNameScript = 'img-'. time();//имя файла новости/статьи
 		$filePathScript = '/images/';//папка с изображениями для новости/статьи
 		
 		/*Загрузка скрипта добавления файла*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+		include MAIN_FILE . '/includes/uploadfile.inc.php';
 	}
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	if (($_POST['category'] == '') || ($_POST['text'] == '') || ($_POST['promotiontitle'] == ''))
 	{
@@ -743,7 +745,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 	}
 	
 	//Если материал в переработке
-	if ($_SESSION['rewrite'])
+	if (isset ($_SESSION['rewrite']) && $_SESSION['rewrite'] == true)
 	{
 		/*Вернуть материал в премодерацию*/
 		try
@@ -772,7 +774,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 			   INNER JOIN author ON idauthor = author.id 
 			   INNER JOIN category ON idcategory = category.id WHERE premoderation = "NO" AND promotion.id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -829,7 +831,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		$metas[] =  array ('id' => $row['id'], 'metaname' => $row['metaname']);
 	}
 	
-	$delAndUpd = "<form action = '/admin/addupdpromotion/' method = 'post'>
+	$delAndUpd = "<form action = '../../admin/addupdpromotion/' method = 'post'>
 			
 						Редактировать материал:
 						<input type = 'hidden' name = 'id' value = '".$idpost_ind."'>
@@ -848,9 +850,9 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 	$robots = 'noindex, nofollow';
 	$descr = '';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	unset($_SESSION['promotionprice']);//закрытие сессии
 	
@@ -863,7 +865,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -905,11 +907,11 @@ if (isset ($_GET['delete']))
 {
 	/*Удаление изображения заголовка*/
 	$fileName = $_SESSION['imghead'];
-	$delFile = $_SERVER['DOCUMENT_ROOT'] . '/images/'.$fileName;//путь к файлу для удаления
+	$delFile = MAIN_FILE . '/images/'.$fileName;//путь к файлу для удаления
 	unlink($delFile);//удаление файла
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -976,6 +978,6 @@ if (isset ($_GET['delete']))
 	}
 	
 
-	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }

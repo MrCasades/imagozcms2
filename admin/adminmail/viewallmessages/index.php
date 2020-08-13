@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../../includes/path.inc.php';
 
 $title = 'Сообщения для администрации';//Данные тега <title>
 $headMain = 'Сообщения для администрации';
@@ -6,7 +8,7 @@ $robots = 'noindex, nofollow';
 $descr = '';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка формы входа*/
 if (!loggedIn())
@@ -30,7 +32,7 @@ if ((!userRole('Администратор')) && (!userRole('Автор')))
 if (isset ($_POST['action']) && ($_POST['action'] == 'Del'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	
@@ -40,13 +42,14 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Del'))
 		$s -> bindValue(':idmessage', $_POST['idmessage']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
+	
 	catch (PDOException $e)
 	{
-	$robots = 'noindex, nofollow';
-	$descr = '';
-	$error = 'Ошибка удаления '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-	include 'error.html.php';
-	exit();
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка удаления '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
 	}
 	
 	header ('Location: .');//перенаправление обратно в контроллер index.php
@@ -56,7 +59,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Del'))
 /*Вывод всех сообщений*/
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Постраничный вывод информации*/
 		

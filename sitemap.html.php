@@ -1,21 +1,21 @@
 <? 
 	/*Загрузка функций в шаблон*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	include_once MAIN_FILE . '/includes/func.inc.php';
 
 $content = '<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
-      <loc>https://'.$_SERVER['SERVER_NAME'].'/</loc>
+      <loc>https://'.MAIN_URL.'/</loc>
 	  <lastmod>2020-01-01</lastmod>
 	  <priority>1.0</priority>
    </url>
    <url>
-      <loc>https://'.$_SERVER['SERVER_NAME'].'/cooperation/</loc>
+      <loc>https://'.MAIN_URL.'/cooperation/</loc>
 	  <lastmod>2020-01-01</lastmod>
 	  <priority>0.65</priority>
    </url>
    <url>
-      <loc>https://'.$_SERVER['SERVER_NAME'].'/promotion/</loc>
+      <loc>https://'.MAIN_URL.'/promotion/</loc>
 	  <lastmod>2020-01-01</lastmod>
 	  <priority>0.65</priority>
    </url>
@@ -24,7 +24,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 <?php foreach ($newsMain as $news): ?>
 	
 <?php $content .= '<url>
-      <loc>https://'.$_SERVER['SERVER_NAME'].'/viewnews/?id='.$news['id'].'</loc>
+      <loc>https://'.MAIN_URL.'/viewnews/?id='.$news['id'].'</loc>
 	  <lastmod>'.date("Y-m-d", strtotime($news['newsdate'])).'</lastmod>
 	  <priority>0.8</priority>
    </url>';?>
@@ -34,7 +34,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 <?php foreach ($posts as $post): ?>
 
 <?php $content .= '<url>
-      <loc>https://'.$_SERVER['SERVER_NAME'].'/viewpost/?id='.$post['id'].'</loc>
+      <loc>https://'.MAIN_URL.'/viewpost/?id='.$post['id'].'</loc>
 	  <lastmod>'.date("Y-m-d", strtotime($post['postdate'])).'</lastmod>
 	  <priority>0.8</priority>
    </url>';?>
@@ -44,7 +44,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 <?php foreach ($promotions as $promotion): ?>
 
 <?php $content .= '<url>
-      <loc>https://'.$_SERVER['SERVER_NAME'].'/viewpromotion/?id='.$promotion['id'].'</loc>
+      <loc>https://'.MAIN_URL.'/viewpromotion/?id='.$promotion['id'].'</loc>
 	  <lastmod>'.date("Y-m-d", strtotime($promotion['promotiondate'])).'</lastmod>
 	  <priority>0.75</priority>
    </url>';?>
@@ -54,7 +54,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 <?php foreach ($authors as $author): ?>
 
 <?php $content .= '<url>
-      <loc>https://'.$_SERVER['SERVER_NAME'].'/account/?id='.$author['id'].'</loc>
+      <loc>https://'.MAIN_URL.'/account/?id='.$author['id'].'</loc>
 	  <lastmod>'.date("Y-m-d", strtotime($author['regdate'])).'</lastmod>
 	  <priority>0.7</priority>
    </url>';?>

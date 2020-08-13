@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 $title = 'Список заданий | imagoz.ru';//Данные тега <title>
 $headMain = 'Все задания';
@@ -6,7 +8,7 @@ $robots = 'noindex, nofollow';
 $descr = 'В данном разделе размещаются список всех технических заданий';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Определение нахождения пользователя в системе*/
 if (loggedIn())
@@ -31,7 +33,7 @@ if ((!userRole('Администратор')) && (!userRole('Автор')))
 }
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Постраничный вывод информации*/
 		

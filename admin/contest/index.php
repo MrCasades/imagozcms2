@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 $title = 'Управление конкурсом';//Данные тега <title>
 $headMain = 'Управление конкурсом';
@@ -7,7 +9,7 @@ $descr = '';
 $scriptJScode = '<script src="script.js"></script>';//добавить код JS
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка формы входа*/
 if (!loggedIn())
@@ -40,7 +42,7 @@ $button = 'Добавить конкурс';
 if (isset ($_GET['addform']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -73,7 +75,7 @@ if (isset ($_GET['addform']))
 if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -112,7 +114,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'))
 if (isset ($_GET['editform']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -147,7 +149,7 @@ if (isset ($_GET['editform']))
 if (isset ($_POST['action']) && ($_POST['action'] == 'Del'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	
@@ -175,7 +177,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Del'))
 if (isset ($_POST['action']) && ($_POST['action'] == 'ON'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -201,7 +203,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'ON'))
 if (isset ($_POST['action']) && ($_POST['action'] == 'OFF'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -228,7 +230,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'OFF'))
 if (isset ($_POST['action']) && ($_POST['action'] == 'CP_ON'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -254,7 +256,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'CP_ON'))
 if (isset ($_POST['action']) && ($_POST['action'] == 'CP_OFF'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -280,7 +282,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'CP_OFF'))
 if (isset ($_POST['action']) && ($_POST['action'] == 'Обнулить баллы'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -302,7 +304,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Обнулить балл�
 }
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Команда SELECT*/
 try

@@ -1,9 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
+
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -21,7 +24,7 @@ if (isset ($_GET['id']))
 	$_SESSION['idAuthor'] = $idAuthor;
 	$select = 'SELECT * FROM author WHERE id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -50,13 +53,8 @@ if (isset ($_GET['id']))
 	/*Если страница отсутствует. Ошибка 404*/
 	if (empty ($authors))
 	{
-		$title = 'Ошибка 404!';//Данные тега <title>
-		$headMain = 'Ошибка 404! Запрашиваемая страница отсутствует.';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Страницы по данному адресу не существует!';
-		include 'error.html.php';
-		exit();
+		header ('Location: ../page-not-found/');//перенаправление обратно в контроллер index.php
+		exit();	
 	}
 	
 	$title = 'Профиль пользователя '.$row['authorname'];//Данные тега <title>
@@ -149,10 +147,6 @@ if (isset ($_GET['id']))
 			$addRoleAdvertiser ='';
 		}
 		
-							
-		/*Подключение к базе данных*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
 		/*Команда SELECT, вывод счёта автора*/
 		try
 		{
@@ -215,7 +209,7 @@ if (isset ($_GET['id']))
 			$closeTable = '';
 		}
 		
-		$payForm = '<form action = "/admin/payment/" method = "post">
+		$payForm = '<form action = "../admin/payment/" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Вывести средства">
@@ -223,7 +217,7 @@ if (isset ($_GET['id']))
 								</div>
 							</form>';// вывод средств и обновление реквизитов
 		
-		$payFormIn = '<form action = "/admin/payment/" method = "post">
+		$payFormIn = '<form action = "../admin/payment/" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Пополнить счёт">
@@ -251,12 +245,12 @@ if (isset ($_GET['id']))
 	/*Вывод кнопки "Написать сообщение"*/
 	if ($selectedAuthor != $idAuthor)
 	{
-		$mainMessagesForm = '<form action = "/mainmessages/addupdmainmessage/#bottom" method = "post">
+		$mainMessagesForm = '<form action = "../mainmessages/addupdmainmessage/#bottom" method = "post">
 								<div>
 									<input type = "hidden" name = "idto" value = "'.$idAuthor.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Написать сообщение">
 								</div>
-							</form>';// перечислить средства на счёт;
+							</form>';// написать сообщение!
 	}
 	
 	else
@@ -265,10 +259,6 @@ if (isset ($_GET['id']))
 	}
 	
 	/*Вывод новостей и статей автора*/
-
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
 	/*Команда SELECT, возвращение роли автора*/
 	try
 	{
@@ -295,7 +285,7 @@ if (isset ($_GET['id']))
 
 	if	(($authorRole == 'Автор') || ($authorRole == 'Администратор'))
 	{
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include MAIN_FILE . '/includes/db.inc.php';
 		
 		/*Выбор новостей автора*/
 		try
@@ -424,7 +414,7 @@ if (isset ($_GET['id']))
 							<input type = "submit" name = "delrang" value = "Удалить ранг Автор" class="btn btn-primary btn-sm"> 
 					 	 </form>';
 			
-			$addBonus = '<form action = "/admin/payment/" method = "post">
+			$addBonus = '<form action = "../admin/payment/" method = "post">
 									<input type = "hidden" name = "id" value = "'.$_SESSION['idAuthor'].'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Назначить премию или бонус">
 							</form>';//если у автора статус "Автор", то ему можно назначить премию или бонус
@@ -444,7 +434,7 @@ if (isset ($_GET['id']))
 	/*Присвоить статус автора*/
 	if (isset($_GET['addrang']))
 	{
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include MAIN_FILE . '/includes/db.inc.php';
 		
 		try
 		{
@@ -474,7 +464,7 @@ if (isset ($_GET['id']))
 	/*Присвоить статус автора*/
 	if (isset($_GET['delrang']))
 	{
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include MAIN_FILE . '/includes/db.inc.php';
 		
 		try
 		{
@@ -502,10 +492,6 @@ if (isset ($_GET['id']))
 	}
 	
 	/*Вывод комментариев*/
-	
-	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	
 	/*Постраничный вывод информации*/
 		
 	$page = isset($_GET["page"]) ? (int) $_GET["page"] : 1;// помещаем номер страницы из массива GET в переменую $page
@@ -575,9 +561,9 @@ if (isset ($_GET['addcomment']))
 	$id = '';
 	$button = 'Добавить запись';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	if (isset($_SESSION['loggIn']))
 	{
@@ -593,8 +579,8 @@ if (isset ($_GET['addcomment']))
 		$headMain = 'Ошибка добавления записи';
 		$robots = 'noindex, follow';
 		$descr = '';
-		$commentError = $commentError = '<a href="/admin/registration/?log">Авторизируйтесь</a> в системе или 
-						 <a href="/admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы добавить сообщение на стену!';//Вывод сообщения в случае невхода в систему
+		$commentError = $commentError = '<a href="//'.MAIN_URL.'/admin/registration/?log">Авторизируйтесь</a> в системе или 
+						 <a href="//'.MAIN_URL.'/admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы добавить сообщение на стену!';//Вывод сообщения в случае невхода в систему
 		
 		include 'commentfail.html.php';
 		exit();
@@ -605,7 +591,7 @@ if (isset ($_GET['addcomment']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать')
 {		
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{
@@ -639,9 +625,9 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать'
 	$id = $row['id'];
 	$button = 'Обновить запись';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	@session_start();//Открытие сессии для сохранения названия файла изображения
 	
@@ -660,10 +646,10 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	$filePathScript = '/images/';//папка с изображениями для новости/статьи
 	
 	/*Загрузка скрипта добавления файла*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+	include MAIN_FILE . '/includes/uploadfile.inc.php';
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	/*Возвращение id автора*/
 		
@@ -719,11 +705,11 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		$filePathScript = '/images/';//папка с изображениями для новости/статьи
 		
 		/*Загрузка скрипта добавления файла*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+		include MAIN_FILE . '/includes/uploadfile.inc.php';
 	}
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -758,7 +744,7 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 if (isset ($_POST['action']) && $_POST['action'] == 'Del')	
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -806,7 +792,7 @@ if (isset ($_GET['delete']))
 	unlink($delFile);//удаление файла
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -927,7 +913,7 @@ if (isset ($_GET['changepass']))
 		/*Обновление пароля*/
 		/*Подключение к базе данных*/
 		
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include MAIN_FILE . '/includes/db.inc.php';
 	
 		$password = md5($_POST['password'] . 'fgtn');
 		
@@ -980,7 +966,7 @@ if (isset ($_GET['changepass']))
 		$descr = 'Сообщение об успешной смене пароля';
 		$loggood = 'Вы успешно сменили пароль!';
 	
-		include $_SERVER['DOCUMENT_ROOT'].'/admin/accessgood.html.php';
+		include MAIN_FILE.'/admin/accessgood.html.php';
 		exit();
 	}
 }
@@ -990,7 +976,7 @@ if (isset ($_GET['changepass']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Обновить аватар')
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -1048,7 +1034,7 @@ if (isset($_GET['updavatar']))//Если есть переменная editform 
 		if ($_SESSION['avatar'] != 'ava-def.jpg')
 		{
 			$fileName = $_SESSION['avatar'];
-			$delFile = $_SERVER['DOCUMENT_ROOT'] . '/avatars/'.$fileName;//путь к файлу для удаления
+			$delFile = MAIN_FILE . '/avatars/'.$fileName;//путь к файлу для удаления
 			unlink($delFile);//удаление файла
 		}
 		
@@ -1056,11 +1042,11 @@ if (isset($_GET['updavatar']))//Если есть переменная editform 
 		$filePathScript = '/avatars/';//папка с изображениями для новости/статьи
 		
 		/*Загрузка скрипта добавления файла*/
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/uploadfile.inc.php';
+		include MAIN_FILE . '/includes/uploadfile.inc.php';
 	}
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -1078,7 +1064,7 @@ if (isset($_GET['updavatar']))//Если есть переменная editform 
 		exit();
 	}
 	
-	header ('Location: https://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }
 
@@ -1086,7 +1072,7 @@ if (isset($_GET['updavatar']))//Если есть переменная editform 
 if (isset ($_POST['action']) && $_POST['action'] == 'Удалить аватар')
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -1143,11 +1129,11 @@ if (isset ($_GET['delava']))
 	
 	/*Удаление аватара*/
 	$fileName = $_SESSION['avatar'];
-	$delFile = $_SERVER['DOCUMENT_ROOT'] . '/avatars/'.$fileName;//путь к файлу для удаления
+	$delFile = MAIN_FILE . '/avatars/'.$fileName;//путь к файлу для удаления
 	unlink($delFile);//удаление 
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -1165,7 +1151,7 @@ if (isset ($_GET['delava']))
 		exit();
 	}
 	
-	header ('Location: https://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }
 /*Обновление информации профиля*/
@@ -1174,7 +1160,7 @@ if (isset ($_GET['delava']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Обновить информацию профиля')
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -1209,9 +1195,9 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Обновить инфор
 	$idauthor = $row['id'];
 	$button = 'Обновить информацию об авторе';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	include 'form.html.php';
 	exit();
@@ -1222,7 +1208,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Обновить инфор
 if (isset ($_GET['updacc']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -1243,7 +1229,7 @@ if (isset ($_GET['updacc']))
 		exit();
 	}
 	
-	header ('Location: .'.'/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
+	header ('Location: ..'.'/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
 	exit();
 }
 
@@ -1251,7 +1237,7 @@ if (isset ($_GET['updacc']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Стать рекламодателем')
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -1324,7 +1310,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Стать рекламод
 	/*Команда UPDATE - обновление роли*/
 if (isset ($_GET['addrole']))
 {
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 		try
 		{
@@ -1355,7 +1341,7 @@ if (isset ($_GET['addrole']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Отказаться от роли рекламодателя')
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -1394,7 +1380,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Отказаться от �
 	/*Команда UPDATE - обновление роли*/
 if (isset ($_GET['delrole']))
 {
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	try
 	{

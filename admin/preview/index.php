@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';

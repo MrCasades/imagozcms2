@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 $title = 'Полный топ новостей | imagoz.ru';//Данные тега <title>
 $headMain = 'Весь топ новостей';
@@ -6,7 +8,7 @@ $robots = 'noindex, follow';
 $descr = 'В данном разделе отображаются весь топ новостей портала';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Определение нахождения пользователя в системе*/
 if (loggedIn())
@@ -15,16 +17,13 @@ if (loggedIn())
 }
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Постраничный вывод информации*/
 		
 $page = isset($_GET["page"]) ? (int) $_GET["page"] : 1;// помещаем номер страницы из массива GET в переменую $page
 $onPage = 10;// количество статей на страницу
 $shift = ($page - 1) * $onPage;// (номер страницы - 1) * статей на страницу
-
-/*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
 /*Вывод новостей*/
 /*Команда SELECT*/

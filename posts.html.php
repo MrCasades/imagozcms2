@@ -1,14 +1,16 @@
-<?php 
+<?php
+
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once __DIR__ . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';
+include_once __DIR__ . '/header.inc.php';
 
 /*Загрузка adminnews*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
+include_once __DIR__ . '/admin/adminnews.inc.html.php';
 
 ?>
+
  <div class = "maincont_for_view">
 		<div align = "center" ><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
 		<script src="//yastatic.net/share2/share.js"></script>
@@ -26,16 +28,16 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		 foreach ($newsIn as $news): ?> 
 		<div class="columns__panel">
          <div class="columns__panel-content">
-			<div class = "post_for_columns" style = "background: url(/images/<?php echo $news['imghead']; ?>); background-size: cover; ">
+			<div class = "post_for_columns" style = "background: url(./images/<?php echo $news['imghead']; ?>); background-size: cover; ">
 				<div  class = "posttitle"><strong><?php echo date("Y.m.d H:i", strtotime($news['newsdate'])); ?> </strong></div>
-				<a href="/viewnews/?id=<?php htmlecho ($news['id']); ?>" rel = "nofollow">.</a>
+				<a href="./viewnews/?id=<?php htmlecho ($news['id']); ?>" rel = "nofollow">.</a>
 			</div>
-			<strong><a href="/viewnews/?id=<?php htmlecho ($news['id']); ?>"><?php htmlecho ((implode(' ', array_slice(explode(' ', strip_tags($news['newstitle'])), 0, 7)))); ?>...</a></strong> 
+			<strong><a href="./viewnews/?id=<?php htmlecho ($news['id']); ?>"><?php htmlecho ((implode(' ', array_slice(explode(' ', strip_tags($news['newstitle'])), 0, 7)))); ?>...</a></strong> 
 		  </div>	 
 		</div>	 
 		 <?php endforeach; ?>
 	</div>	
-	<div class="for_allposts_link"><p align = "center"><a href="/viewallnews/" style = "color: white">Все новости</a></p></div>
+	<div class="for_allposts_link"><p align = "center"><a href="./viewallnews/" style = "color: white">Все новости</a></p></div>
 	  
 	 <div>
 		 <table cellspacing="5">
@@ -50,7 +52,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		
 		foreach ($metas_1 as $meta): ?> 	  
 				<td><div>	 
-					<strong><a href="/viewmetanews/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
+					<strong><a href="./viewmetanews/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
 				</div></td> 	
 				<?php endforeach; ?>
 		  </tr>
@@ -70,9 +72,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	  <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <img width = "8%" height = "8%" src="../view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($newsTOP['viewcount']); ?> 
-		  <img width = "5%" height = "5%" src="../like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($newsTOP['averagenumber']); ?>			
-			<a href="/viewnews/?id=<?php echo $newsTOP['id']; ?>"> <?php echomarkdown ($newsTOP['newstitle']); ?></a>
+          <img width = "8%" height = "8%" src="./view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($newsTOP['viewcount']); ?> 
+		  <img width = "5%" height = "5%" src="./like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($newsTOP['averagenumber']); ?>			
+			<a href="./viewnews/?id=<?php echo $newsTOP['id']; ?>"> <?php echomarkdown ($newsTOP['newstitle']); ?></a>
 		</div>
 	  </div>
 	</div>
@@ -80,7 +82,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p align = "center"><a href="/viewfullnewstop/">Вывести весь топ</a></p>
+          <p align = "center"><a href="./viewfullnewstop/">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
@@ -131,20 +133,20 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		 foreach ($lastRecommPosts as $lastRecommPost): ?> 
 		<div class="columns__panel">
          <div class="columns__panel-content">
-			<div class = "post_for_columns" style = "background: url(/images/<?php echo $lastRecommPost['imghead']; ?>); background-size: cover; ">
+			<div class = "post_for_columns" style = "background: url(./images/<?php echo $lastRecommPost['imghead']; ?>); background-size: cover; ">
 				<div  class = "posttitle"><strong><?php echo date("Y.m.d H:i", strtotime($lastRecommPost['postdate'])); ?> </strong></div>
-				<a href="/viewpost/?id=<?php htmlecho ($lastRecommPost['id']); ?>" rel = "nofollow">.</a>
+				<a href="./viewpost/?id=<?php htmlecho ($lastRecommPost['id']); ?>" rel = "nofollow">.</a>
 			</div>
-			<strong><a href="/viewpost/?id=<?php htmlecho ($lastRecommPost['id']); ?>"><?php htmlecho ((implode(' ', array_slice(explode(' ', strip_tags($lastRecommPost['posttitle'])), 0, 7)))); ?>...</a></strong> 
+			<strong><a href="./viewpost/?id=<?php htmlecho ($lastRecommPost['id']); ?>"><?php htmlecho ((implode(' ', array_slice(explode(' ', strip_tags($lastRecommPost['posttitle'])), 0, 7)))); ?>...</a></strong> 
 		  </div>	 
 		</div>	 
 		 <?php endforeach; ?>
 	</div>	
-	<div class="for_allposts_link"><p align = "center"><a href="/viewallrecommpost/" style = "color: white">Все рекомендации</a></p></div>
+	<div class="for_allposts_link"><p align = "center"><a href="./viewallrecommpost/" style = "color: white">Все рекомендации</a></p></div>
 	 
 	 <?php
 	 /*Загрузка компонента магазина*/
-		include_once $_SERVER['DOCUMENT_ROOT'] . '/shopcomponent/shopcomponent.inc.php';?>
+		include_once MAIN_FILE . '/shopcomponent/shopcomponent.inc.php';?>
 			 	
 		<div>
 		<div class = "titles_main_padge"><h4 align = "center">Отражение дня</h4></div>
@@ -166,11 +168,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 						}
 						 else 
 						{
-							$img = '/images/'.$postIMG['imghead'];//если картинка присутствует
+							$img = './images/'.$postIMG['imghead'];//если картинка присутствует
 						}?>
 			<div>	
 				 <div class = "post_imd_day" style = "background: url(<?php echo $img; ?>); background-size: cover; ">
-					 <a href="/viewpost/?id=<?php htmlecho ($postIMG['id']); ?>" rel = "nofollow">.</a>
+					 <a href="./viewpost/?id=<?php htmlecho ($postIMG['id']); ?>" rel = "nofollow">.</a>
 				 </div>
 			</div>			
 		 <?php endforeach; ?>
@@ -206,8 +208,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 				
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($promotion['promotiondate']. ' | Автор: <a href="/account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
-					<p>Рубрика: <a href="viewcategory/?id=<?php echo $promotion['categoryid']; ?>" style="color: white"><?php echo $promotion['categoryname'];?></a>
+				    <?php echo ($promotion['promotiondate']. ' | Автор: <a href="./account/?id='.$promotion['idauthor'].'" style="color: white" >'.$promotion['authorname']).'</a>';?>
+					<p>Рубрика: <a href="./viewcategory/?id=<?php echo $promotion['categoryid']; ?>" style="color: white"><?php echo $promotion['categoryname'];?></a>
 					  <?php if ($promotion['www'] != '')//если автор приложил ссылку
 						{
 							$link = '| <a href="//'.$promotion['www'].'" style="color: white" rel = "nofollow">Ссылка на ресурс</a>';
@@ -225,17 +227,17 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 						}
 						 else 
 						{
-							$img = '<img width = "90%" height = "90%" src="/images/'.$promotion['imghead'].'"'. ' alt="'.$promotion['imgalt'].'"'.'>';//если картинка присутствует
+							$img = '<img width = "90%" height = "90%" src="./images/'.$promotion['imghead'].'"'. ' alt="'.$promotion['imgalt'].'"'.'>';//если картинка присутствует
 						}?>
 					  <p><?php echo $img;?></p>
 				     </div>
 					<p align = "justify"><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($promotion['text'])), 0, 50))); ?> [...]</p>
-					<a href="/viewpromotion/?id=<?php htmlecho ($promotion['id']); ?>" class="btn btn-primary">Далее</a>
+					<a href="./viewpromotion/?id=<?php htmlecho ($promotion['id']); ?>" class="btn btn-primary">Далее</a>
 				   </div>	
 				 </div>
 			</div>			
 		 <?php endforeach; ?>
-		 <div class="for_allposts_link"><p align = "center"><a href="/viewallpromotion/" style="color: white">Весь промоушен</a></p></div>
+		 <div class="for_allposts_link"><p align = "center"><a href="./viewallpromotion/" style="color: white">Весь промоушен</a></p></div>
 			
 		<div>
 		 <table cellspacing="5">
@@ -250,7 +252,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		
 		foreach ($metas_3 as $meta): ?> 	  
 				<td><div>	 
-					<strong><a href="/viewmetapromotion/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
+					<strong><a href="./viewmetapromotion/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
 				</div></td> 	
 				<?php endforeach; ?>
 		  </tr>
@@ -270,9 +272,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	  <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <img width = "8%" height = "8%" src="../view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($promotionTOP['viewcount']); ?> 
-		  <img width = "5%" height = "5%" src="../like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($promotionTOP['averagenumber']); ?>			
-			<a href="/viewpromotion/?id=<?php echo $promotionTOP['id']; ?>"> <?php echomarkdown ($promotionTOP['promotiontitle']); ?></a>
+          <img width = "8%" height = "8%" src="./view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($promotionTOP['viewcount']); ?> 
+		  <img width = "5%" height = "5%" src="./like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($promotionTOP['averagenumber']); ?>			
+			<a href="./viewpromotion/?id=<?php echo $promotionTOP['id']; ?>"> <?php echomarkdown ($promotionTOP['promotiontitle']); ?></a>
 		</div>
 	  </div>
 	</div>
@@ -280,7 +282,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p align = "center"><a href="/viewfullpromotiontop/">Вывести весь топ</a></p>
+          <p align = "center"><a href="./viewfullpromotiontop/">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
@@ -325,8 +327,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 				
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($post['postdate']. ' | Автор: <a href="/account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';?>
-					<p>Рубрика: <a href="viewcategory/?id=<?php echo $post['categoryid']; ?>" style="color: white"><?php echo $post['categoryname'];?></a></p>
+				    <?php echo ($post['postdate']. ' | Автор: <a href="./account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';?>
+					<p>Рубрика: <a href="./viewcategory/?id=<?php echo $post['categoryid']; ?>" style="color: white"><?php echo $post['categoryname'];?></a></p>
 				  </div>
 				  	
 				   <div class = "newstext">
@@ -339,17 +341,17 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 						}
 						 else 
 						{
-							$img = '<img width = "90%" height = "90%" src="/images/'.$post['imghead'].'"'. ' alt="'.$post['imgalt'].'"'.'>';//если картинка присутствует
+							$img = '<img width = "90%" height = "90%" src="./images/'.$post['imghead'].'"'. ' alt="'.$post['imgalt'].'"'.'>';//если картинка присутствует
 						}?>
 					  <p><?php echo $img;?></p>
 				     </div>
 					<p align = "justify"><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($post['text'])), 0, 50))); ?> [...]</p>
-					<a href="/viewpost/?id=<?php htmlecho ($post['id']); ?>" class="btn btn-primary">Далее</a>
+					<a href="./viewpost/?id=<?php htmlecho ($post['id']); ?>" class="btn btn-primary">Далее</a>
 				   </div>	
 				 </div>
 			</div>			
 		 <?php endforeach; ?>
-		 <div class="for_allposts_link"><p align = "center"><a href="/viewallposts/" style="color: white">Все статьи</a></p></div>
+		 <div class="for_allposts_link"><p align = "center"><a href="./viewallposts/" style="color: white">Все статьи</a></p></div>
 		
 		<div>
 		 <table cellspacing="5">
@@ -364,7 +366,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		
 		foreach ($metas_2 as $meta): ?> 	  
 				<td><div>	 
-					<strong><a href="/viewmetapost/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
+					<strong><a href="./viewmetapost/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
 				</div></td> 	
 				<?php endforeach; ?>
 		  </tr>
@@ -384,9 +386,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	  <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <img width = "8%" height = "8%" src="../view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($postTOP['viewcount']); ?> 
-		  <img width = "5%" height = "5%" src="../like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($postTOP['averagenumber']); ?>			
-			<a href="/viewpost/?id=<?php echo $postTOP['id']; ?>"> <?php echomarkdown ($postTOP['posttitle']); ?></a>
+          <img width = "8%" height = "8%" src="./view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($postTOP['viewcount']); ?> 
+		  <img width = "5%" height = "5%" src="./like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho ($postTOP['averagenumber']); ?>			
+			<a href="./viewpost/?id=<?php echo $postTOP['id']; ?>"> <?php echomarkdown ($postTOP['posttitle']); ?></a>
 		</div>
 	  </div>
 	</div>
@@ -394,7 +396,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 	 <div class="columns__panel">
        <div class="columns__panel-content">	   
 		<div class = "fortop5">  
-          <p align = "center"><a href="/viewfullposttop/">Вывести весь топ</a></p>
+          <p align = "center"><a href="./viewfullposttop/">Вывести весь топ</a></p>
 		</div>
 	  </div>
 	 </div>	 
@@ -413,10 +415,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		<div class="columns__panel">
           <div class="columns__panel-content">	  
 			 <div class = "fortop5"> 
-			  <img width = "40 px" height = "40 px" src="/avatars/<?php echo $authorTOP['avatar'];?>" alt="<?php echo $authorTOP['authorname'];?>">
-			  <a href="/account/?id=<?php echo $authorTOP['id'];?>"><?php echo $authorTOP['authorname'];?></a>
-			  <p align = "right"><img width = "4%" height = "4%" src="../countposts.jpg" alt="Опубликовано материалов" title="Опубликовано материалов"> <?php htmlecho ($authorTOP['countposts']); ?> 
-		  	  <img width = "4%" height = "4%" src="../rating.jpg" alt="Рейтинг автора" title="Рейтинг"> <?php htmlecho ($authorTOP['rating']); ?></p>
+			  <img width = "40 px" height = "40 px" src="./avatars/<?php echo $authorTOP['avatar'];?>" alt="<?php echo $authorTOP['authorname'];?>">
+			  <a href="./account/?id=<?php echo $authorTOP['id'];?>"><?php echo $authorTOP['authorname'];?></a>
+			  <p align = "right"><img width = "4%" height = "4%" src="./countposts.jpg" alt="Опубликовано материалов" title="Опубликовано материалов"> <?php htmlecho ($authorTOP['countposts']); ?> 
+		  	  <img width = "4%" height = "4%" src="./rating.jpg" alt="Рейтинг автора" title="Рейтинг"> <?php htmlecho ($authorTOP['rating']); ?></p>
 			 </div>
 		  </div>
 		</div>	 
@@ -436,9 +438,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/adminnews.inc.html.php';
 		 <div class="columns__panel">
           <div class="columns__panel-content"> 
 			<div class = "fortop5">	 	
-          		<img width = "40 px" height = "40 px" src="/avatars/<?php echo $contestTOP['avatar'];?>" alt="<?php echo $contestTOP['authorname'];?>">
-		  		<a href="/account/?id=<?php echo $contestTOP['id'];?>"><?php echo $contestTOP['authorname'];?></a>
-		  		<p align = "right"><img width = "4%" height = "4%" src="../score.jpg" alt="Конкурсные очки" title="Конкурсные очки"><?php echo $contestTOP['contestscore'];?></p>	   
+          		<img width = "40 px" height = "40 px" src="./avatars/<?php echo $contestTOP['avatar'];?>" alt="<?php echo $contestTOP['authorname'];?>">
+		  		<a href="./account/?id=<?php echo $contestTOP['id'];?>"><?php echo $contestTOP['authorname'];?></a>
+		  		<p align = "right"><img width = "4%" height = "4%" src="./score.jpg" alt="Конкурсные очки" title="Конкурсные очки"><?php echo $contestTOP['contestscore'];?></p>	   
 			 </div>
 		  </div>
 		</div>	   	
@@ -459,7 +461,7 @@ teasernet_padid = 319119;
 	 </tr>
 	 <tr>
 		<td>
-			 <a href="https://zen.yandex.ru/imagoz" rel = "nofollow"><img width = "75%" height = "75%" src="../zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz"></a></td><td><script type="text/javascript" src="https://vk.com/js/api/openapi.js?160"></script>
+			 <a href="https://zen.yandex.ru/imagoz" rel = "nofollow"><img width = "75%" height = "75%" src="./zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz"></a></td><td><script type="text/javascript" src="https://vk.com/js/api/openapi.js?160"></script>
 
 	<!-- VK Widget -->
 	 <div id="vk_groups"></div>
@@ -491,5 +493,5 @@ teasernet_padid = 319119;
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once __DIR__ . '/footer.inc.php';?>
 

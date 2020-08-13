@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont_for_view"> 
 			<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -24,13 +24,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ('Дата выдачи: '.$task['taskdate']. ' | Задание выдал: <a href="/account/?id='.$task['idauthor'].'" style="color: white" >'.$task['authorname']).'</a>';?>
+				    <?php echo ('Дата выдачи: '.$task['taskdate']. ' | Задание выдал: <a href="../../account/?id='.$task['idauthor'].'" style="color: white" >'.$task['authorname']).'</a>';?>
 					<p>Тип: <?php echo $task['tasktypename'];?> | Для ранга не ниже: <?php echo $task['rangname'];?></p>
 				  </div>
 				   <div class = "newstext">
 				    <h5 align = "center"><?php htmlecho ($task['tasktitle']); ?></h5>
 					<p align = "justify"><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($task['text'])), 0, 50))); ?> [...]</p>
-					<a href="/admin/viewalltask/viewtask/?id=<?php htmlecho ($task['id']); ?>" class="btn btn-primary">Далее</a>
+					<a href="../../admin/viewalltask/viewtask/?id=<?php htmlecho ($task['id']); ?>" class="btn btn-primary">Далее</a>
 				   </div>	
 				 </div>
 			</div>			
@@ -58,5 +58,5 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>
 

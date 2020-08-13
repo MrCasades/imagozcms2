@@ -1,13 +1,13 @@
 <?php 
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont_for_view">
 		
@@ -16,7 +16,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			<div  align="justify">
 			
 				<div class = "posttitle">
-				  <?php echo ('Дата выдачи: '.$task['taskdate']. ' | Задание выдал: <a href="/account/?id='.$task['idauthor'].'" style="color: white" >'.$task['authorname']).'</a>';?>
+				  <?php echo ('Дата выдачи: '.$task['taskdate']. ' | Задание выдал: <a href="../../../account/?id='.$task['idauthor'].'" style="color: white" >'.$task['authorname']).'</a>';?>
 					<p>Тип: <?php echo $task['tasktypename'];?></p>
 				</div>	
 					<p><?php echomarkdown ($task['text']); ?></p>
@@ -29,4 +29,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

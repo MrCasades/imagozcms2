@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 <div class = "maincont">
 	<div>
@@ -19,7 +19,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 <?php foreach ($authors as $author): ?> 
 			<div>
 		  <tr>
-				<td><a href="/account/?id=<?php htmlecho($author['id'])?>"><?php htmlecho($author['authorname']);?></a></td>
+				<td><a href="../../account/?id=<?php htmlecho($author['id'])?>"><?php htmlecho($author['authorname']);?></a></td>
 				<td><?php htmlecho($author['email']);?></td>
 				<td><?php htmlecho($author['score']);?></td>
 				<td><?php htmlecho($author['bonus']);?></td>
@@ -34,4 +34,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

@@ -1,7 +1,9 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Определение нахождения пользователя в системе*/
 if (loggedIn())
@@ -38,7 +40,7 @@ if (isset ($_GET['id']))
 			   INNER JOIN tasktype ON idtasktype = tasktype.id  
 			   WHERE taskstatus = "YES" AND task.id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -72,7 +74,7 @@ if (isset ($_GET['id']))
 	
 	if ($row['tasktypename'] == 'Новость')
 	{
-		$performTask = '<form action = "/admin/addupdnews/?add" method = "post">
+		$performTask = '<form action = "../../../admin/addupdnews/?add" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$idTask.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Выполнить задание">
@@ -82,7 +84,7 @@ if (isset ($_GET['id']))
 	
 	elseif ($row['tasktypename'] == 'Статья')
 	{
-		$performTask = '<form action = "/admin/addupdpost/?add" method = "post">
+		$performTask = '<form action = "../../../admin/addupdpost/?add" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$idTask.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Выполнить задание">
@@ -91,7 +93,7 @@ if (isset ($_GET['id']))
 	}
 	
 	/*Отказаться от задания*/
-	$refuse = '<form action = "/admin/viewalltask/viewtask/taskstatus/" method = "post">
+	$refuse = '<form action = "../../../admin/viewalltask/taskstatus/" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$idTask.'">
 									<input type = "submit" name = "action" class="btn btn-danger btn-sm" value = "Отказаться">

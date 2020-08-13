@@ -1,7 +1,9 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -24,9 +26,9 @@ if (isset ($_GET['addmessage']))
 	$button = 'Добавить сообщение';
 	$errorForm = '';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	if (isset($_SESSION['loggIn']))
 	{
@@ -42,7 +44,7 @@ if (isset ($_GET['addmessage']))
 		$headMain = 'Форма обратной связи';
 		$robots = 'noindex, follow';
 		$descr = '';
-		$commentError = '<a href="/admin/registration/?log">Авторизируйтесь</a> в системе или <a href="/admin/registration/?reg">зарегестрируйтесь</a> для добавления сообщения!';//Вывод сообщения в случае невхода в систему
+		$commentError = '<a href="//'.MAIN_URL.'/admin/registration/?log">Авторизируйтесь</a> в системе или <a href="//'.MAIN_URL.'/admin/registration/?reg">зарегестрируйтесь</a> для добавления сообщения!';//Вывод сообщения в случае невхода в систему
 		
 		include 'messagefail.html.php';
 		exit();
@@ -53,7 +55,7 @@ if (isset ($_GET['addmessage']))
 if (isset($_GET['addform']))//Если есть переменная addform выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	/*Возвращение id автора*/
 	
@@ -90,6 +92,6 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 		
 	toEmail_1($titleMessage, $mailMessage);//отправка письма
 	
-	header ('Location: /account/?id='.$selectedAuthor);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();		
 }

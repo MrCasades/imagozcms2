@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont_for_view"> 
 			<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -11,11 +11,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,twitter,lj"></div></div>
 		
 		<div>
-		<?php if (!isset($comments))
+		<?php if (empty ($comments))
 		 {
-			 $noPosts = '<p align = "center">Записи отсутствуют</p>';
-			 echo $noPosts;
-			 $comments = null;
+			 echo '<p align = "center">Записи отсутствуют</p>';
 		 }
 		 
 		 else
@@ -26,7 +24,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				
 				<div class = "post">
 				  <div class = "posttitle">
-				    Дата записи: <?php echo ($comment['date']. ' | Автор: <a href="/account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
+				    Дата записи: <?php echo ($comment['date']. ' | Автор: <a href="../account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
 				  </div>
 				   <div class = "newstext">
 					   <?php if ($comment['imghead'] == '')
@@ -36,7 +34,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						}
 							else 
 						{
-							$img = '<p align="center"><img width = "40%" height = "20%" src="/images/'.$comment['imghead'].'"'. ' alt="'.$comment['imgalt'].'"'.'></p>';//если картинка присутствует
+							$img = '<p align="center"><img width = "40%" height = "20%" src="../images/'.$comment['imghead'].'"'. ' alt="'.$comment['imgalt'].'"'.'></p>';//если картинка присутствует
 						}?>
 					<p><?php echo $img;?></p>
 					<p align = "justify"><?php echomarkdown ($comment['text']); ?></p>
@@ -48,18 +46,16 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 <div align="center"><h4>Ответы (<?php echo $countPosts; ?>)</h4>
 		 <a href="?addcomment" class="btn btn-primary">Ответить</a></div>
 		<div>
-		<?php if (!isset($subcomments))
+		<?php if (empty ($subcomments))
 				{
-					$noComments = '<p align="center">Ответы отсутствуют!</p>';
-					echo $noComments;
-					$subcomments = null;
+					echo '<p align="center">Ответы отсутствуют!</p>';
 				}
 				
 			  else
 				
 				foreach ($subcomments as $subcomment): ?> 	   		
 				<div class = "post">
-				 <legend><h6><strong>Ответил <a href="/account/?id=<?php echo $subcomment['subidauthor']; ?>"><?php echo $subcomment['subauthorname']; ?></a></strong> <?php echo $subcomment['date'];?></h6> </legend>		
+				 <legend><h6><strong>Ответил <a href="../account/?id=<?php echo $subcomment['subidauthor']; ?>"><?php echo $subcomment['subauthorname']; ?></a></strong> <?php echo $subcomment['date'];?></h6> </legend>		
 				  <p><?php echomarkdown ($subcomment['text']); ?></p>
 				  
 				   <?php 
@@ -100,11 +96,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					 // если текущая старница
 					 if($i == $page)
 					 {
-						 echo "<a href='/viewnews/?id=".$idComment."&page=$i' class='btn btn-info'>$i</a> ";
+						 echo "<a href='../viewnews/?id=".$idComment."&page=$i' class='btn btn-info'>$i</a> ";
 					 } 
 					 else 
 					 {
-						 echo "<a href='/viewnews/?id=".$idComment."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
+						 echo "<a href='../viewnews/?id=".$idComment."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
 					 }
 				 }?>
 				 </div>				
@@ -114,4 +110,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

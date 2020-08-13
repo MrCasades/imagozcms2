@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func_promotion.inc.php';
+include_once MAIN_FILE . '/includes/func_promotion.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont"> 
 	 <div class = "post" align="center">
@@ -19,4 +19,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	</div>	
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

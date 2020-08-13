@@ -1,10 +1,10 @@
 <?php 
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont_for_view">
 		<div align="center">
@@ -20,7 +20,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				  
 			  foreach ($metas as $meta): ?>	  
 				<td><div>	 
-					<a href="/viewmetanews/?metaid=<?php echo $meta['id']; ?>"><?php echomarkdown ($meta['metaname']); ?></a>	 
+					<a href="../viewmetanews/?metaid=<?php echo $meta['id']; ?>"><?php echomarkdown ($meta['metaname']); ?></a>	 
 				</div></td> 	
 				<?php endforeach; ?>
 		  </tr>
@@ -30,7 +30,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		<div class = "post">	  
 			<div  align="justify">
 				<div class = "posttitle">
-				  <?php echo ($date.' | Автор: <a href="/account/?id='.$authorId.'" style="color: white" >'.$nameAuthor).'</a>';?>
+				  <?php echo ($date.' | Автор: <a href="../account/?id='.$authorId.'" style="color: white" >'.$nameAuthor).'</a>';?>
 				  <p>Рубрика: <a href="../viewcategory/?id=<?php echo $categoryId; ?>" style="color: white"><?php echo $categoryName;?></a></p>
 				</div>
 				  <p><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -70,7 +70,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					}
 						else 
 					{
-						$img = '<p align="center"><img width = "80%" height = "80%" src="/images/'.$imgHead.'"'. ' alt="'.$imgAlt.'"'.'></p>';//если картинка присутствует
+						$img = '<p align="center"><img width = "80%" height = "80%" src="../images/'.$imgHead.'"'. ' alt="'.$imgAlt.'"'.'></p>';//если картинка присутствует
 					}?>
 					<p><?php echo $img;?></p>
 					<p><?php echomarkdown ($articleText); ?></p>
@@ -110,10 +110,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($similarNews as $news_1): ?> 
 		<div class="columns__panel">
          <div class="columns__panel-content">
-			<div class = "post_for_columns" style = "background: url(/images/<?php echo $news_1['imghead']; ?>); background-size: cover; ">
-				<strong><a href="/viewnews/?id=<?php htmlecho ($news_1['id']); ?>" rel = "nofollow">.</a></strong> 
+			<div class = "post_for_columns" style = "background: url(../images/<?php echo $news_1['imghead']; ?>); background-size: cover; ">
+				<strong><a href="../viewnews/?id=<?php htmlecho ($news_1['id']); ?>" rel = "nofollow">.</a></strong> 
 			</div>
-			<strong><a href="/viewnews/?id=<?php htmlecho ($news_1['id']); ?>"><?php htmlecho ((implode(' ', array_slice(explode(' ', strip_tags($news_1['newstitle'])), 0, 7)))); ?>...</a></strong> 
+			<strong><a href="../viewnews/?id=<?php htmlecho ($news_1['id']); ?>"><?php htmlecho ((implode(' ', array_slice(explode(' ', strip_tags($news_1['newstitle'])), 0, 7)))); ?>...</a></strong> 
 		  </div>	 
 		</div>	 
 		 <?php endforeach; ?>
@@ -144,7 +144,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				foreach ($comments as $comment): ?> 	   		
 				<div class = "post">
 				 <div class = "posttitle">
-				    Дата комментария: <?php echo ($comment['date']. ' | Автор: <a href="/account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
+				    Дата комментария: <?php echo ($comment['date']. ' | Автор: <a href="./account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
 				  </div>		
 					<p><?php 
 				   
@@ -168,13 +168,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						 echo $updAnddel;?></p>
 				  <p>
 					<table cellpadding = "3 %">
-						<td><img width = "90 px" height = "90 px" src="/avatars/<?php echo $comment['avatar'];?>" alt="<?php echo $comment['authorname'];?>"></td>
+						<td><img width = "90 px" height = "90 px" src="../avatars/<?php echo $comment['avatar'];?>" alt="<?php echo $comment['authorname'];?>"></td>
 						<td ><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($comment['text'])), 0, 50))); ?> [...]</td>
 					</table>	
 				  </p>
-				  <p><img width = "3%" height = "3%" src="<?php echo '//'.$_SERVER['SERVER_NAME'];?>/answers.jpg" alt="Ответы на комментарий" title="Количество ответов"> 
+				  <p><img width = "3%" height = "3%" src="<?php echo '//'. MAIN_URL;?>/answers.jpg" alt="Ответы на комментарий" title="Количество ответов"> 
 					  <strong>[<?php echo $comment['subcommentcount']; ?>]</strong></p>
-				  <a href="/viewwallpost/?id=<?php echo $comment['id']; ?>" class="btn btn-primary btn-sm">Открыть</a>
+				  <a href="../viewwallpost/?id=<?php echo $comment['id']; ?>" class="btn btn-primary btn-sm">Открыть</a>
 				</div>	  		   
 				<?php endforeach; ?> 
 				
@@ -186,11 +186,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					 // если текущая старница
 					 if($i == $page)
 					 {
-						 echo "<a href='/viewnews/?id=".$idNews."&page=$i' class='btn btn-info'>$i</a> ";
+						 echo "<a href='./viewnews/?id=".$idNews."&page=$i' class='btn btn-info'>$i</a> ";
 					 } 
 					 else 
 					 {
-						 echo "<a href='/viewnews/?id=".$idNews."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
+						 echo "<a href='./viewnews/?id=".$idNews."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
 					 }
 				 }?>
 				 </div>				
@@ -199,4 +199,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

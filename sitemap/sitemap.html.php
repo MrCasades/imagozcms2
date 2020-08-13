@@ -1,13 +1,7 @@
 <?php 
 
-/*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
-
-/*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
-
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 <div class = "maincont_for_view">
 	<div align = "center" ><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -27,12 +21,12 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		foreach ($categorysSM as $category): ?> 
 		  
 		<div>  
-			<a href="/viewcategory/?id=<?php echo $category['id']; ?>"> <strong><?php echomarkdown ($category['category']); ?></strong></a> 	
+			<a href="../viewcategory/?id=<?php echo $category['id']; ?>"> <strong><?php echomarkdown ($category['category']); ?></strong></a> 	
 		</div>	   	
 		<?php endforeach; ?> 
-		<p><a href="/cooperation/"> <strong>Сотрудничество</strong></a></p>
-	    <p><a href="/promotion/"> <strong>Промоушен</strong></a></p>
-	    <p><a href="/admin/adminmail/?addmessage"> <strong>Обратная связь</strong></a></p>
+		<p><a href="../cooperation/"> <strong>Сотрудничество</strong></a></p>
+	    <p><a href="../promotion/"> <strong>Промоушен</strong></a></p>
+	    <p><a href="../admin/adminmail/?addmessage"> <strong>Обратная связь</strong></a></p>
 </div>		
 
 <div class = "post">	 
@@ -49,7 +43,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($newsInSM as $news): ?> 
 		  
 			<div>
-				<a href="/viewnews/?id=<?php htmlecho ($news['id']); ?>"><?php htmlecho ($news['newstitle']); ?></a>  
+				<a href="../viewnews/?id=<?php htmlecho ($news['id']); ?>"><?php htmlecho ($news['newstitle']); ?></a>  
 			</div>			
 		 <?php endforeach; ?>
 </div>
@@ -68,7 +62,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($postsSM as $post): ?> 
 		  
 			<div>
-				<a href="/viewpost/?id=<?php htmlecho ($post['id']); ?>"><?php htmlecho ($post['posttitle']); ?></a>  
+				<a href="../viewpost/?id=<?php htmlecho ($post['id']); ?>"><?php htmlecho ($post['posttitle']); ?></a>  
 			</div>			
 		 <?php endforeach; ?>
 </div>		 
@@ -76,4 +70,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>		 
+include_once MAIN_FILE . '/footer.inc.php';?>		 

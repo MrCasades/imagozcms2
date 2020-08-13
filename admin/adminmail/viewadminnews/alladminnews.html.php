@@ -1,18 +1,16 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont"> 
 		<div>
 			
-		<?php if (!isset($messages))
+		<?php if (empty ($messages))
 		 {
-			 $noPosts = '<p align = "center">Сообщения отсутствуют</p>';
 			 echo $noPosts;
-			 $messages = null;
 		 }
 		 
 		 else
@@ -23,13 +21,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($message['messagedate']. ' | Автор: <a href="/account/?id='.$message['idauthor'].'" style="color: white" >'.$message['authorname']).'</a>';?>
+				    <?php echo ($message['messagedate']. ' | Автор: <a href="../../../account/?id='.$message['idauthor'].'" style="color: white" >'.$message['authorname']).'</a>';?>
 					<p>E-mail: <?php echo $message['email'];?></p>
 				  </div>
 				   <div class = "newstext">
 				    <h5 align = "center"><?php htmlecho ($message['messagetitle']); ?></h5>
 					<p align = "justify"><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($message['text'])), 0, 50))); ?> [...]</p>
-					<a href="/admin/adminmail/viewadminnews/viewnews/?idadminnews=<?php htmlecho ($message['id']); ?>" class="btn btn-primary">Далее</a>
+					<a href="../../../admin/adminmail/viewnews/?idadminnews=<?php htmlecho ($message['id']); ?>" class="btn btn-primary">Далее</a>
 				   </div>	
 				 </div>
 			</div>			
@@ -56,4 +54,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

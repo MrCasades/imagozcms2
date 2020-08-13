@@ -2,10 +2,10 @@
 <html>
 <head> 
 	<title><?php echo $title; ?> </title> 
-	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/styles.css';?>" rel= "stylesheet" type="text/css">
-	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/css/mybootstap.css';?>" rel= "stylesheet" type="text/css">
-	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/css/bootstrap-markdown.min.css';?>" rel= "stylesheet" type="text/css">
-	<link href="<?php echo '//'.$_SERVER['SERVER_NAME'].'/favicon.ico';?>" rel="icon" type="image/x-icon">
+	<link href="<?php echo '//'.MAIN_URL.'/styles.css';?>" rel= "stylesheet" type="text/css">
+	<link href="<?php echo '//'.MAIN_URL.'/css/mybootstap.css';?>" rel= "stylesheet" type="text/css">
+	<link href="<?php echo '//'.MAIN_URL.'/css/bootstrap-markdown.min.css';?>" rel= "stylesheet" type="text/css">
+	<link href="<?php echo '//'.MAIN_URL.'/favicon.ico';?>" rel="icon" type="image/x-icon">
 	
 	<?php 
         //канонический адрес
@@ -46,17 +46,17 @@
 </head>
 <body>
     
-	<div class="forlogo" align = "center"><a href="<?php echo '//'.$_SERVER['SERVER_NAME'];?>"><img width = "15%" height = "15%" src="<?php echo '//'.$_SERVER['SERVER_NAME'];?>/logomain.jpg" alt="imagoz.ru | Hi-Tech, игры, интернет в отражении"></a>
-						<img width = "80%" height = "15%" src="<?php echo '//'.$_SERVER['SERVER_NAME'];?>/LOGO2.jpg" alt="Мир высоких технологий, интернета, игр в отражении"></div>
+	<div class="forlogo" align = "center"><a href="<?php echo '//'.MAIN_URL;?>"><img width = "15%" height = "15%" src="<?php echo '//'.MAIN_URL;?>/logomain.jpg" alt="imagoz.ru | Hi-Tech, игры, интернет в отражении"></a>
+						<img width = "80%" height = "15%" src="<?php echo '//'.MAIN_URL;?>/LOGO2.jpg" alt="Мир высоких технологий, интернета, игр в отражении"></div>
 	<div>
 	   
 		<?php 
 		/*Загрузка меню авторизации*/
-		include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/logpanel.html.inc.php';?>
+		include_once MAIN_FILE . '/admin/logpanel.html.inc.php';?>
 		
 		<?php 
 		/*Загрузка кнопки добавления статьи*/
-		include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/addpost.html.inc.php';
+		include_once MAIN_FILE . '/admin/addpost.html.inc.php';
 		    
 		    echo '<div align = "center"><p>'.$logPanel.'</p></div>';
 			echo '<div align = "center"><p>'.$superUser.'</p></div>';
@@ -92,6 +92,9 @@
 		
 	<?php 
 		/*Загрузка списка рубрик*/
-		include_once $_SERVER['DOCUMENT_ROOT'] . '/mainmenu/mainmenu.inc.php'; ?>
+		include_once MAIN_FILE . '/mainmenu/mainmenu.inc.php'; ?>
 		
 	<h1><?php htmlecho ($headMain); ?> </h1>
+		
+	
+	

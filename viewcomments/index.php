@@ -1,9 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
+
 /*Загрузка функций в шаблон*/
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -20,7 +23,7 @@ if (isset ($_GET['idpost']))
 	$_SESSION['idpost'] = $idPost;
 	$select = 'SELECT * FROM posts WHERE id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -49,7 +52,7 @@ if (isset ($_GET['idpost']))
 	/*Вывод комментариев*/
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Постраничный вывод информации*/
 		

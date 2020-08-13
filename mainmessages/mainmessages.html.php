@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "messenger"> 
 		<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -44,8 +44,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						
 							$idAuthorUnr = $unreadMessage['idfrom'];
 							$authorNameUnr = $unreadMessage['authorfrom'];
-							$avatarUnr = '<img width = "40 px" height = "40 px" src="/avatars/'.$unreadMessage['avafr'].'" alt="'.$authorNameUnr.'">';
-							$dialogLinkUnr = '<a href="/mainmessages/viewmainmessages/?id='.$idAuthorUnr.'#bottom">'.$authorNameUnr.'</a>';
+							$avatarUnr = '<img width = "40 px" height = "40 px" src="../avatars/'.$unreadMessage['avafr'].'" alt="'.$authorNameUnr.'">';
+							$dialogLinkUnr = '<a href="../mainmessages/viewmainmessages/?id='.$idAuthorUnr.'#bottom">'.$authorNameUnr.'</a>';
 							$messageDateUnr = $unreadMessage['mainmessagedate'];
 							$unrMessages = '';
 					}
@@ -82,8 +82,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						
 							$idAuthor = $dialog['idfrom'];
 							$authorName = $dialog['authorfrom'];
-							$avatar = '<img width = "40 px" height = "40 px" src="/avatars/'.$dialog['avafr'].'" alt="'.$authorName.'">';
-							$dialogLink = '<a href="/mainmessages/viewmainmessages/?id='.$idAuthor.'#bottom">'.$authorName.'</a>';
+							$avatar = '<img width = "40 px" height = "40 px" src="../avatars/'.$dialog['avafr'].'" alt="'.$authorName.'">';
+							$dialogLink = '<a href="../mainmessages/viewmainmessages/?id='.$idAuthor.'#bottom">'.$authorName.'</a>';
 					}
 					
 					elseif (($dialog['idto'] != $selectedAuthor) && ($dialog['firstmessage'] == "YES"))
@@ -91,8 +91,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						
 							$idAuthor = $dialog['idto'];
 							$authorName = $dialog['authorto'];
-							$avatar = '<img width = "40 px" height = "40 px" src="/avatars/'.$dialog['avato'].'" alt="'.$authorName.'">';
-							$dialogLink = '<a href="/mainmessages/viewmainmessages/?id='.$idAuthor.'#bottom">'.$authorName.'</a>';
+							$avatar = '<img width = "40 px" height = "40 px" src="../avatars/'.$dialog['avato'].'" alt="'.$authorName.'">';
+							$dialogLink = '<a href="../mainmessages/viewmainmessages/?id='.$idAuthor.'#bottom">'.$authorName.'</a>';
 					}
 		  
 				   else
@@ -115,4 +115,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

@@ -2,7 +2,7 @@
 /*Вывод списка рубрик*/
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Вывод рубрик*/
 /*Команда SELECT*/

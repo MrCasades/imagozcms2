@@ -2,12 +2,12 @@
 /*Вывод панели входа / регистрации. Вывод имени пользователя вошедшего в систему*/
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка ссылки для входа, регистрации*/
 if (!isset($_SESSION['loggIn']))//если не выполнен вход в систему
 {
-	$logPanel = "<a href='/admin/registration/?log#bottom'>Вход</a> | <a href='/admin/registration/?reg#bottom'>Регистрация</a>";
+	$logPanel = "<a href='//".MAIN_URL."/admin/registration/?log#bottom'>Вход</a> | <a href='//".MAIN_URL."/admin/registration/?reg#bottom'>Регистрация</a>";
 }
 
 /*Загрузка имени вошедшего пользователя и кнопки выхода из системы*/
@@ -20,7 +20,7 @@ else
 	$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 		{
@@ -45,9 +45,9 @@ else
 	$unreadCount = $row['unreadcount'];//счётчик непрочитанных сообщений
 	
 	$logPanel = '<form action = " " method = "post">
-					<strong>Профиль:</strong> <a href="/account/?id='.$selectedAuthor.'">'.$_POST['author'].'</a> | <a href="/mainmessages/#bottom" class="btn btn-info btn-sm">СООБЩЕНИЯ ['.$unreadCount.']</a>
+					<strong>Профиль:</strong> <a href="//'.MAIN_URL.'/account/?id='.$selectedAuthor.'">'.$_POST['author'].'</a> | <a href="//'.MAIN_URL.'/mainmessages/#bottom" class="btn btn-info btn-sm">СООБЩЕНИЯ ['.$unreadCount.']</a>
 					<input type = "hidden" name = "action" value = "logout">
-					<input type = "hidden" name = "goto" value = "/../">
+					<input type = "hidden" name = "goto" value = "//'.MAIN_URL.'">
 					<input class="btn btn-primary btn-sm" type="submit" value="Exit">
 			     </form>';
 }

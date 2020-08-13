@@ -1,7 +1,9 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Форма ввода E-mail*/
 if (isset ($_GET['send']))
@@ -32,7 +34,7 @@ if (isset ($_GET['sendmessage']))
 	$reKey = rand (1001, 9999);//recovery-key
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT Выбор старого пароля*/
 	try
@@ -91,7 +93,7 @@ if (isset ($_GET['sendmessage']))
 	
 	$title ='Смена пароля для сайта imagoz.ru';
 	
-	$message = 'Для того, чтобы изменить пароль, перейдите по ссылке //'.$_SERVER['SERVER_NAME'].'/admin/recoverpassword/?tikey='.$tiKey.' и в форме введите код '.$reKey.
+	$message = 'Для того, чтобы изменить пароль, перейдите по ссылке //'.MAIN_URL.'/admin/recoverpassword/?tikey='.$tiKey.' и в форме введите код '.$reKey.
 				'. Cсылка действительна 10 часов';
 	
 	$headers = 'From: imagozman@gmail.com' . "\r\n" .
@@ -153,7 +155,7 @@ if (isset($_GET['confrecover']))
 	$reKey_1 = $_POST['rekey'];//Ключ восстановления
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT Выбор ключа восстановления*/
 	try
@@ -236,7 +238,7 @@ if (isset($_GET['recover']))
 		/*Обновление пароля*/
 		/*Подключение к базе данных*/
 		
-		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+		include MAIN_FILE . '/includes/db.inc.php';
 		
 		$email = $_POST['email'];
 		$password = md5($_POST['password'] . 'fgtn');
@@ -266,7 +268,7 @@ if (isset($_GET['recover']))
 		$descr = 'Сообщение об успешной смене пароля';
 		$loggood = 'Вы успешно сменили пароль! Теперь можно войти в свою учётную запись с новыми данными!';
 	
-		include $_SERVER['DOCUMENT_ROOT'].'/admin/accessgood.html.php';
+		include MAIN_FILE.'/admin/accessgood.html.php';
 		exit();
 	}
 }

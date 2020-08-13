@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont_for_view"> 
 			<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -12,11 +12,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		
 		<div>
 		 <?php 
-		 if (!isset($posts))
+		 if (empty ($posts))
 		 {
-			 $noPost = '<p align = "center">Статьи у автора отсутствуют!</p>';
-			 echo $noPost;
-			 $posts = null;
+			 echo '<p align = "center">Статьи у автора отсутствуют!</p>';
 		 }
 		 
 		 else
@@ -27,8 +25,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($post['postdate']. ' | Автор: <a href="/account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';?>
-					<p>Рубрика: <a href="/viewcategory/?id=<?php echo $post['categoryid']; ?>" style="color: white"><?php echo $post['categoryname'];?></a></p>
+				    <?php echo ($post['postdate']. ' | Автор: <a href="../../account/?id='.$post['idauthor'].'" style="color: white" >'.$post['authorname']).'</a>';?>
+					<p>Рубрика: <a href="../../viewcategory/?id=<?php echo $post['categoryid']; ?>" style="color: white"><?php echo $post['categoryname'];?></a></p>
 				  </div>
 				  <div class = "newstext">
 					<h3 align = "center"><?php htmlecho ($post['posttitle']); ?></h3>
@@ -40,12 +38,12 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						}
 						 else 
 						{
-							$img = '<img width = "90%" height = "90%" src="/images/'.$post['imghead'].'"'. ' alt="'.$post['imgalt'].'"'.'>';//если картинка присутствует
+							$img = '<img width = "90%" height = "90%" src="../../images/'.$post['imghead'].'"'. ' alt="'.$post['imgalt'].'"'.'>';//если картинка присутствует
 						}?>
 					<p><?php echo $img;?></p>
 				   </div>
 					<p><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($post['text'])), 0, 50))); ?> [...]</p>
-					<p><a href="/viewpost/?id=<?php htmlecho ($post['id']); ?>" class="btn btn-primary">Далее</a></p>
+					<p><a href="../../viewpost/?id=<?php htmlecho ($post['id']); ?>" class="btn btn-primary">Далее</a></p>
 				  </div>
 				 </div> 
 			</div>			
@@ -72,4 +70,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

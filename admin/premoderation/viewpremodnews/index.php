@@ -1,9 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../../includes/path.inc.php';
+
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -33,7 +36,7 @@ if (isset ($_GET['news']))
 	
 	$select = 'SELECT newsblock.id AS newsid, news, newstitle, imghead, videoyoutube, imgalt, newsdate, idtask FROM newsblock WHERE premoderation = "NO" AND refused = "NO" AND newsblock.id = ';
 
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -156,14 +159,14 @@ if (isset ($_GET['news']))
 	
 	if ((isset($_SESSION['loggIn'])) && (userRole('Администратор')))
 	{
-		$delAndUpd = "<form action = '/admin/addupdnews/' method = 'post'>
+		$delAndUpd = "<form action = '../../../admin/addupdnews/' method = 'post'>
 			
 						Действия с материалом:
 						<input type = 'hidden' name = 'id' value = '".$_SESSION['idnews']."'>
 						<input type = 'submit' name = 'action' value = 'Upd' class='btn btn-primary btn-sm'>
 						<input type = 'submit' name = 'action' value = 'Del' class='btn btn-primary btn-sm'>
 					  </form>";
-		$premoderation = "<form action = '/admin/premoderation/newspremoderationstatus/' method = 'post'>
+		$premoderation = "<form action = '../../../admin/premoderation/newspremoderationstatus/' method = 'post'>
 			
 						Статус публикации:
 						<input type = 'hidden' name = 'id' value = '".$_SESSION['idnews']."'>
@@ -184,10 +187,10 @@ if (isset ($_GET['news']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Конвертировать в статью')
 {
 	/*Загрузка функций в шаблон*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	include_once MAIN_FILE . '/includes/func.inc.php';
 
 	/*Загрузка функций для формы входа*/
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+	require_once MAIN_FILE . '/includes/access.inc.php';
 	
 	$inData = 'newsblock';
 	$idData = $_POST['id'];

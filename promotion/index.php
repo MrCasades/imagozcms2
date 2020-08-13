@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Вывод текста о промоушене*/
 
@@ -8,7 +10,7 @@ $robots = 'all';
 $descr = 'Предложение по размещению рекламных статей на портале imagoz.ru';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 	
 if (loggedIn())
 {
@@ -16,7 +18,7 @@ if (loggedIn())
 }
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 	
 /*Команда SELECT выбор цены промоушена*/
 try

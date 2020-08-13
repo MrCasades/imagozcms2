@@ -1,14 +1,10 @@
 ﻿<?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
-	
-	<?php 
-	/*Загрузка списка рубрик*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/categorypanel/categorypanel.inc.php'; ?>
-	
+include_once MAIN_FILE . '/header.inc.php';?>
+
 	<div class = "maincont">
 	<br>
 	<form action = "?<?php htmlecho ($action); ?>" method = "post">
@@ -25,4 +21,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

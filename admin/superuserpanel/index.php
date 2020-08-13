@@ -1,4 +1,6 @@
 ﻿<?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Вывод текста о сотрудничестве*/
 
@@ -8,7 +10,7 @@ $robots = 'noindex, nofollow';
 $descr = '';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 	
 if (loggedIn())
 {
@@ -31,7 +33,7 @@ if ((!userRole('Администратор')) && (!userRole('Супер-авто
 /*Команда SELECT*/
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 try
 {
@@ -82,8 +84,8 @@ else
 	
 /*Текст о сотрудничестве*/
 
-$superUserPanel = "<p align='center'><a href='/admin/addupdpost/?add' class='btn btn-primary btn-sm'>Добавить статью</a> | 
-	<a href='/admin/addupdnews/?add' class='btn btn-primary btn-sm'>Добавить новость</a>";
+$superUserPanel = "<p align='center'><a href='../../admin/addupdpost/?add' class='btn btn-primary btn-sm'>Добавить статью</a> | 
+	<a href='../../admin/addupdnews/?add' class='btn btn-primary btn-sm'>Добавить новость</a>";
 	
 include 'superuserpanel.html.php';
 exit();	

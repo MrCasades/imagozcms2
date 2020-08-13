@@ -1,6 +1,6 @@
 <? 
 	/*Загрузка функций в шаблон*/
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+	include_once MAIN_FILE . '/includes/func.inc.php';
 
 $content = '<?xml version="1.0" encoding="UTF-8"?>
 
@@ -10,7 +10,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 <title>Hi-Tech новости, игры, наука, интернет в отражении на imagoz.ru</title>
 
-<atom:link href="https://'.$_SERVER['SERVER_NAME'].'/rsssmi/" rel="self" type="application/rss+xml"/>
+<atom:link href="https://'.MAIN_URL.'/rsssmi/" rel="self" type="application/rss+xml"/>
 
 <lastBuildDate>Thu, 15 Mar 2018 10:00:15 +0000</lastBuildDate>
 
@@ -24,7 +24,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 </description>
 
-<link>https://'.$_SERVER['SERVER_NAME'].'/rsssmi/</link>
+<link>https://'.MAIN_URL.'/rsssmi/</link>
 
 '?>
 	
@@ -47,7 +47,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 </description>
 
-<link>https://'.$_SERVER['SERVER_NAME'].'/viewnews/?id='.$newsMain_3['id'].'</link>
+<link>https://'.MAIN_URL.'/viewnews/?id='.$newsMain_3['id'].'</link>
 
 <pubDate>'.date("D, j M Y G:i:s", strtotime($newsMain_3['newsdate'])).' +0300</pubDate>
 
@@ -65,7 +65,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 <description>
 
-<![CDATA[<img src="https://'.$_SERVER['SERVER_NAME'].'/images/'.$post['imghead'].'"> '.
+<![CDATA[<img src="https://'.MAIN_URL.'/images/'.$post['imghead'].'"> '.
 	
 	markdown2html(implode(' ', array_slice(explode(' ', strip_tags($post['text'])), 0, 50))).' [...]
 
@@ -73,7 +73,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 </description>
 
-<link>https://'.$_SERVER['SERVER_NAME'].'/viewpost/?id='.$post['id'].'</link>
+<link>https://'.MAIN_URL.'/viewpost/?id='.$post['id'].'</link>
 
 <pubDate>'.date("D, j M Y G:i:s", strtotime($post['postdate'])).' +0300</pubDate>
 

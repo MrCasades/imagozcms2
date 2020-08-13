@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 $title = 'Обновление среднего рейтинга';//Данные тега <title>
 $headMain = 'Обновление среднего рейтинга';
@@ -6,12 +8,12 @@ $robots = 'noindex, nofollow';
 $descr = '';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка формы входа*/
 if (!loggedIn())
 {
-	include '../login.html.php';
+	include '//'.MAIN_URL.'/login.html.php';
 	exit();
 }
 
@@ -21,14 +23,14 @@ if (!userRole('Администратор'))
 	$robots = 'noindex, nofollow';
 	$descr = '';
 	$error = 'Доступ запрещен';
-	include '../accessfail.html.php';
+	include '//'.MAIN_URL.'/accessfail.html.php';
 	exit();
 }
 
 /*Вывод списка авторов, редакторов и администраторов портала*/
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Формирование списка авторов*/
 	
@@ -71,7 +73,7 @@ if (isset ($_GET['add']))
 	$rating = $_POST['points'];
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{

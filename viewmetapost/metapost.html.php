@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont_for_view">
 			<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -12,11 +12,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			
 		<div>
 		 <?php 
-		 if (!isset($metas_1))
+		 if (empty ($metas_1))
 		 {
-			 $noPosts = '<p align = "center">Данному тегу не соответствует ни одна статья</p>';
-			 echo $noPosts;
-			 $metas_1 = null;
+			 echo '<p align = "center">Данному тегу не соответствует ни одна статья</p>';
 		 }
 			
 		 else
@@ -26,7 +24,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			<div>
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($meta_1['postdate']. ' | Автор: <a href="/account/?id='.$meta_1['idauthor'].'" style="color: white" >'.$meta_1['authorname']).'</a>';?>
+				    <?php echo ($meta_1['postdate']. ' | Автор: <a href="../account/?id='.$meta_1['idauthor'].'" style="color: white" >'.$meta_1['authorname']).'</a>';?>
 					<p>Рубрика: <a href="../viewcategory/?id=<?php echo $meta_1['categoryid']; ?>" style="color: white"><?php echo $meta_1['categoryname'];?></a></p>
 				  </div>
 				   <div class = "newstext">
@@ -39,12 +37,12 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						}
 						 else 
 						{
-							$img = '<img width = "90%" height = "90%" src="/images/'.$meta_1['imghead'].'"'. ' alt="'.$meta_1['imgalt'].'"'.'>';//если картинка присутствует
+							$img = '<img width = "90%" height = "90%" src="../images/'.$meta_1['imghead'].'"'. ' alt="'.$meta_1['imgalt'].'"'.'>';//если картинка присутствует
 						}?>
 					  <p><?php echo $img;?></p>
 				     </div>
 					<p align = "justify"><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($meta_1['text'])), 0, 50))); ?> [...]</p>
-					<a href="/viewpost/?id=<?php htmlecho ($meta_1['id']); ?>" class="btn btn-primary">Далее</a>
+					<a href="../viewpost/?id=<?php htmlecho ($meta_1['id']); ?>" class="btn btn-primary">Далее</a>
 				   </div>	
 				 </div>
 			</div>	   	
@@ -71,4 +69,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

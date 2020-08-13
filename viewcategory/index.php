@@ -1,10 +1,12 @@
 <?php 
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 	
 if (loggedIn())
 {
@@ -39,7 +41,7 @@ if (isset ($_GET['id']))
 	$limitPost = ' LIMIT 5';
 			
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -65,6 +67,12 @@ if (isset ($_GET['id']))
 								'category' => $row['categoryname'], 'author' => $row['authorname']);
 	}	
 	
+	/*Если страница отсутствует. Ошибка 404*/
+	if (!$row)
+	{
+		header ('Location: ../page-not-found/');//перенаправление обратно в контроллер index.php
+		exit();	
+	}
 	
 	try
 	{

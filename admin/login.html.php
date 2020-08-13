@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	<p><a name="bottom"></a></p>  
 	<div class = "maincont_for_view">
 	 <div class = "post" align="center">
@@ -23,10 +23,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 <input type = "submit" value = "Вход" class="btn btn-primary">
 	  </form>	
      </div>	 
-	 <p align="center"><a href="#" onclick="history.back();" class="btn btn-primary btn-sm">Назад</a> | <a href="/admin/recoverpassword/?send" class="btn btn-info btn-sm">Забыли пароль?</a></p>	
+	 <p align="center"><a href="#" onclick="history.back();" class="btn btn-primary btn-sm">Назад</a> | <a href="../../admin/recoverpassword/?send" class="btn btn-info btn-sm">Забыли пароль?</a></p>	
 	</div>		
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>
 

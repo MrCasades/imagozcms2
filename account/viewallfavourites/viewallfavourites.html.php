@@ -1,9 +1,9 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont_for_view"> 
 			<div align = "center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
@@ -26,8 +26,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				
 				<div class = "post">
 				  <div class = "posttitle">
-				    <?php echo ($favourite['date']. ' | Автор: <a href="/account/?id='.$favourite['idauthorpost'].'" style="color: white" >'.$favourite['authorname']).'</a>';?>
-					<p>Рубрика: <a href="viewcategory/?id=<?php echo $favourite['categoryid']; ?>" style="color: white"><?php echo $favourite['categoryname'];?></a></p> 
+				    <?php echo ($favourite['date']. ' | Автор: <a href="../../account/?id='.$favourite['idauthorpost'].'" style="color: white" >'.$favourite['authorname']).'</a>';?>
+					<p>Рубрика: <a href="../../viewcategory/?id=<?php echo $favourite['categoryid']; ?>" style="color: white"><?php echo $favourite['categoryname'];?></a></p> 
 				  </div>
 				  	 
 				   <div class = "newstext">
@@ -40,7 +40,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						}
 						 else 
 						{
-							$img = '<img width = "90%" height = "90%" src="/images/'.$favourite['imghead'].'"'. ' alt="'.$favourite['imgalt'].'"'.'>';//если картинка присутствует
+							$img = '<img width = "90%" height = "90%" src="../../images/'.$favourite['imghead'].'"'. ' alt="'.$favourite['imgalt'].'"'.'>';//если картинка присутствует
 						}?>
 					  <p><?php echo $img;?></p>
 				     </div>
@@ -71,4 +71,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

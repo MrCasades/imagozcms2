@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 $title = 'Отклонённые материалы';//Данные тега <title>
 $headMain = 'Отклонённые материалы';
@@ -7,7 +9,7 @@ $descr = 'В данном разделе выводятся материалы �
 $scriptJScode = '<script src="script.js"></script>';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка формы входа*/
 if (!loggedIn())
@@ -32,7 +34,7 @@ $selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//i
 if (userRole('Автор'))//Для автора
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	/*Вывод новостей*/
 	/*Команда SELECT*/
@@ -127,7 +129,7 @@ if (userRole('Автор'))//Для автора
 if (userRole('Рекламодатель'))//Для рекламодателя
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	/*Вывод стаей*/
 	/*Команда SELECT*/

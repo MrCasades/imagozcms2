@@ -1,17 +1,17 @@
 <?php 
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont">
 	
-	<a href="/viewpost/?addcomment" class="btn btn-primary">Добавить комментарий</a>
+	<a href="../viewpost/?addcomment" class="btn btn-primary">Добавить комментарий</a>
 		
 		<div>
 		 <?php foreach ($comments as $comment): ?> 	   		
@@ -30,7 +30,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						 }
 						 if ($authorName == $comment['authorname'])
 						 {
-							 $updAnddel = '<form action = "/viewpost/?" method = "post">
+							 $updAnddel = '<form action = "../viewpost/?" method = "post">
 								<div>
 									<input type = "hidden" name = "id" value = "'.$comment ['id'].'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Редактировать">
@@ -54,11 +54,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				// если текущая старница
 				if($i == $page)
 				{
-					echo "<a href='/viewcomments/?idpost=".$idPost."&page=$i' class='btn btn-info'>$i</a> ";
+					echo "<a href='../viewcomments/?idpost=".$idPost."&page=$i' class='btn btn-info'>$i</a> ";
 				} 
 				else 
 				{
-					echo "<a href='/viewcomments/?idpost=".$idPost."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
+					echo "<a href='../viewcomments/?idpost=".$idPost."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
 				}
 			}?>
 		</div>			
@@ -66,4 +66,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 	
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>	
+include_once MAIN_FILE . '/footer.inc.php';?>	

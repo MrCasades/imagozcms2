@@ -1,10 +1,10 @@
 <?php 
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func_promotion.inc.php';
+include_once MAIN_FILE . '/includes/func_promotion.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont_for_view">
 		<div align="center">
@@ -20,7 +20,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		  
 			  foreach ($metas as $meta): ?>	  
 				<td><div>	 
-					<a href="/viewmetapromotion/?metaid=<?php echo $meta['id']; ?>"><?php echomarkdown ($meta['metaname']); ?></a>	 
+					<a href="../viewmetapromotion/?metaid=<?php echo $meta['id']; ?>"><?php echomarkdown ($meta['metaname']); ?></a>	 
 				</div></td> 	
 				<?php endforeach; ?>
 		  </tr>
@@ -31,7 +31,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 			<div  align="justify">
 			
 				<div class = "posttitle">
-				  <?php echo ($date.' | Автор: <a href="/account/?id='.$authorId.'" style="color: white" >'.$nameAuthor).'</a>';?>
+				  <?php echo ($date.' | Автор: <a href="../account/?id='.$authorId.'" style="color: white" >'.$nameAuthor).'</a>';?>
 				  <p>Рубрика: <a href="../viewcategory/?id=<?php echo $categoryId; ?>" style="color: white"><?php echo $categoryName;?></a>
 					<?php if ($www != '')//если автор приложил ссылку
 						{
@@ -65,8 +65,8 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
                     </script>
 				  <hr>
 				    <p class="like"> 
-				     <img width = "5%" height = "5%" src="/viewpromotion/view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($viewCount); ?> 
-				     <img width = "3%" height = "3%" src="/viewpromotion/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho (round($averageNumber, 2, PHP_ROUND_HALF_DOWN)); ?>
+				     <img width = "5%" height = "5%" src="../viewpromotion/view.jpg" alt="Число просмотров материала" title="Просмотры"> <?php htmlecho ($viewCount); ?> 
+				     <img width = "3%" height = "3%" src="../viewpromotion/like.jpg" alt="Оценка материала" title="Оценка"> <?php htmlecho (round($averageNumber, 2, PHP_ROUND_HALF_DOWN)); ?>
 					</p>
 					<?php if ($imgHead == '')
 					{
@@ -75,7 +75,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					}
 						else 
 					{
-						$img = '/images/'.$imgHead;//если картинка присутствует
+						$img = '../images/'.$imgHead;//если картинка присутствует
 					}?>
 					
 					<div class = "img_post" style = "background: url(<?php echo $img; ?>);
@@ -89,7 +89,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					<p><?php echo $delAndUpd; ?></p>
 					<p><?php echo $premoderation; ?></p>
 					<p><strong><a href="https://zen.yandex.ru/imagoz" rel = "nofollow">
-						<img width = "5%" height = "5%" src="/viewpromotion/zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
+						<img width = "5%" height = "5%" src="../viewpromotion/zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
 					</p>
 					<div align="center"><?php echo $recommendation; ?></div>
 			</div>			
@@ -108,10 +108,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		 foreach ($similarPosts as $post_1): ?> 
 		<div class="columns__panel">
          <div class="columns__panel-content">
-			<div class = "post_for_columns" style = "background: url(/images/<?php echo $post_1['imghead']; ?>); background-size: cover; ">
-				<strong><a href="/viewpromotion/?id=<?php htmlecho ($post_1['id']); ?>" rel = "nofollow">.</a></strong> 
+			<div class = "post_for_columns" style = "background: url(../images/<?php echo $post_1['imghead']; ?>); background-size: cover; ">
+				<strong><a href="../viewpromotion/?id=<?php htmlecho ($post_1['id']); ?>" rel = "nofollow">.</a></strong> 
 			</div>
-			<strong><a href="/viewpromotion/?id=<?php htmlecho ($post_1['id']); ?>"><?php htmlecho ((implode(' ', array_slice(explode(' ', strip_tags($post_1['promotiontitle'])), 0, 7)))); ?>...</a></strong> 
+			<strong><a href="../viewpromotion/?id=<?php htmlecho ($post_1['id']); ?>"><?php htmlecho ((implode(' ', array_slice(explode(' ', strip_tags($post_1['promotiontitle'])), 0, 7)))); ?>...</a></strong> 
 		  </div>	 
 		</div>	 
 		 <?php endforeach; ?>
@@ -142,7 +142,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 				foreach ($comments as $comment): ?> 	   		
 				<div class = "post">
 				 <div class = "posttitle">
-				    Дата комментария: <?php echo ($comment['date']. ' | Автор: <a href="/account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
+				    Дата комментария: <?php echo ($comment['date']. ' | Автор: <a href="../account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
 				  </div>		
 					<p><?php 
 				   
@@ -166,13 +166,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 						 echo $updAnddel;?></p>
 				  <p>
 					<table cellpadding = "3 %">
-						<td><img width = "90 px" height = "90 px" src="/avatars/<?php echo $comment['avatar'];?>" alt="<?php echo $comment['authorname'];?>"></td>
+						<td><img width = "90 px" height = "90 px" src="../avatars/<?php echo $comment['avatar'];?>" alt="<?php echo $comment['authorname'];?>"></td>
 						<td ><?php echomarkdown (implode(' ', array_slice(explode(' ', strip_tags($comment['text'])), 0, 50))); ?> [...]</td>
 					</table>	
 				  </p>
-				  <p><img width = "3%" height = "3%" src="<?php echo '//'.$_SERVER['SERVER_NAME'];?>/answers.jpg" alt="Ответы на комментарий" title="Количество ответов"> 
+				  <p><img width = "3%" height = "3%" src="<?php echo '//'.MAIN_URL;?>/answers.jpg" alt="Ответы на комментарий" title="Количество ответов"> 
 					  <strong>[<?php echo $comment['subcommentcount']; ?>]</strong></p>
-				  <a href="/viewwallpost/?id=<?php echo $comment['id']; ?>" class="btn btn-primary btn-sm">Открыть</a>
+				  <a href="../viewwallpost/?id=<?php echo $comment['id']; ?>" class="btn btn-primary btn-sm">Открыть</a>
 				</div>	  		   
 				<?php endforeach; ?> 
 				
@@ -184,11 +184,11 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					 // если текущая старница
 					 if($i == $page)
 					 {
-						 echo "<a href='/viewpost/?id=".$idPromotion."&page=$i' class='btn btn-info'>$i</a> ";
+						 echo "<a href='../viewpost/?id=".$idPromotion."&page=$i' class='btn btn-info'>$i</a> ";
 					 } 
 					 else 
 					 {
-						 echo "<a href='/viewpost/?id=".$idPromotion."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
+						 echo "<a href='../viewpost/?id=".$idPromotion."&page=$i' class='btn btn-primary btn-sm'>$i</a> ";
 					 }
 				 }?>
 				</div>	
@@ -197,4 +197,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

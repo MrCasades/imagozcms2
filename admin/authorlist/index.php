@@ -1,4 +1,6 @@
 ﻿<?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 $title = 'Список пользователей';//Данные тега <title>
 $headMain = 'Зарегестрированные пользователи';
@@ -7,7 +9,7 @@ $descr = '';
 $scriptJScode = '<script src="script.js"></script>';//добавить код JS
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка формы входа*/
 if (!loggedIn())
@@ -32,7 +34,7 @@ if (!userRole('Администратор'))
 if (isset($_GET['add']))//Если есть переменная add выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	$padgeTitle = 'Новый автор';// Переменные для формы "Новый автор"
 	$action = 'addform';
@@ -71,7 +73,7 @@ if (isset($_GET['add']))//Если есть переменная add вывод�
 if (isset ($_GET['addform']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -149,7 +151,7 @@ if (isset ($_GET['addform']))
 if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -234,7 +236,7 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Upd'))
 if (isset ($_GET['editform']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -327,7 +329,7 @@ if (isset ($_GET['editform']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Удаление записей о ролях автора*/
 	try
@@ -430,7 +432,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 }	
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 
 /*Команда SELECT*/
 try

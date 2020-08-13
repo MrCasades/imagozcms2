@@ -1,9 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
+
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -19,7 +22,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Обновить платё
 	$_SESSION['idAuthor'] = $_POST['id'];
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -81,7 +84,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Обновить платё
 if (isset($_GET['updewallet']))//Если есть переменная updewallet выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -105,7 +108,7 @@ if (isset($_GET['updewallet']))//Если есть переменная updewall
 		exit();
 	}
 	
-	header ('Location: /account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL.'/account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
 	exit();
 	
 }
@@ -118,7 +121,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Вывести средст
 	$_SESSION['idAuthor'] = $_POST['id'];
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Проверка на создание автором заявки на вывод средств*/
 	
@@ -222,7 +225,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Вывести средст
 if (isset($_GET['editpayment']))//Если есть переменная editpayment выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Проверка на превышение фактического счёта суммы в заявке*/
 	
@@ -323,7 +326,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Назначить прем
 	$_SESSION['idAuthor'] = $_POST['id'];
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -364,7 +367,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Назначить прем
 if (isset($_GET['addbonus']))//Если есть переменная editpayment выводится форма
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -387,11 +390,11 @@ if (isset($_GET['addbonus']))//Если есть переменная editpaymen
 		exit();
 	}
 	
-	header ('Location: /account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL.'/account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
 	exit();
 }
 
-/*Назначение бонусов и премий*/
+/*Пополнение счёта*/
 if (isset ($_POST['action']) && $_POST['action'] == 'Пополнить счёт')
 {
 	$title = 'Пополнить счёт';//Данные тега <title>
@@ -426,7 +429,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'История платеж
 	/*Команда SELECT Вывод истории платежей*/
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{
@@ -456,5 +459,5 @@ if (isset ($_POST['action']) && $_POST['action'] == 'История платеж
 	exit();
 }
 
-header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 exit();

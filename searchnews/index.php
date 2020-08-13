@@ -1,4 +1,7 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
+
 /*Вывод информации для формы поиска*/
 
 $title = 'Поиск новостей | imagoz.ru';
@@ -7,7 +10,7 @@ $robots = 'noindex, follow';
 $descr = 'В данном разделе осуществляется поиск информации';
 	
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 	
 if (loggedIn())
 {
@@ -19,7 +22,7 @@ if (loggedIn())
 if (isset($_GET['action']) && ($_GET['action']) == 'search')
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	/*Переменные для выражения SELECT*/
 	$select = 'SELECT newsblock.id AS newsid, news, newstitle, imghead, imgalt, newsdate, authorname, author.id AS authorid, category.id AS categoryid, categoryname';
@@ -95,7 +98,7 @@ if (isset($_GET['action']) && ($_GET['action']) == 'search')
 }
 	
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 	
 /*Если нужен поиск по авторам
 try

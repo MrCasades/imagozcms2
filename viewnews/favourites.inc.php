@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Добавление / удаление из избранного*/
 
@@ -10,7 +12,7 @@ if (isset($_POST['val_fav']) && isset($_POST['id']) && isset($_POST['idauthor'])
 	$favData = 'SELECT id, news, newstitle, newsdate, imghead, imgalt, idauthor, idcategory FROM newsblock WHERE id = '.$_POST['id'];//подготовка данных для избранного
 	
 	/*Выбор материала для избранного*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -29,7 +31,7 @@ if (isset($_POST['val_fav']) && isset($_POST['id']) && isset($_POST['idauthor'])
 		$imgAlt = $row['imgalt'];
 		$idAuthorPost = $row['idauthor'];
 		$idCategory = $row['idcategory'];
-		$url = '<a href="/viewnews/?id='.$row['id'].'" class="btn btn-primary">Далее</a>';
+		$url = '<a href="//'.MAIN_URL.'/viewnews/?id='.$row['id'].'" class="btn btn-primary">Далее</a>';
 			
 		$sql = $SELECTCONTEST;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
@@ -119,7 +121,7 @@ elseif (isset($_POST['val_fav']) && isset($_POST['id']) && isset($_POST['idautho
 				idauthor = '.$_POST['idauthor'].' AND
 				idnews = '.$_POST['id'];
 		
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{

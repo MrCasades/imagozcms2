@@ -1,7 +1,9 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -30,7 +32,7 @@ if ((!userRole('Администратор')) && (!userRole('Автор')))
 $selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
 		
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 	
 /*Команда SELECT*/
 try
@@ -77,7 +79,7 @@ if (isset($tasks))
 {
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{

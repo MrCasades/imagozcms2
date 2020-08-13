@@ -1,9 +1,12 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
+
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -22,11 +25,11 @@ if (isset ($_GET['id']))
 	/*Канонический адрес*/
 	if(!empty($_GET['utm_referrer']) || !empty($_GET['page']))
 	{
-		$canonicalURL = '<link rel="canonical" href="//'.$_SERVER['SERVER_NAME'].'/viewpost/?id='.$idPost.'"/>';
+		$canonicalURL = '<link rel="canonical" href="//'.MAIN_URL.'/viewpost/?id='.$idPost.'"/>';
 	}
 
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -64,13 +67,8 @@ if (isset ($_GET['id']))
 	/*Если страница отсутствует. Ошибка 404*/
 	if (!$row)
 	{
-		$title = 'Ошибка 404!';//Данные тега <title>
-		$headMain = 'Ошибка 404! Запрашиваемая страница отсутствует.';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Страницы по данному адресу не существует!';
-		include 'error.html.php';
-		exit();
+		header ('Location: ../page-not-found/');//перенаправление обратно в контроллер index.php
+		exit();	
 	}
 	
 	$categoryID = $row['categoryid'];//Сохранение id сатегории
@@ -82,9 +80,9 @@ if (isset ($_GET['id']))
 	$authorComment = '';
 	$jQuery = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	/*Микроразметка*/
 	
@@ -293,7 +291,7 @@ if (isset ($_GET['id']))
 	
 	if ((isset($_SESSION['loggIn'])) && (userRole('Администратор')))
 	{
-		$delAndUpd = "<form action = '/admin/addupdpost/' method = 'post'>
+		$delAndUpd = "<form action = '../admin/addupdpost/' method = 'post'>
 			
 						Действия с материалом:
 						<input type = 'hidden' name = 'id' value = '".$idPost."'>
@@ -301,7 +299,7 @@ if (isset ($_GET['id']))
 						<input type = 'submit' name = 'action' value = 'Del' class='btn btn-primary btn-sm'>
 					  </form>";
 		
-		$premoderation = "<form action = '/admin/premoderation/postpremoderationstatus/' method = 'post'>
+		$premoderation = "<form action = '../admin/premoderation/postpremoderationstatus/' method = 'post'>
 			
 						Статус публикации:
 						<input type = 'hidden' name = 'id' value = '".$idPost."'>
@@ -355,8 +353,8 @@ if (isset ($_GET['id']))
 	
 	elseif (!isset($_SESSION['loggIn']))
 	{
-		$recommendation = '<strong>Вы можете <a href="/admin/registration/?log">авторизироваться</a> в системе или 
-						 <a href="/admin/registration/?reg">зарегестрироваться</a> для того, чтобы рекомендовать статью на главной странице!</strong>';
+		$recommendation = '<strong>Вы можете <a href="../admin/registration/?log">авторизироваться</a> в системе или 
+						 <a href="../admin/registration/?reg">зарегестрироваться</a> для того, чтобы рекомендовать статью на главной странице!</strong>';
 	}
 	
 	/*Вывод похожих материалов*/
@@ -501,10 +499,10 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 	}
 	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	/*Загрузка функций для формы входа*/
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+	require_once MAIN_FILE . '/includes/access.inc.php';
 		
 	/*Возврат id автора*/
 	
@@ -575,7 +573,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Del')
 if (isset ($_GET['delete']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
 	

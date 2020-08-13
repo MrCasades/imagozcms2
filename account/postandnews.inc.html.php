@@ -2,8 +2,8 @@
 	  <div>
 	   <table>
 		<tr>
-		    <td><a href="/account/allauthornews/?id=<?php htmlecho ($idAuthor); ?>">Новости автора</a></td>
-		    <td><a href="/account/allauthorpost/?id=<?php htmlecho ($idAuthor); ?>">Статьи автора</a></td>
+		    <td><a href="../account/allauthornews/?id=<?php htmlecho ($idAuthor); ?>">Новости автора</a></td>
+		    <td><a href="../account/allauthorpost/?id=<?php htmlecho ($idAuthor); ?>">Статьи автора</a></td>
 		</tr>
 		<tr>
 		<?php if (!isset($newsIn))
@@ -18,7 +18,7 @@
 		 echo '<td>'; 
 		 foreach ($newsIn as $news): ?> 
 		  <ul>
-			<li><a href="/viewnews/?id=<?php htmlecho ($news['id']); ?>"><?php htmlecho ($news['newstitle']); ?></a></li> 
+			<li><a href="../viewnews/?id=<?php htmlecho ($news['id']); ?>"><?php htmlecho ($news['newstitle']); ?></a></li> 
 		  </ul>				
 		 <?php endforeach; ?></td>
 		 
@@ -37,7 +37,7 @@
 		 echo '<td>';
 		 foreach ($posts as $post): ?> 
 		  <ul>
-			<li><a href="/viewpost/?id=<?php htmlecho ($post['id']); ?>"><?php htmlecho ($post['posttitle']); ?></a></li>
+			<li><a href="../viewpost/?id=<?php htmlecho ($post['id']); ?>"><?php htmlecho ($post['posttitle']); ?></a></li>
 		  </ul>			
 		 <?php endforeach; ?></td>
 		 </tr>

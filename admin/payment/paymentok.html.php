@@ -1,16 +1,16 @@
 <?php 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont"> 
 	 <div class = "post" align="center">
 		<p>Заявка на вывод денежных средств создана</p>
-		<a href="<?php echo 'https://'.$_SERVER['SERVER_NAME'];?>" class="btn btn-primary btn-sm">Главная страница</a>
+		<a href="<?php echo '//'.MAIN_URL;?>" class="btn btn-primary btn-sm">Главная страница</a>
 	 </div>	
 	</div> 
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

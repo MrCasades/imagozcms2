@@ -1,4 +1,7 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
+
 /*Добавление / удаление из избранного*/
 
 /*Добавить в ибранное*/
@@ -9,7 +12,7 @@ if (isset($_POST['val_fav']) && isset($_POST['id']) && isset($_POST['idauthor'])
 	$favData = 'SELECT id, post, posttitle, postdate, imghead, imgalt, idauthor, idcategory FROM posts WHERE id = '.$_POST['id'];//подготовка данных для избранного
 		
 	/*Выбор материала для избранного*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	try
 	{
@@ -28,7 +31,7 @@ if (isset($_POST['val_fav']) && isset($_POST['id']) && isset($_POST['idauthor'])
 		$imgAlt = $row['imgalt'];
 		$idAuthorPost = $row['idauthor'];
 		$idCategory = $row['idcategory'];
-		$url = '<a href="/viewpost/?id='.$row['id'].'" class="btn btn-primary">Далее</a>';
+		$url = '<a href="//'.MAIN_URL.'/viewpost/?id='.$row['id'].'" class="btn btn-primary">Далее</a>';
 
 			
 		$sql = $SELECTCONTEST;
@@ -119,7 +122,7 @@ elseif (isset($_POST['val_fav']) && isset($_POST['id']) && isset($_POST['idautho
 			   idauthor = '.$_POST['idauthor'].' AND
 			   idpost = '.$_POST['id'];
 		
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 
 	try
 	{

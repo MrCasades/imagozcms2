@@ -1,13 +1,13 @@
 <?php 
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 /*Загрузка функций в шаблон*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/func.inc.php';
+include_once MAIN_FILE . '/includes/func.inc.php';
 
 /*Загрузка header*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
+include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont">
 		<div>
@@ -23,7 +23,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 		  
 			  foreach ($metas as $meta): ?>	  
 				<td><div>	 
-					<a href="/viewmeta/?metaid=<?php echo $meta['id']; ?>"><?php echomarkdown ($meta['metaname']); ?></a>	 
+					<a href="../../../viewmeta/?metaid=<?php echo $meta['id']; ?>"><?php echomarkdown ($meta['metaname']); ?></a>	 
 				</div></td> 	
 				<?php endforeach; ?>
 		  </tr>
@@ -41,7 +41,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					}
 						else 
 					{
-						$img = '<img width = "60%" height = "40%" src="/images/'.$imgHead.'"'. ' alt="'.$imgAlt.'"'.'>';//если картинка присутствует
+						$img = '<img width = "60%" height = "40%" src="../../../images/'.$imgHead.'"'. ' alt="'.$imgAlt.'"'.'>';//если картинка присутствует
 					}?>
 					<p><?php echo $img;?></p>
 					<p><?php echomarkdown ($articleText); ?></p>
@@ -56,4 +56,4 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/header.inc.php';?>
 					
 <?php 
 /*Загрузка footer*/
-include_once $_SERVER['DOCUMENT_ROOT'] . '/footer.inc.php';?>
+include_once MAIN_FILE . '/footer.inc.php';?>

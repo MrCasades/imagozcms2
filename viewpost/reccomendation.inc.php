@@ -1,7 +1,9 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Подключение к базе данных*/
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+include MAIN_FILE . '/includes/db.inc.php';
 	
 /*Команда SELECT выбор цены промоушена*/
 try

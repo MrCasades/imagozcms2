@@ -1,7 +1,9 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../../../includes/path.inc.php';
 
 /*Загрузка функций для формы входа*/
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+require_once MAIN_FILE . '/includes/access.inc.php';
 
 if (loggedIn())
 {
@@ -29,7 +31,7 @@ if (!userRole('Администратор'))
 if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -72,7 +74,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Опубликовать')
 if (isset ($_GET['premodyes']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Скрипт пополнения счёта автора и изменение ранга*/
 	/*Выбор цены  и id автора*/
@@ -212,7 +214,7 @@ if (isset ($_GET['premodyes']))
 		exit();
 	}
 		
-	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }
 
@@ -221,7 +223,7 @@ if (isset ($_GET['premodyes']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Снять с публикации')
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -260,7 +262,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Снять с публик�
 if (isset ($_GET['premodno']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -278,7 +280,7 @@ if (isset ($_GET['premodno']))
 		exit();
 	}
 		
-	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }		
 
@@ -287,7 +289,7 @@ if (isset ($_GET['premodno']))
 if (isset ($_POST['action']) && $_POST['action'] == 'Отклонить')
 {	
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	/*Команда SELECT*/
 	try
@@ -320,9 +322,9 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Отклонить')
 	$id = $row['id'];
 	$button = 'Отклонить';
 	$scriptJScode = '<script src="script.js"></script>
-					 <script src="/js/jquery-1.min.js"></script>
-					 <script src="/js/bootstrap-markdown.js"></script>
-					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	include 'refusalform.html.php';
 
@@ -331,7 +333,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Отклонить')
 if (isset ($_GET['refusedyes']))
 {
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
@@ -361,6 +363,6 @@ if (isset ($_GET['refusedyes']))
 		exit();
 	}
 		
-	header ('Location: http://'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
 	exit();
 }	
