@@ -14,9 +14,14 @@ $robots = 'noindex, nofollow';
 $descr = '';
 
 /*Загрузка формы входа*/
-if (!loggedIn())
+if (loggedIn())
 {
-	include '../../login.html.php';
+	/*Если loggedIn = TRUE, выводится имя пользователя иначе меню авторизации*/
+}
+
+else
+{
+	include MAIN_FILE .'/admin/login.html.php';
 	exit();
 }
 
