@@ -1,4 +1,6 @@
 <?
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Оценка статьи*/
 if (isset($_GET['vote']))
@@ -13,7 +15,7 @@ if (isset($_GET['vote']))
 	$SELECTCONTEST = 'SELECT conteston FROM contest WHERE id = 1';//проверка включения/выключения конкурса
 							
 	/*Подключение к базе данных*/
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	include MAIN_FILE . '/includes/db.inc.php';
 		
 	try
 	{

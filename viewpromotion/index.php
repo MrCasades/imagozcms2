@@ -174,7 +174,8 @@ if (isset ($_GET['id']))
 	try
 	{
 		$sql = 'SELECT * FROM votedauthor WHERE idauthor = '.$selectedAuthor.' AND idpromotion = '.$votedPost;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 
 	catch (PDOException $e)
@@ -188,22 +189,19 @@ if (isset ($_GET['id']))
 		exit();
 	}
 	
-	foreach ($result as $row)
-	{
-		$authorID2[] =  array ('idauthor' => $row['idauthor'], 'idpromotion' => $row['idpromotion']);
-	}	
+	$row = $s -> fetch();
 		
-	if(!isset ($row['idauthor']))
+	if(!$row['idauthor'])
 	{		
 		$votedAuthor = '';
 	}
 	
 	else
 	{
-		$votedAuthor = (int)$row['idauthor'];//id автора, который проголосовал
+		$votedAuthor = (int)$row['idauthor'];;//id автора, который проголосовал
 	}	
 	
-	if (!isset ($row['idpromotion']))//если переменная отсутствует
+	if (!$row['idpromotion'])//если переменная отсутствует
 	{
 		$votedPost = '';
 	}

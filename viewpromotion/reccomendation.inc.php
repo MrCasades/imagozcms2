@@ -1,4 +1,6 @@
 <?php
+/*Загрузка главного пути*/
+include_once '../includes/path.inc.php';
 
 /*Подключение к базе данных*/
 include MAIN_FILE . '/includes/db.inc.php';
