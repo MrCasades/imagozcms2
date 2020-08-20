@@ -7,7 +7,7 @@ require_once MAIN_FILE . '/includes/access.inc.php';
 /*Загрузка ссылки для входа, регистрации*/
 if (!isset($_SESSION['loggIn']))//если не выполнен вход в систему
 {
-	$logPanel = "<a href='//".MAIN_URL."/admin/registration/?log#bottom'>Вход</a> | <a href='//".MAIN_URL."/admin/registration/?reg#bottom'>Регистрация</a>";
+	$logPanel = "<a href='//".MAIN_URL."/admin/registration/?log#bottom'><strong>Вход</strong></a> | <a href='//".MAIN_URL."/admin/registration/?reg#bottom'><strong>Регистрация</strong></a>";
 }
 
 /*Загрузка имени вошедшего пользователя и кнопки выхода из системы*/
@@ -45,7 +45,7 @@ else
 	$unreadCount = $row['unreadcount'];//счётчик непрочитанных сообщений
 	
 	$logPanel = '<form action = " " method = "post">
-					<strong>Профиль:</strong> <a href="//'.MAIN_URL.'/account/?id='.$selectedAuthor.'">'.$_POST['author'].'</a> | <a href="//'.MAIN_URL.'/mainmessages/#bottom" class="btn btn-info btn-sm">СООБЩЕНИЯ ['.$unreadCount.']</a>
+					<strong>Профиль:</strong> <a href="//'.MAIN_URL.'/account/?id='.$selectedAuthor.'"><strong>'.$_POST['author'].'</strong></a> | <a href="//'.MAIN_URL.'/mainmessages/#bottom" class="btn btn-info btn-sm"><strong>СООБЩЕНИЯ ['.$unreadCount.']</strong></a>
 					<input type = "hidden" name = "action" value = "logout">
 					<input type = "hidden" name = "goto" value = "//'.MAIN_URL.'">
 					<input class="btn btn-primary btn-sm" type="submit" value="Exit">
