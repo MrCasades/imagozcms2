@@ -65,6 +65,24 @@
 			echo'<p  align = "center">'.$forAuthors.'</p>';?>
 		
 	</div>
+	
+	<script>
+			 //Цвет непрочитанных сообщений
+			const countMess = document.querySelector("#countcolor"); 
+			const countVal = countMess.innerHTML;
+
+			if (parseInt(countVal) > 0)
+			{
+			   countMess.style.color = ("red");
+			   countMess.innerHTML = "["+countVal+"]";
+			} 
+			
+			else if (parseInt(countVal) === 0) 
+			{
+			   countMess.innerHTML = "";
+			}
+    </script>
+	
 	<div>
 		    <!-- Yandex.RTB R-A-448222-6 -->
 <div id="yandex_rtb_R-A-448222-6"></div>

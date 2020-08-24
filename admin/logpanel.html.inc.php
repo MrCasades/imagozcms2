@@ -45,7 +45,7 @@ else
 	$unreadCount = $row['unreadcount'];//счётчик непрочитанных сообщений
 	
 	$logPanel = '<form action = " " method = "post">
-					<strong>Профиль:</strong> <a href="//'.MAIN_URL.'/account/?id='.$selectedAuthor.'"><strong>'.$_POST['author'].'</strong></a> | <a href="//'.MAIN_URL.'/mainmessages/#bottom" class="btn btn-info btn-sm"><strong>СООБЩЕНИЯ ['.$unreadCount.']</strong></a>
+					<strong>Профиль:</strong> <a href="//'.MAIN_URL.'/account/?id='.$selectedAuthor.'"><strong>'.$_POST['author'].'</strong></a> | <a href="//'.MAIN_URL.'/mainmessages/#bottom" class="btn btn-info btn-sm"><strong>СООБЩЕНИЯ <span id = "countcolor">'.$unreadCount.'</span></strong></a>
 					<input type = "hidden" name = "action" value = "logout">
 					<input type = "hidden" name = "goto" value = "//'.MAIN_URL.'">
 					<input class="btn btn-primary btn-sm" type="submit" value="Exit">
