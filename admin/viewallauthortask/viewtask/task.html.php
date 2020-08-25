@@ -20,8 +20,10 @@ include_once MAIN_FILE . '/header.inc.php';?>
 					<p>Тип: <?php echo $task['tasktypename'];?></p>
 				</div>	
 					<p><?php echomarkdown ($task['text']); ?></p>
-					<p><?php echo $performTask; ?></p>
-					<p><?php echo $refuse; ?></p>
+					<table>
+						<td><?php echo $performTask; ?></td>
+						<td><?php echo $refuse; ?></td>
+					</table>	
 			</div>			
 		 <?php endforeach; ?>
 		</div>	

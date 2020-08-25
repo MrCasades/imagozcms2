@@ -124,7 +124,8 @@ if (isset ($_GET['id']))
 		{
 			$changeTaskStatus = "<form action = '../../../admin/viewalltask/taskstatus/' method = 'post'>
 									<input type = 'hidden' name = 'id' value = '".$_SESSION['idtask']."'>
-									<input type = 'submit' name = 'action' value = 'Взять задание' class='btn btn-primary btn-sm'>
+									<input type = 'submit' name = 'action' value = 'Взять задание' class='btn btn-danger btn-sm'>
+									<a href='#' onclick='history.back();' class='btn btn-primary btn-sm'>Назад</a>
 								 </form>";	
 		}
 		
