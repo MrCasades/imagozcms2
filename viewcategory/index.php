@@ -67,13 +67,6 @@ if (isset ($_GET['id']))
 								'category' => $row['categoryname'], 'author' => $row['authorname']);
 	}	
 	
-	/*Если страница отсутствует. Ошибка 404*/
-	if (!$row)
-	{
-		header ('Location: ../page-not-found/');//перенаправление обратно в контроллер index.php
-		exit();	
-	}
-	
 	try
 	{
 		$sql = $selectPost.$idCategory. ' ORDER BY posts.id DESC '. $limitPost;
@@ -122,6 +115,13 @@ if (isset ($_GET['id']))
 		$promotions[] =  array ('id' => $row['promotionid'], 'idauthor' => $row['authorid'], 'text' => $row['promotion'], 'promotiontitle' =>  $row['promotiontitle'], 'promotiondate' => $row['promotiondate'],
 						'categoryname' => $row['categoryname'], 'authorname' => $row['authorname'],'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'], 'www' =>  $row['www'],
 						'categoryid' => $row['categoryid']);
+	}
+	
+	/*Если страница отсутствует. Ошибка 404*/
+	if (!$row)
+	{
+		header ('Location: ../page-not-found/');//перенаправление обратно в контроллер index.php
+		exit();	
 	}
 
 	if (isset ($row['categoryname']))
