@@ -44,13 +44,8 @@ include_once MAIN_FILE . '/header.inc.php';?>
 			<strong><label for = "post">Введите дополнительную информацию:</label></strong>
 			<textarea class = "descr" id = "accountinfo" name = "accountinfo" data-provide="markdown" rows="10" placeholder = "Расскажите о себе"><?php htmlecho($accountinfo);?></textarea>	
 		</div>		 
-     <br>
-			<p><input type = "hidden" name = "role" value = "<?php htmlecho($role);?>">
-			<input type = "hidden" name = "id" value = "<?php htmlecho($idauthor);?>">
-			
-			<div class="g-recaptcha" data-sitekey="<?php echo SITE_KEY;?>"></div>
-				<br>
-			<input type = "submit" value = "<?php htmlecho($button); ?>" class="btn btn-primary" id = "confirm"></p>
+			<p><div class="g-recaptcha" data-sitekey="<?php echo SITE_KEY;?>"></div></p>
+			<p><input type = "submit" value = "<?php htmlecho($button); ?>" class="btn btn-primary" id = "confirm"></p>
 	</form>
 	</div>
 	</div>

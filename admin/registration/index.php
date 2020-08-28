@@ -48,32 +48,8 @@ if (isset($_GET['reg']))
 	defaultRegFormData();//данные для формы регистрации по умолчанию
 	
 	$errLog = '';
-	
-	/*Формирование списка ролей*/
-	
-	try
-	{
-		$result = $pdo->query('SELECT id, descr FROM role');
-	}
-	
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка формирования списка ролей '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	foreach ($result as $row)
-	{
-		$roles[] = array('id' => $row['id'], 'descr' => $row['descr']);
-	}
-	
 		
-	include MAIN_FILE.'/admin/registration/registration.html.php';
+	include 'registration.html.php';
 	exit();
 }
 
@@ -126,7 +102,7 @@ if (isset ($_GET['addform']))
 		
 		$errLog = 'Заполните все обязательные поля';
 		
-		include $_SERVER['DOCUMENT_ROOT'].'/admin/registration/registration.html.php';
+		include 'registration.html.php';
 		exit();
 	}
 	
@@ -137,7 +113,7 @@ if (isset ($_GET['addform']))
 		
 		$errLog = 'Пароли должны совпадать!';
 		
-		include MAIN_FILE.'/admin/registration/registration.html.php';
+		include 'registration.html.php';
 		exit();
 	}
 	
@@ -204,39 +180,35 @@ if (isset ($_GET['addform']))
 						exit();
 					}			
 				}
-
-				if(isset ($_POST['roles']))
+				
+				/*Если нужно присвоить статус по умолчанию*/
+				
+				/*try 
 				{
-					foreach ($_POST['roles'] as $role)
-					{
-
-						try
-						{
-							$sql = 'INSERT INTO authorrole SET idauthor = :idauthor, idrole = "Автор"';// псевдопеременная получающая значение из формы
-							$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-							$s -> bindValue(':idauthor', $authorid);//отправка значения
-							$s -> bindValue('Автор', $role);//отправка значения
-							$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-						}
-						catch (PDOException $e)
-						{
-							$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-							$headMain = 'Ошибка данных!';
-							$robots = 'noindex, nofollow';
-							$descr = '';
-							$error = 'Ошибка назначения роли '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-							include 'error.html.php';
-							exit();
-						}	
-					}
+					$sql = 'INSERT INTO authorrole SET idauthor = :idauthor, idrole = :idrole';// псевдопеременная получающая значение из формы
+					$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+					$s -> bindValue(':idauthor', $authorid);//отправка значения
+					$s -> bindValue(':idrole', 'Рекламодатель');//отправка значения
+					$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 				}
+				
+				catch (PDOException $e)
+				{
+					$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+					$headMain = 'Ошибка данных!';
+					$robots = 'noindex, nofollow';
+					$descr = '';
+					$error = 'Ошибка назначения роли '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+					include 'error.html.php';
+					exit();
+				}*/	
 
 				$title = 'Регистрация прошла успешно';//Данные тега <title>
 				$headMain = 'Поздравляем, Вы успешно зарегестрировались в системе!';
 				$robots = 'noindex, nofollow';
 				$descr = 'Сообщение об успешной регистрации нового пользователя';
 				$loggood = 'Вы успешно зарегестрировались!';
-				include $_SERVER['DOCUMENT_ROOT'].'/admin/accessgood.html.php';
+				include MAIN_FILE.'/admin/accessgood.html.php';
 				exit();
 				
 			}
@@ -247,7 +219,7 @@ if (isset ($_GET['addform']))
 				
 				$errLog = 'Проверка не пройдена';
 				
-				include MAIN_FILE.'/admin/registration/registration.html.php';
+				include 'registration.html.php';
 				exit();
 			}
 		}
@@ -258,7 +230,7 @@ if (isset ($_GET['addform']))
 			
 			$errLog = 'Проверка не пройдена';
 			
-			include MAIN_FILE.'/admin/registration/registration.html.php';
+			include 'registration.html.php';
 			exit();
 		}
 	}
