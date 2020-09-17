@@ -57,10 +57,31 @@ if (isset ($_GET['id']))
 	
 	if (isset ($row['post']))		//если статьи в рубрике есть!	
 	{
-		$title = 'Все избранные материалы пользователя ' . $row['authorname'].' | imagoz.ru';//Данные тега <title>
-		$headMain = 'Все статьи пользователя ' . $row['authorname'];
+		//Выбор имени в заголовок
+		try
+		{
+			$sql = 'SELECT authorname AS accname FROM author WHERE id = '.$idAuthor;
+			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		}
+
+		catch (PDOException $e)
+		{
+			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+			$headMain = 'Ошибка данных!';
+			$robots = 'noindex, nofollow';
+			$descr = '';
+			$error = 'Ошибка вывода содержимого статьи ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+			include 'error.html.php';
+			exit();
+		}
+
+		$row = $s -> fetch();
+		
+		$title = 'Все избранные материалы пользователя ' . $row['accname'].' | imagoz.ru';//Данные тега <title>
+		$headMain = 'Все статьи пользователя ' . $row['accname'];
 		$robots = 'noindex, follow';
-		$descr = 'В данном разделе публикуются все статьи пользователя '.$row['authorname'];
+		$descr = 'В данном разделе публикуются все статьи пользователя '.$row['accname'];
 	}
 	
 	else		//если статьи отсутствуют!

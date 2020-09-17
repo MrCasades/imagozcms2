@@ -27,7 +27,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 				<div class = "post">
 				  <div class = "posttitle">
 				    <?php echo ($favourite['date']. ' | Автор: <a href="../../account/?id='.$favourite['idauthorpost'].'" style="color: white" >'.$favourite['authorname']).'</a>';?>
-					<p>Рубрика: <a href="../../viewcategory/?id=<?php echo $favourite['categoryid']; ?>" style="color: white"><?php echo $favourite['categoryname'];?></a></p> 
+					<p>Рубрика: <a href="../../viewcategory/?id=<?php echo $favourite['idcategory']; ?>" style="color: white"><?php echo $favourite['categoryname'];?></a></p> 
 				  </div>
 				  	 
 				   <div class = "newstext">

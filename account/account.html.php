@@ -43,8 +43,11 @@ include_once MAIN_FILE . '/header.inc.php';?>
 			<div>
 				    <strong>Сайт:</strong> <?php if ($author['www'] != '')//если автор приложил ссылку
 						{
-							$linkAuthor = '<a href="//'.$author['www'].'" rel = "nofollow">'.$author['www'].'</a>';
-							echo $linkAuthor;
+							echo '<a href="//';
+							htmlecho ($author['www']);
+							echo '" rel = "nofollow">';
+							htmlecho ($author['www']);
+							echo '</a>';
 						}?> 
 				<br/>
 				<br/>
