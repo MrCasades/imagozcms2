@@ -68,18 +68,24 @@
 	
 	<script>
 			 //Цвет непрочитанных сообщений
-			const countMess = document.querySelector("#countcolor"); 
-			const countVal = countMess.innerHTML;
-
-			if (parseInt(countVal) > 0)
-			{
-			   countMess.style.color = ("red");
-			   countMess.innerHTML = "["+countVal+"]";
-			} 
 			
-			else if (parseInt(countVal) === 0) 
+			countsViewAndColor("#countcolor", "red");
+		
+			function countsViewAndColor(idcount, color) 
 			{
-			   countMess.innerHTML = "";
+				const countMess = document.querySelector(idcount); 
+				const countVal = countMess.innerHTML;
+				
+				if (parseInt(countVal) > 0)
+				{
+				   countMess.style.color = (color);
+				   countMess.innerHTML = "["+countVal+"]";
+				} 
+
+				else if (parseInt(countVal) === 0) 
+				{
+				   countMess.innerHTML = "";
+				}
 			}
     </script>
 	
