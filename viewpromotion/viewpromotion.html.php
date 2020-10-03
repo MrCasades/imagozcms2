@@ -83,7 +83,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
     												-webkit-background-size: 100% auto;
    												    -moz-background-size: 100% auto; 
  												    background-size: 100% auto; "></div>	
-					<p><?php echomarkdown ($articleText); ?></p>
+					<p><?php echomarkdown_pub ($articleText); ?></p>
 					<p align="center"><?php echo $video; ?></p>
 					<p><?php echo $votePanel; ?></p>
 					<p><?php echo $delAndUpd; ?></p>

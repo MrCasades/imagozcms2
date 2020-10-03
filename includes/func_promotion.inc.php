@@ -646,3 +646,35 @@ function delCommentData($id, $idArticle)
 	$GLOBALS ['id'] = $row['id'];
 	$GLOBALS ['button'] = 'Удалить';
 }
+
+/*Замена watch?v= на embed в видео*/
+function toEmbedInVideo($video)
+{
+	$element_1 = 'watch?v='; //искомый элемент
+	$replace_1 = 'embed/'; //на что меняем
+	
+	$element_2 = 'youtu.be'; //искомый элемент
+	$replace_2 = 'www.youtube.com/embed'; //на что меняем
+	
+	$findStWatch = strpos ($video, $element_1);
+	$findStYoutube = strpos ($video, $element_2);
+	
+	if ($findStWatch != '')
+	{
+		$video = str_replace($element_1, $replace_1, $video);
+	}
+	
+	elseif ($findStYoutube != '')
+	{
+		$video = str_replace($element_2, $replace_2, $video);
+	}
+	
+	else
+	{
+		$video = $video;
+	}
+	
+	//$video = $findSt != '' ? str_replace($element, $replace, $video) : $video;
+	
+	return $video;
+}

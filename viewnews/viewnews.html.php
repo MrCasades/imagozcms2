@@ -73,7 +73,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 						$img = '<p align="center"><img width = "80%" height = "80%" src="../images/'.$imgHead.'"'. ' alt="'.$imgAlt.'"'.'></p>';//если картинка присутствует
 					}?>
 					<p><?php echo $img;?></p>
-					<p><?php echomarkdown ($articleText); ?></p>
+					<p><?php echomarkdown_pub ($articleText); ?></p>
 					<p align="center"><?php echo $video; ?></p>
 					<p><?php echo $votePanel; ?></p>
 					<p><a name="bottom"></a></p> 

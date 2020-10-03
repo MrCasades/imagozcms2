@@ -577,11 +577,11 @@ if (isset($_GET['addform']))//Если есть переменная addform в�
 			authorbonus = '.$bonus.',
 			pricetext = '.$fullPrice;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':post', $_POST['text']);//отправка значения
+		$s -> bindValue(':post', viewVideoInArticle($_POST['text']));//отправка значения
 		$s -> bindValue(':posttitle', $_POST['posttitle']);//отправка значения
 		$s -> bindValue(':description', $_POST['description']);//отправка значения
 		$s -> bindValue(':imgalt', $_POST['imgalt']);//отправка значения
-		$s -> bindValue(':videoyoutube', $_POST['videoyoutube']);//отправка значения
+		$s -> bindValue(':videoyoutube', toEmbedInVideo($_POST['videoyoutube']));//отправка значения
 		$s -> bindValue(':idcategory', $_POST['category']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
@@ -799,11 +799,11 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 			' WHERE id = :idpost';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> bindValue(':idpost', $_POST['id']);//отправка значения
-		$s -> bindValue(':post', $_POST['text']);//отправка значения
+		$s -> bindValue(':post', viewVideoInArticle($_POST['text']));//отправка значения
 		$s -> bindValue(':posttitle', $_POST['posttitle']);//отправка значения
 		$s -> bindValue(':description', $_POST['description']);//отправка значения
 		$s -> bindValue(':imgalt', $_POST['imgalt']);//отправка значения
-		$s -> bindValue(':videoyoutube', $_POST['videoyoutube']);//отправка значения
+		$s -> bindValue(':videoyoutube', toEmbedInVideo($_POST['videoyoutube']));//отправка значения
 		$s -> bindValue(':idcategory', $_POST['category']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
