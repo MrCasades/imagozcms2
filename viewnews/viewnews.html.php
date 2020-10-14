@@ -144,7 +144,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 				foreach ($comments as $comment): ?> 	   		
 				<div class = "post">
 				 <div class = "posttitle">
-				    Дата комментария: <?php echo ($comment['date']. ' | Автор: <a href="./account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
+				    Дата комментария: <?php echo ($comment['date']. ' | Автор: <a href="../account/?id='.$comment['idauthor'].'" style="color: white" >'.$comment['authorname']).'</a>';?>
 				  </div>		
 					<p><?php 
 				   

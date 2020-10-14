@@ -54,7 +54,7 @@
                             <a href="https://www.imagoz.ru/viewcategory/?id=5">Изображение дня</a>
                         </menu>
                     </header>
-					<?php echomarkdown ($newsMain_3['textnews']); ?>
+					<?php echomarkdown_pub ($newsMain_3['textnews']); ?>
         ]]> 
  </turbo:content>
 
@@ -90,7 +90,7 @@
                             <a href="https://www.imagoz.ru/viewcategory/?id=5">Изображение дня</a>
                         </menu>
                     </header>
-					<?php echomarkdown ($post['text']); ?>
+					<?php echomarkdown_pub ($post['text']); ?>
         ]]> 
  </turbo:content>
 

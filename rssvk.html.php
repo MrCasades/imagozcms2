@@ -42,7 +42,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 <![CDATA['.
 
-markdown2html($newsMain_3['textnews']).'
+markdown2html_pub($newsMain_3['textnews']).'
 
 ]]>
 
@@ -68,7 +68,7 @@ markdown2html($newsMain_3['textnews']).'
 
 <![CDATA['.
 
-markdown2html ($post['text']).'
+markdown2html_pub ($post['text']).'
 
 ]]>
 

@@ -38,7 +38,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>
 
 <![CDATA[<img src="https://'.MAIN_URL.'/images/'.$newsMain_3['imghead'].'"> '.
 	
-	markdown2html(implode(' ', array_slice(explode(' ', strip_tags($newsMain_3['textnews'])), 0, 50))).' [...]
+	markdown2html_pub(implode(' ', array_slice(explode(' ', strip_tags($newsMain_3['textnews'])), 0, 50))).' [...]
 
 ]]>
 
