@@ -142,6 +142,79 @@
   border-radius: 1px;
 }
 
+/*Адаптивное отображение*/
+/* normal Screen */
+@media only screen and (min-width : 1280px) {
+
+	.columns {
+	  column-count: 2;
+	  column-gap: 0;
+	}
+
+	.columns_f1 {
+	  column-count: 1;
+	  column-gap: 0;
+	}
+
+	.columns__panel {
+	  break-inside: avoid;
+	  padding: 5px;
+	}
+	.columns__panel-content {
+	  padding: 1px;
+	  border-radius: 1px;
+	}
+}
+
+/* iPads and small resolution */
+@media only screen and (min-width : 768px) {
+
+	.columns {
+	  column-count: 2;
+	  column-gap: 0;
+	}
+
+	.columns_f1 {
+	  column-count: 1;
+	  column-gap: 0;
+	}
+
+	.columns__panel {
+	  break-inside: avoid;
+	  padding: 5px;
+	}
+	.columns__panel-content {
+	  padding: 1px;
+	  border-radius: 1px;
+	}
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+
+	.columns {
+	  column-count: 1;
+	  column-gap: 0;
+	}
+
+	.columns_f1 {
+	  column-count: 1;
+	  column-gap: 0;
+	}
+
+	.columns__panel {
+	  break-inside: avoid;
+	  padding: 5px;
+	}
+	.columns__panel-content {
+	  padding: 1px;
+	  border-radius: 1px;
+	}
+}
+
+/*Компонент магазина*/
 /* normal Screen */
 @media only screen and (min-width : 1280px) {
 	.columns_shop {
