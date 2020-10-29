@@ -311,6 +311,8 @@ if (isset ($_POST['action']) && ($_POST['action'] == 'Upd' || $_POST['action'] =
 		$selectedMeta[] = $row['idmeta'];
 	}
 	
+	if (empty ($selectedMeta)) $selectedMeta[] = 0;//если нет ни одной тематики
+	
 	/*Список тематик*/
 	try
 	{
