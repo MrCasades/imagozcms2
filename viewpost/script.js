@@ -173,7 +173,8 @@ $( document ).ready(function() {
 					
 					$("#score").html(parseInt($("#score").html()) - parseInt($("#recommprice").attr('value')))//изменение счёта
 
-					$("#ajax_form_recomm").html('Вы успешно рекомендовали статью! Она в данный момент на 1-м месте!');
+					$("#ajax_form_recomm").html('');
+					alert('Вы успешно рекомендовали статью! Она в данный момент на 1-м месте!');
 				}
 
 				return false; 
