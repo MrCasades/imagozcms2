@@ -20,7 +20,7 @@ if (loggedIn())
 /*Подключение к базе данных*/
 include MAIN_FILE . '/includes/db.inc.php';
 
-/*Последняя рекомендованная новость*/
+/*Последняя рекомендованная статья*/
 /*Команда SELECT*/
 
 try
@@ -56,7 +56,7 @@ foreach ($result as $row)
 
 try
 {
-	$sql = 'SELECT * FROM newsblock WHERE premoderation = "YES" ORDER BY newsdate DESC LIMIT 10';//Вверху самое последнее значение
+	$sql = 'SELECT id, news, newstitle, newsdate, imghead FROM newsblock WHERE premoderation = "YES" ORDER BY newsdate DESC LIMIT 10';//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
 
