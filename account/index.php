@@ -38,7 +38,7 @@ if (isset ($_GET['id']))
 		$headMain = 'Ошибка данных!';
 		$robots = 'noindex, nofollow';
 		$descr = '';
-		$error = 'Ошибка вывода содержимого статьи ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		$error = 'Ошибка вывода аккаунта ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
 		include 'error.html.php';
 		exit();
 	}
@@ -61,6 +61,10 @@ if (isset ($_GET['id']))
 	$headMain = $row['authorname'];
 	$robots = 'all';
 	$descr = 'Вся информация о пользователе '.$row['authorname']. ' портала imagoz.ru';
+	$scriptJScode = '<script src="script.js"></script>
+					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
+					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
 	/*Вывод избранного*/
 	
@@ -102,6 +106,7 @@ if (isset ($_GET['id']))
 	}
 	
 	/*Управление аккаунтом*/
+	
 	if ($selectedAuthor == $idAuthor)
 	{
 		$updAndDelAvatar = '<form action = "?" method = "post">
@@ -150,7 +155,7 @@ if (isset ($_GET['id']))
 		/*Команда SELECT, вывод счёта автора*/
 		try
 		{
-			$sql = 'SELECT score FROM author WHERE author.id = '.$_SESSION['idAuthor'];
+			$sql = 'SELECT score FROM author WHERE author.id = '.$selectedAuthor;
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		}
@@ -173,7 +178,7 @@ if (isset ($_GET['id']))
 		{
 			$sql = 'SELECT idpaysystem, paysystemname, ewallet, updewalletdate FROM author 
 					INNER JOIN paysystem ON idpaysystem = paysystem.id 
-					WHERE author.id = '.$_SESSION['idAuthor'];
+					WHERE author.id = '.$selectedAuthor;
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		}
@@ -264,7 +269,7 @@ if (isset ($_GET['id']))
 	{
 		$sql = 'SELECT idrole FROM author 
 				INNER JOIN authorrole ON author.id = idauthor
-				INNER JOIN role ON idrole = role.id WHERE author.id = '.$_SESSION['idAuthor'];
+				INNER JOIN role ON idrole = role.id WHERE author.id = '.$idAuthor;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
@@ -292,7 +297,7 @@ if (isset ($_GET['id']))
 		{
 			$sql = 'SELECT newsblock.id AS newsid, newstitle FROM author
 					INNER JOIN newsblock ON author.id = idauthor 
-					WHERE premoderation = "YES" AND author.id = '.$_SESSION['idAuthor'].' ORDER BY newsblock.id DESC LIMIT 3';
+					WHERE premoderation = "YES" AND author.id = '.$idAuthor.' ORDER BY newsblock.id DESC LIMIT 3';
 			$result = $pdo->query($sql);
 		}
 	
@@ -324,7 +329,7 @@ if (isset ($_GET['id']))
 		{
 			$sql = 'SELECT posts.id AS postid, posttitle FROM author
 					INNER JOIN posts ON author.id = idauthor 
-					WHERE premoderation = "YES" AND author.id = '.$_SESSION['idAuthor'].' ORDER BY posts.id DESC LIMIT 3';
+					WHERE premoderation = "YES" AND author.id = '.$idAuthor.' ORDER BY posts.id DESC LIMIT 3';
 			$result = $pdo->query($sql);
 		}
 	
@@ -356,7 +361,7 @@ if (isset ($_GET['id']))
 		{
 			$sql = 'SELECT rangname, pricenews, pricepost, rating FROM author
 					INNER JOIN rang ON rang.id = idrang 
-					WHERE author.id = '.$_SESSION['idAuthor'];
+					WHERE author.id = '.$idAuthor;
 			$result = $pdo->query($sql);
 		}
 	
@@ -410,12 +415,12 @@ if (isset ($_GET['id']))
 		if	($authorRole == 'Автор')
 		{		
 			$addRole = '<form action=" " metod "post">
-							<input type = "hidden" name = "id" value = "'.$_SESSION['idAuthor'].'">
+							<input type = "hidden" name = "id" value = "'.$idAuthor.'">
 							<input type = "submit" name = "delrang" value = "Удалить ранг Автор" class="btn btn-primary btn-sm"> 
 					 	 </form>';
 			
 			$addBonus = '<form action = "../admin/payment/" method = "post">
-									<input type = "hidden" name = "id" value = "'.$_SESSION['idAuthor'].'">
+									<input type = "hidden" name = "id" value = "'.$idAuthor.'">
 									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Назначить премию или бонус">
 							</form>';//если у автора статус "Автор", то ему можно назначить премию или бонус
 		}
@@ -423,7 +428,7 @@ if (isset ($_GET['id']))
 		else
 		{		
 			$addRole = '<form action=" " metod "post">
-							<input type = "hidden" name = "id" value = "'.$_SESSION['idAuthor'].'">
+							<input type = "hidden" name = "id" value = "'.$idAuthor.'">
 							<input type = "submit" name = "addrang" value = "Присвоить ранг Автор" class="btn btn-primary btn-sm"> 
 					 	 </form>';
 			
@@ -439,7 +444,7 @@ if (isset ($_GET['id']))
 		try
 		{
 			$sql = 'INSERT authorrole SET 
-					idauthor = '.$_SESSION['idAuthor'].' ,
+					idauthor = '.$idAuthor.' ,
 					idrole = "Автор"';
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -457,7 +462,7 @@ if (isset ($_GET['id']))
 			
 		}
 		
-		header ('Location: ../account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
+		header ('Location: ../account/?id='.$idAuthor);//перенаправление обратно в контроллер index.php
 		exit();	
 	}
 	
@@ -469,7 +474,7 @@ if (isset ($_GET['id']))
 		try
 		{
 			$sql = 'DELETE FROM authorrole WHERE 
-					idauthor = '.$_SESSION['idAuthor'].' AND
+					idauthor = '.$idAuthor.' AND
 					idrole = "Автор"';
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
@@ -487,7 +492,7 @@ if (isset ($_GET['id']))
 			
 		}
 		
-		header ('Location: ../account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
+		header ('Location: ../account/?id='.$idAuthor);//перенаправление обратно в контроллер index.php
 		exit();	
 	}
 	
@@ -526,9 +531,34 @@ if (isset ($_GET['id']))
 								'subcommentcount' => $row['subcommentcount'], 'imghead' => $row['imghead'], 'imgalt' => $row['imgalt']);
 	}
 	
-	//@session_start();//Открытие сессии для сохранения id комментария
+	/*Форма добавления комментария / Получение имени автора для вывода меню редактирования или удаления комментария*/
+	if (isset($_SESSION['loggIn']))
+	{
+		$addComment = '<form action = "../account/addupdwallpost/?addform" method = "post" align="center" enctype="multipart/form-data">
+						 <div>
+						 	<label for = "upload">Выберете файл изображения на своём устройстве</label>
+							<input type = "file" name = "upload" id = "upload">
+							<input type = "hidden" name = "action" value = "upload">
+						    <input type = "hidden" name = "idauthin" value = "'.$idAuthor.'">
+							<textarea class = "descr" id = "comment" name = "comment" data-provide="markdown" rows="10" placeholder = "Напишите свой комментарий!"></textarea>	
+						 </div>
+						  <div>
+						  	<br/>
+							<input type = "submit" value = "Добавить запись" class="btn btn-info btn-sm">
+						  </div>	  
+						</form>
+						<hr/>';	
+	}
 	
-	//$_SESSION['idCommentForDel'] = (int) $row['id'];
+	else
+	{
+		$authorName = '';
+		$_SESSION['email'] = '';
+		$addComment = '<a href="../admin/registration/?log">Авторизируйтесь</a> в системе или 
+						 <a href="../admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы оставить запись!';//Вывод сообщения в случае невхода в систему
+		
+		$action = '';	
+	}
 	
 	/*Определение количества статей*/
 	$sql = "SELECT count(*) AS all_articles FROM comments WHERE idaccount = ".$idAuthor;
@@ -545,297 +575,6 @@ if (isset ($_GET['id']))
 	include 'account.html.php';
 	exit();
 }
-
-/*Добавление комментария*/
-if (isset ($_GET['addcomment']))
-{
-	$title = 'Добавление записи на стену | imagoz.ru';//Данные тега <title>
-	$headMain = 'Добавление записи';
-	$robots = 'noindex, follow';
-	$descr = 'Форма добавления записи';
-	$padgeTitle = 'Новая запись';// Переменные для формы "Новая статья"
-	$action = 'addform';	
-	$text = '';
-	$imgalt = '';
-	$idauthor = '';
-	$id = '';
-	$button = 'Добавить запись';
-	$scriptJScode = '<script src="script.js"></script>
-					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
-					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
-					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
-	
-	if (isset($_SESSION['loggIn']))
-	{
-		$authorComment = authorLogin ($_SESSION['email'], $_SESSION['password']);//возвращает имя автора
-		
-		include 'formwall.html.php';
-		exit();
-	}	
-	
-	else
-	{
-		$title = 'Ошибка добавления записи';//Данные тега <title>
-		$headMain = 'Ошибка добавления записи';
-		$robots = 'noindex, follow';
-		$descr = '';
-		$commentError = $commentError = '<a href="//'.MAIN_URL.'/admin/registration/?log">Авторизируйтесь</a> в системе или 
-						 <a href="//'.MAIN_URL.'/admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы добавить сообщение на стену!';//Вывод сообщения в случае невхода в систему
-		
-		include 'commentfail.html.php';
-		exit();
-	}	
-}
-
-/*Обновление комментария*/
-if (isset ($_POST['action']) && $_POST['action'] == 'Редактировать')
-{		
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-
-	try
-	{
-		$sql = 'SELECT * FROM comments  
-		WHERE id = :idcomment';//Вверху самое последнее значение
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Error table in mainpage' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();	
-	
-	$title = 'Редактирование записи | imagoz.ru';//Данные тега <title>
-	$headMain = 'Редактирование записи';
-	$robots = 'noindex, follow';
-	$descr = 'Форма редактирования записи';
-	$action = 'editform';	
-	$text = $row['comment'];
-	$imgalt = $row['imgalt'];
-	$id = $row['id'];
-	$button = 'Обновить запись';
-	$scriptJScode = '<script src="script.js"></script>
-					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
-					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
-					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
-	
-	@session_start();//Открытие сессии для сохранения названия файла изображения
-	
-	$_SESSION['imghead'] = $row['imghead'];
-	
-	include 'formwall.html.php';
-	exit();
-}
-	
-/*команда INSERT  - добавление комментария в базу данных*/
-if (isset($_GET['addform']))//Если есть переменная addform выводится форма
-{
-	/*Загрузка изображения на стену*/
-	
-	$fileNameScript = 'comm-'. time();//имя файла новости/статьи
-	$filePathScript = '/images/';//папка с изображениями для новости/статьи
-	
-	/*Загрузка скрипта добавления файла*/
-	include MAIN_FILE . '/includes/uploadfile.inc.php';
-	
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-		
-	/*Возвращение id автора*/
-		
-	$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
-		
-	try
-	{
-		$sql = 'INSERT INTO comments SET 
-			comment = :comment,	
-			commentdate = SYSDATE(),
-			imgalt = :imgalt,
-			imghead = '.'"'.$fileName.'"'.', '.
-			'idauthor = '.$selectedAuthor.','.
-			'idaccount = '.$_SESSION['idAuthor'];
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':comment', $_POST['comment']);//отправка значения
-		$s -> bindValue(':imgalt', $_POST['imgalt']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-	
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка добавления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	header ('Location: ../account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
-	exit();	
-}
-	
-/*UPDATE - обновление текста комментария*/
-
-if (isset($_GET['editform']))//Если есть переменная editform выводится форма
-{
-	if (!is_uploaded_file($_FILES['upload']['tmp_name']))//если файл не загружен, оставить старое имя
-	{
-		$fileName = $_SESSION['imghead'];
-	}
-	
-	else
-	{
-		/*Удаление старого файла изображения*/
-		$fileName = $_SESSION['imghead'];
-		$delFile = $_SERVER['DOCUMENT_ROOT'] . '/images/'.$fileName;//путь к файлу для удаления
-		unlink($delFile);//удаление файла
-		
-		$fileNameScript = 'comm-'. time();//имя файла новости/статьи
-		$filePathScript = '/images/';//папка с изображениями для новости/статьи
-		
-		/*Загрузка скрипта добавления файла*/
-		include MAIN_FILE . '/includes/uploadfile.inc.php';
-	}
-	
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	try
-	{
-		$sql = 'UPDATE comments SET 
-			comment = :comment,
-			imgalt = :imgalt,
-			imghead = '.'"'.$fileName.'"'.
-			' WHERE id = :idcomment';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
-		$s -> bindValue(':comment', $_POST['comment']);//отправка значения
-		$s -> bindValue(':imgalt', $_POST['imgalt']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-		
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка обновления информации comment'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	header ('Location: ../account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
-	exit();
-}
-
-/*DELETE - удаление комментария*/
-
-if (isset ($_POST['action']) && $_POST['action'] == 'Del')	
-{	
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	/*Команда SELECT*/
-	try
-	{
-		$sql = 'SELECT id, imghead FROM comments WHERE id = :idcomment';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора id и заголовка newsblock : ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();
-	
-	$title = 'Удаление записи';//Данные тега <title>
-	$headMain = 'Удаление записи';
-	$robots = 'noindex, follow';
-	$descr = '';
-	$action = 'delete';
-	$posttitle = 'Запись';
-	$id = $row['id'];
-	$button = 'Удалить';
-	
-	@session_start();//Открытие сессии для сохранения названия файла изображения
-	
-	$_SESSION['imghead'] = $row['imghead'];
-	
-	include 'delete.html.php';
-}
-	
-if (isset ($_GET['delete']))
-{
-	/*Удаление изображения заголовка*/
-	$fileName = $_SESSION['imghead'];
-	$delFile = $_SERVER['DOCUMENT_ROOT'] . '/images/'.$fileName;//путь к файлу для удаления
-	unlink($delFile);//удаление файла
-	
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	try
-	{
-		$sql = 'DELETE FROM comments WHERE id = :idcomment';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-	
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка удаления информации '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	/*Удаление ответов*/
-	try
-	{
-		$sql = 'DELETE FROM subcomments WHERE idcomment = :idcomment' ;
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idcomment', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-	
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка удаления ответов '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	header ('Location: ../account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
-	exit();
-}	
 
 /*Смена пароля*/
 
@@ -1307,7 +1046,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'Стать рекламод
 	exit();
 }
 
-	/*Команда UPDATE - обновление роли*/
+/*Команда UPDATE - обновление роли*/
 if (isset ($_GET['addrole']))
 {
 	include MAIN_FILE . '/includes/db.inc.php';

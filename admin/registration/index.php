@@ -6,9 +6,8 @@ include_once '../../includes/path.inc.php';
 /*Загрузка функций для формы входа*/
 include_once MAIN_FILE . '/includes/access.inc.php';
 
-/*КЛЮЧИ*/
-define('SITE_KEY', '6Le8cswUAAAAANIKzxmwHehiR6-jKRJnUeqw5JRB');
-define('SECRET_KEY', '6Le8cswUAAAAAG6x81r5pO1YpMwyqktm9m5clOgv');
+/*Загрузка ключей*/
+include_once MAIN_FILE . '/includes/capchakey.inc.php';
 
 /*Авторизация в системе*/
 if (isset($_GET['log']))
@@ -136,12 +135,10 @@ if (isset ($_GET['addform']))
         	{
 				try
 				{
-					$sql = 'INSERT INTO author SET authorname = :authorname, email = :email, www = :www, accountinfo = :accountinfo, regdate = SYSDATE()';// псевдопеременная получающая значение из формы
+					$sql = 'INSERT INTO author SET authorname = :authorname, email = :email, regdate = SYSDATE()';// псевдопеременная получающая значение из формы
 					$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 					$s -> bindValue(':authorname', $_POST['authorname']);//отправка значения
 					$s -> bindValue(':email', $_POST['email']);//отправка значения
-					$s -> bindValue(':www', $_POST['www']);//отправка значения
-					$s -> bindValue(':accountinfo', $_POST['accountinfo']);//отправка значения
 					$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 				}
 				catch (PDOException $e)
