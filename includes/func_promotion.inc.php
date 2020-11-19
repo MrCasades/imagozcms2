@@ -74,6 +74,21 @@ function markdown2html ($text)
 	return Markdown($text);
 }
 
+/*markdown2html в одобренных публикациях*/
+function markdown2html_pub ($text)
+{
+	/*Загрузка библиотеки Markdown*/
+	include_once 'markdown_promotion.php';
+	
+	return Markdown($text);
+	
+}
+
+function echomarkdown_pub ($text)
+{
+	echo markdown2html_pub ($text);
+}
+
 /*markdown2html для использования в шаблоне*/
 	
 function echomarkdown ($text)

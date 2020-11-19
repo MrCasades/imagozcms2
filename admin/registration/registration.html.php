@@ -6,7 +6,7 @@ include_once MAIN_FILE . '/includes/func.inc.php';
 include_once MAIN_FILE . '/header.inc.php';?>
 	<p><a name="bottom"></a></p>  
 	<div class = "maincont_for_view">
-	<div class = "post">
+	<div class = "post_reg_log">
 	  <div  align="justify">
 		<p>Пройдите процедуру регистрации в системе, для того, чтобы получить возможность оценивать материалы наших авторов, оставлять комментарии и отвечать на них. 
 		   У Вас будет свой профиль, где сможете вести персональный блог на стенеи и общаться с другими пользователями.</p>

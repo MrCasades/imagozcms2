@@ -299,8 +299,8 @@ if (isset ($_GET['id']))
 	
 	elseif (!isset($_SESSION['loggIn']))
 	{
-		$recommendation = '<strong>Вы можете <a href="/admin/registration/?log">авторизироваться</a> в системе или 
-						 <a href="/admin/registration/?reg">зарегестрироваться</a> для того, чтобы рекомендовать статью на главной странице!</strong>';
+		$recommendation = '<strong>Вы можете <a href="../admin/registration/?log">авторизироваться</a> в системе или 
+						 <a href="../admin/registration/?reg">зарегестрироваться</a> для того, чтобы рекомендовать статью на главной странице!</strong>';
 	}
 	
 	/*Вывод похожих материалов*/
@@ -384,8 +384,8 @@ if (isset ($_GET['id']))
 	{
 		$authorName = '';
 		$_SESSION['email'] = '';
-		$addComment = '<a href="/admin/registration/?log">Авторизируйтесь</a> в системе или 
-						 <a href="/admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы оставить комментарий!';//Вывод сообщения в случае невхода в систему
+		$addComment = '<a href="../admin/registration/?log">Авторизируйтесь</a> в системе или 
+						 <a href="../admin/registration/?reg">зарегестрируйтесь</a> для того, чтобы оставить комментарий!';//Вывод сообщения в случае невхода в систему
 		
 		$action = '';	
 	}

@@ -543,6 +543,8 @@ function defaultRegFormData()
 					 <script src="/js/jquery-1.min.js"></script>
 					 <script src="/js/bootstrap-markdown.js"></script>
 					 <script src="/js/bootstrap.min.js"></script>';//добавить код JS
+	
+	$GLOBALS ['reCapchaAPI'] = '<script src="https://www.google.com/recaptcha/api.js"></script>'; //для ReCapcha
 }
 
 /*Добавление микроразметки*/

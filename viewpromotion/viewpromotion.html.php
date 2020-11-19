@@ -91,7 +91,6 @@ include_once MAIN_FILE . '/header.inc.php';?>
 					<p><strong><a href="https://zen.yandex.ru/imagoz" rel = "nofollow">
 						<img width = "5%" height = "5%" src="../viewpromotion/zen-icon.png" alt="Наш Дзен-канал" title="zen.yandex.ru/imagoz">Подписывайтесь на наш Дзен-канал!</a></strong>
 					</p>
-					<div align="center"><?php echo $recommendation; ?></div>
 			</div>			
 		</div>
 		<div>
