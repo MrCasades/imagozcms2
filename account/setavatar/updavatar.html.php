@@ -14,7 +14,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 			<td><input type = "hidden" name = "action" value = "upload"></td>
 		  </tr>	
 		  <tr>
-			<td><input type = "hidden" name = "id" value = "<?php htmlecho($id); ?>"></td>
+			<td><input type = "hidden" name = "id" value = "<?php htmlecho($idAuthor); ?>"></td>
 			<td><input type = "submit" value = "<?php htmlecho($button); ?>" class="btn btn-primary btn-sm"></td>
 		  </tr>	
 		 </table>	

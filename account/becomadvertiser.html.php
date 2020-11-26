@@ -6,7 +6,7 @@ include_once MAIN_FILE . '/includes/func.inc.php';
 include_once MAIN_FILE . '/header.inc.php';?>
 
 	
-	<div class = "maincont"> 
+	<div class = "maincont_for_view"> 
 	 <div class = "post" align="center">
 		<div align = "justify"><?php echo $annotation; ?></div>
 		<p><strong>Получение / отказ от роли рекламодателя:</strong></p>

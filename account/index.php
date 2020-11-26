@@ -17,19 +17,19 @@ if (loggedIn())
 if (isset ($_GET['id']))
 {
 	$idAuthor = $_GET['id'];
-	$selectedAuthor = '';//если автор не выбран
 	
-	@session_start();//Открытие сессии для сохранения id автора
-	
-	$_SESSION['idAuthor'] = $idAuthor;
-	$select = 'SELECT * FROM author WHERE id = ';
+	/*Возвращение id автора для вызова функции изменения пароля*/
 
+	$selectedAuthor = isset($_SESSION['loggIn']) ? (int)(authorID($_SESSION['email'], $_SESSION['password'])) : '';//id автора
+	
 	include MAIN_FILE . '/includes/db.inc.php';
 	
 	try
 	{
-		$sql = $select.$idAuthor;
-		$result = $pdo->query($sql);
+		$sql = 'SELECT authorname, www, accountinfo, avatar FROM author WHERE id = :id';
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':id', $idAuthor);//отправка значения
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	
 	catch (PDOException $e)
@@ -42,25 +42,25 @@ if (isset ($_GET['id']))
 		include 'error.html.php';
 		exit();
 	}
-
-	/*Вывод результата в шаблон*/
-	foreach ($result as $row)
-	{
-		$authors[] =  array ('id' => $row['id'], 'authorname' => $row['authorname'], 'www' => $row['www'],
-							'accountinfo' => $row['accountinfo'], 'avatar' => $row['avatar']);
-	}	
+	
+	$row = $s -> fetch();
+	
+	$authorName = $row['authorname'];
+	$www = $row['www'];
+	$accountInfo = $row['accountinfo'];
+	$avatar = $row['avatar'];
 	
 	/*Если страница отсутствует. Ошибка 404*/
-	if (empty ($authors))
+	if (!$row)
 	{
 		header ('Location: ../page-not-found/');//перенаправление обратно в контроллер index.php
 		exit();	
 	}
 	
-	$title = 'Профиль пользователя '.$row['authorname'];//Данные тега <title>
-	$headMain = $row['authorname'];
+	$title = 'Профиль пользователя '.$authorName;//Данные тега <title>
+	$headMain = $authorName;
 	$robots = 'all';
-	$descr = 'Вся информация о пользователе '.$row['authorname']. ' портала imagoz.ru';
+	$descr = 'Вся информация о пользователе '.$authorName. ' портала imagoz.ru';
 	$scriptJScode = '<script src="script.js"></script>
 					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
 					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
@@ -98,38 +98,13 @@ if (isset ($_GET['id']))
 							'categoryname' => $row['categoryname']);
 	}		
 	
-	/*Возвращение id автора для вызова функции изменения пароля*/
-		
-	if (isset($_SESSION['loggIn']))
-	{
-		$selectedAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
-	}
-	
 	/*Управление аккаунтом*/
 	
 	if ($selectedAuthor == $idAuthor)
 	{
-		$updAndDelAvatar = '<form action = "?" method = "post">
-								<div>
-									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить аватар">
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Удалить аватар">
-								</div>
-							</form>';//Вывод кнопок удаления-обновления аватара
-		
-		$changePass = '<a href="../account/?change">Сменить пароль</a>';//запуск ф-ции "Смена пароля"
-		
-		$updAccountInfo = '<form action = "?" method = "post">
-								<div>
-									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить информацию профиля">
-								</div>
-							</form>';//запуск обновления информации профиля
-		
 		$setAccount = '<form action = "./setaccount/" method = "post">
 								<div>
-									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Настройки">
+									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Настройки учётной записи">
 								</div>
 							</form>';//запуск обновления информации профиля
 		
@@ -452,9 +427,10 @@ if (isset ($_GET['id']))
 		try
 		{
 			$sql = 'INSERT authorrole SET 
-					idauthor = '.$idAuthor.' ,
+					idauthor = :id,
 					idrole = "Автор"';
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> bindValue(':id', $idAuthor);//отправка значения
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		}
 		
@@ -583,403 +559,7 @@ if (isset ($_GET['id']))
 	include 'account.html.php';
 	exit();
 }
-
-/*Смена пароля*/
-
-if (isset($_GET['change']))
-{
-	$title = 'Введите старый пароль!';//Данные тега <title>
-	$headMain = 'Введите старый пароль';
-	$robots = 'noindex, nofollow';
-	$descr = '';
-	$action = 'addnewpass';
-	$errLog ='';
-	$password = ' ';
-	$button = 'Ввод';
 	
-	include 'oldpass.html.php';
-}
-	
-if (isset ($_GET['addnewpass']))
-{	
-	if ($_POST['password'] != '')
-	{
-		$password = md5($_POST['password'] . 'fgtn');
-	}
-	
-	/*Если старый пароль не совпадает*/
-	if ($password != $_SESSION['password'])
-	{
-		$title = 'Введите старый пароль!';//Данные тега <title>
-		$headMain = 'Введите старый пароль';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$action = 'addnewpass';
-		$errLog ='Пароли не совпадают';
-		$password = ' ';
-		$button = 'Ввод';
-		
-		include 'oldpass.html.php';
-	}	
-	
-	else
-	{
-		$title = 'Введите новый пароль!';//Данные тега <title>
-		$headMain = 'Введите новый пароль';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$action = 'changepass';
-		$errLog ='';
-		$password1 = ' ';
-		$password2 = '';
-		$button = 'Ввод';
-		
-		include 'newpass.html.php';
-	}
-}
-
-if (isset ($_GET['changepass']))
-{
-	if (($_POST['password'] != $_POST['password2']) || ($_POST['password'] == ''))
-	{
-		$title = 'Введите новый пароль!';//Данные тега <title>
-		$headMain = 'Введите новый пароль';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$action = 'changepass';
-		$errLog ='Пароли должны совпадать или поле не должно быть пустым';
-		$password1 = ' ';
-		$password2 = '';
-		$button = 'Ввод';
-		
-		include 'newpass.html.php';
-	}
-	
-	elseif ($_POST['password'] != '')
-	{
-		/*Обновление пароля*/
-		/*Подключение к базе данных*/
-		
-		include MAIN_FILE . '/includes/db.inc.php';
-	
-		$password = md5($_POST['password'] . 'fgtn');
-		
-		try
-		{
-			$sql = 'UPDATE author SET password = :password WHERE id = :id';
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> bindValue(':password', $password);//отправка значения
-			$s -> bindValue(':id', $_SESSION['idAuthor']);//отправка значения
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-		}
-		
-		catch (PDOException $e)
-		{
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка назначения пароля '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-		}	
-
-		try
-		{
-			$sql = 'SELECT password FROM author WHERE id = :id';
-			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-			$s -> bindValue(':id', $_SESSION['idAuthor']);//отправка значения
-			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-		}
-		
-		catch (PDOException $e)
-		{
-			$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-			$headMain = 'Ошибка данных!';
-			$robots = 'noindex, nofollow';
-			$descr = '';
-			$error = 'Ошибка назначения пароля '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-			include 'error.html.php';
-			exit();
-		}
-		
-		$row = $s -> fetch();
-			
-		$_SESSION['password'] = $row['password'];
-		
-		$title = 'Смена пароля прошла успешно';//Данные тега <title>
-		$headMain = 'Смена пароля прошла успешно!';
-		$robots = 'noindex, nofollow';
-		$descr = 'Сообщение об успешной смене пароля';
-		$loggood = 'Вы успешно сменили пароль!';
-	
-		include MAIN_FILE.'/admin/accessgood.html.php';
-		exit();
-	}
-}
-
-/*Обновить аватар*/
-
-if (isset ($_POST['action']) && $_POST['action'] == 'Обновить аватар')
-{
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	/*Команда SELECT*/
-	try
-	{
-		$sql = 'SELECT id, avatar FROM author WHERE id = '.$_SESSION['idAuthor'];
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idnews', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-		$headMain = 'Ошибка данных!';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора данных аватара: ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();
-	
-	$title = 'Обновление аватара';//Данные тега <title>
-	$headMain = 'Обновление аватара';
-	$robots = 'noindex, nofollow';
-	$descr = '';
-	$action = 'updavatar';
-	$avatar = $row['avatar'];
-	$id = $row['id'];
-	$button = 'Обновить аватар';
-	$errorForm = '';
-	
-	@session_start();//Открытие сессии для сохранения названия файла изображения
-	
-	$_SESSION['avatar'] = $row['avatar'];
-	
-	include 'updavatar.html.php';
-	exit();
-}
-
-/*UPDATE - обновление аватара*/
-
-if (isset($_GET['updavatar']))//Если есть переменная editform выводится форма
-{
-	if (!is_uploaded_file($_FILES['upload']['tmp_name']))//если файл не загружен, оставить старое имя
-	{
-		$fileName = $_SESSION['avatar'];
-	}
-	
-	else
-	{
-		/*Удаление старого файла изображения*/
-		
-		if ($_SESSION['avatar'] != 'ava-def.jpg')
-		{
-			$fileName = $_SESSION['avatar'];
-			$delFile = MAIN_FILE . '/avatars/'.$fileName;//путь к файлу для удаления
-			unlink($delFile);//удаление файла
-		}
-		
-		$fileNameScript = 'ava-'. time();//имя файла новости/статьи
-		$filePathScript = '/avatars/';//папка с изображениями для новости/статьи
-		
-		/*Загрузка скрипта добавления файла*/
-		include MAIN_FILE . '/includes/uploadfile.inc.php';
-	}
-	
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	try
-	{
-		$sql = 'UPDATE author SET 
-			avatar = '.'"'.$fileName.'"'.'WHERE id = '.$_SESSION['idAuthor'];
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка обновления аватара'. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
-	exit();
-}
-
-/*Удаление аватара*/
-if (isset ($_POST['action']) && $_POST['action'] == 'Удалить аватар')
-{	
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	/*Команда SELECT*/
-	try
-	{
-		$sql = 'SELECT id, avatar FROM author WHERE id = '.$_SESSION['idAuthor'];
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':idnews', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора аватара : ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	$row = $s -> fetch();
-	
-	if ($row['avatar'] == "ava-def.jpg")
-	{
-		$title = 'Удаление аватара';//Данные тега <title>
-		$headMain = 'Удаление аватара';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Нельзя удалить аватар по умолчанию!';
-	
-		include 'error.html.php';
-	}
-	
-	else
-	{
-		
-		$title = 'Удаление аватара';//Данные тега <title>
-		$headMain = 'Удаление аватара';
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$action = 'delava';
-		$posttitle = 'Аватар';
-		$button = 'Удалить';
-		
-		@session_start();//Открытие сессии для сохранения названия файла изображения
-	
-		$_SESSION['avatar'] = $row['avatar'];
-	
-		include 'delete.html.php';
-	}
-}
-
-if (isset ($_GET['delava']))
-{
-	
-	/*Удаление аватара*/
-	$fileName = $_SESSION['avatar'];
-	$delFile = MAIN_FILE . '/avatars/'.$fileName;//путь к файлу для удаления
-	unlink($delFile);//удаление 
-	
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	try
-	{
-		$sql = 'UPDATE author SET 
-			avatar = "ava-def.jpg" WHERE id = '.$_SESSION['idAuthor'];
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка удаления аватара '. ' Error: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	header ('Location: //'.MAIN_URL);//перенаправление обратно в контроллер index.php
-	exit();
-}
-/*Обновление информации профиля*/
-
-/*Обновление информации о профиле*/
-if (isset ($_POST['action']) && $_POST['action'] == 'Обновить информацию профиля')
-{
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	/*Команда SELECT*/
-	try
-	{
-		$sql = 'SELECT author.id, authorname, email, www, accountinfo FROM author WHERE author.id = :id';
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':id', $_POST['id']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Ошибка выбора информации аккаунта : ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}	
-
-	$row = $s -> fetch();
-	
-	$title = 'Редактирование профиля';//Данные тега <title>
-	$headMain = 'Редактировать профиль пользователя '.$row['authorname'];
-	$robots = 'noindex, nofollow';
-	$descr = '';
-	$padgeTitle = 'Редактировать данные пользователя';// Переменные для формы "Новый автор"
-	$action = 'updacc';
-	$authorname = $row['authorname'];
-	$email = $row['email'];
-	$www = $row['www'];
-	$accountinfo = $row['accountinfo'];
-	$idauthor = $row['id'];
-	$button = 'Обновить информацию об авторе';
-	$scriptJScode = '<script src="script.js"></script>
-					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
-					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
-					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
-	
-	include 'form.html.php';
-	exit();
-	
-}
-
-	/*Команда UPDATE*/
-if (isset ($_GET['updacc']))
-{
-	/*Подключение к базе данных*/
-	include MAIN_FILE . '/includes/db.inc.php';
-	
-	try
-	{
-		$sql = 'UPDATE author SET www = :www, accountinfo = :accountinfo WHERE author.id = :id';// псевдопеременная получающая значение из формы
-		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
-		$s -> bindValue(':id', $_POST['id']);//отправка значения
-		$s -> bindValue(':www', $_POST['www']);//отправка значения
-		$s -> bindValue(':accountinfo', $_POST['accountinfo']);//отправка значения
-		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
-	}
-	
-	catch (PDOException $e)
-	{
-		$robots = 'noindex, nofollow';
-		$descr = '';
-		$error = 'Error Update: '. $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-		include 'error.html.php';
-		exit();
-	}
-	
-	header ('Location: ..'.'/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
-	exit();
-}
-
 /*Присвоение роли "Рекламодатель"*/
 if (isset ($_POST['action']) && $_POST['action'] == 'Стать рекламодателем')
 {
@@ -1062,9 +642,10 @@ if (isset ($_GET['addrole']))
 		try
 		{
 			$sql = 'INSERT authorrole SET 
-					idauthor = '.$_SESSION['idAuthor'].' ,
+					idauthor = :id,
 					idrole = "Рекламодатель"';
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+			$s -> bindValue(':id', $_POST['id']);//отправка значения
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		}
 		
@@ -1132,9 +713,10 @@ if (isset ($_GET['delrole']))
 	try
 	{
 		$sql = 'DELETE FROM authorrole WHERE 
-				idauthor = '.$_SESSION['idAuthor'].' AND
+				idauthor = :id AND
 				idrole = "Рекламодатель"';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':id', $_POST['id']);//отправка значения
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 		
@@ -1150,6 +732,6 @@ if (isset ($_GET['delrole']))
 			
 	}
 		
-	header ('Location: ../account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
+	header ('Location: ../account/?id='.$_POST['id']);//перенаправление обратно в контроллер index.php
 	exit();	
 }

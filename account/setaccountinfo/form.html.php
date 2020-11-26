@@ -5,7 +5,7 @@ include_once MAIN_FILE . '/includes/func.inc.php';
 /*Загрузка header*/
 include_once MAIN_FILE . '/header.inc.php';?>
 
-	<div class = "maincont">
+	<div class = "maincont_for_view">
 	<div class = "post">
 	<form action = "?<?php htmlecho ($action); ?>" method = "post">
 	  <table>	

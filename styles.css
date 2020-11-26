@@ -10,6 +10,13 @@
 		
 }
 
+details {
+	padding: 15px;
+	color: red;
+    background-color: #f6f7f8;
+    margin-bottom: 20px;
+}
+
 .logo {
 	text-align: center;
 }

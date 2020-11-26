@@ -12,13 +12,11 @@ include_once MAIN_FILE . '/header.inc.php';?>
 		<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,twitter,lj"></div></p>	
 	
 		<div>
-		<p><?php echo $updAndDelAvatar; ?></p>
 		<p><?php echo $mainMessagesForm; ?></p>
 		<p><?php echo $setAccount; ?></p>
 		
-		 <?php foreach ($authors as $author): ?> 
-		   <p><img width = "150 px" height = "150 px" src="../avatars/<?php echo $author['avatar'];?>" alt="<?php echo $author['authorname'];?>"></p>
-		   <p><?php if (($authorRole == 'Автор') || ($authorRole == 'Администратор'))//если пользователю присвоен определённый статус, то выводятся его ранг
+		   <p><img width = "150 px" height = "150 px" src="../avatars/<?php echo $avatar;?>" alt="<?php echo $authorName;?>"></p>
+		   <p><?php if (($authorRole === 'Автор') || ($authorRole === 'Администратор'))//если пользователю присвоен определённый статус, то выводятся его ранг
 				
 				{
 					echo ('<strong> Авторский ранг: '.$rangView.' </strong>'.$score.
@@ -32,7 +30,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 					echo $closeTable;
 				}?></p>
 			
-			<p><?php if ($authorRole == 'Рекламодатель')//если пользователю присвоен определённый статус, то выводятся его ранг
+			<p><?php if ($authorRole === 'Рекламодатель')//если пользователю присвоен определённый статус, то выводятся его ранг
 				
 				{
 					echo ($score.'<p>'.$payForm.'</p>'.$payFormIn);
@@ -42,23 +40,19 @@ include_once MAIN_FILE . '/header.inc.php';?>
 			<p><?php echo $addBonus; ?></p>
 			<p><?php echo $addRoleAdvertiser; ?></p>
 			<div>
-				    <strong>Сайт:</strong> <?php if ($author['www'] != '')//если автор приложил ссылку
+				    <strong>Сайт:</strong> <?php if ($www !== '')//если автор приложил ссылку
 						{
 							echo '<a href="//';
-							htmlecho ($author['www']);
+							htmlecho ($www);
 							echo '" rel = "nofollow">';
-							htmlecho ($author['www']);
+							htmlecho ($www);
 							echo '</a>';
 						}?> 
 				<br/>
 				<br/>
-				<p><h4>Дополнительная информация:</h4></p>
-				<p align="justify"><?php echomarkdown ($author['accountinfo']);?></p>	
+				<h4>Дополнительная информация:</h4>
+				<p align="justify"><?php echomarkdown ($accountInfo);?></p>	
 			</div>			
-		 <?php endforeach; ?>
-		 <p><?php echo $changePass; ?></p>
-		 <p><?php echo $updAccountInfo; ?></p>
-
 		<div>
 			<?php 
 			if (!empty ($favourites))
@@ -195,8 +189,6 @@ include_once MAIN_FILE . '/header.inc.php';?>
 		</div>
 	</div>		
 	
-
-
 <?php 
 /*Загрузка footer*/
 include_once MAIN_FILE . '/footer.inc.php';?>

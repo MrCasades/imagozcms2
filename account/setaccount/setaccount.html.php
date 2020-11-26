@@ -7,25 +7,33 @@ include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont_for_view"> 
 		
-		<p align="center"><script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
-		<script src="//yastatic.net/share2/share.js"></script>
-		<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,twitter,lj"></div></p>	
-	<h4>Настройка аватара</h4>
 	<hr/>
-	<div>
-	 <form action = "?" method = "post">
-		<div>
-		 <input type = "hidden" name = "id" value = "<?php echo $selectedAuthor;?>'">
-		 <input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить аватар">
-		 <input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Удалить аватар">
-		</div>
-	 </form>
-			
-			
-	</div>		
-	
-
-
+	<div class = "titles_main_padge"><h4 align="center">Настройка аватара</h4></div>
+	<div class ="post" align="center">
+		<h6>Текущий аватар</h6>
+		<p><img width = "150 px" height = "150 px" src="../../avatars/<?php echo $avatar;?>" alt="<?php echo $authorName;?>"></p>
+		 <form action = "../../account/setavatar/" method = "post">
+			 <input type = "hidden" name = "id" value = "<?php echo $idAuthor;?>'">
+			 <input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить аватар">
+		 </form>
+	 </div>	
+	 <hr/>
+	<div class = "titles_main_padge"><h4 align="center">Добавить / изменить дополнительную информацию профиля</h4></div>
+	<div class ="post" align="center">
+		<p>Добавьте любую информацию о себе. Она будет выведена на главной странице профиля!</p>
+		 <form action = "../../account/setaccountinfo/" method = "post">
+			 <input type = "hidden" name = "id" value = "<?php echo $idAuthor;?>'">
+			 <input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить информацию профиля">
+			 <?php echo $delAva;?>
+		 </form>
+	 </div>
+	<div class = "titles_main_padge"><h4 align="center">Смена пароля</h4></div>
+	<div class ="post" align="center">
+		<p>Для безопасности своей учётной записи периодически меняйте пароль!</p>
+		 <form action = "../../account/changepass/" method = "post">
+			 <input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Изменить пароль">
+		 </form>
+	 </div>	
 <?php 
 /*Загрузка footer*/
 include_once MAIN_FILE . '/footer.inc.php';?>

@@ -6,9 +6,7 @@
 	
 	<?php 
         //Дополнительный код
-        if (empty ($scriptJScode)) $scriptJScode = '';
-    
-        echo $scriptJScode; ?>
+        echo $scriptJScode = $scriptJScode ?? ''; ?>
 
 </body>
 </html>	
