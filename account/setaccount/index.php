@@ -13,6 +13,17 @@ if (loggedIn())
 	/*Если loggedIn = TRUE, выводится имя пользователя иначе меню авторизации*/
 }
 
+else
+{
+	$title = 'Ошибка доступа';//Данные тега <title>
+	$headMain = 'Ошибка доступа';
+	$robots = 'noindex, nofollow';
+	$descr = '';
+	
+	include '../../admin/login.html.php';
+	exit();
+}
+
 $idAuthor = (int)(authorID($_SESSION['email'], $_SESSION['password']));//id автора
 
 $title = 'Настройка аккаунта';//Данные тега <title>
@@ -49,6 +60,37 @@ $authorName = $row['authorname'];
 
 /*Если установлен аватар по умолчанию, то его нельзя удалить*/
 $delAva = $avatar === "ava-def.jpg" ? '' : '<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Удалить аватар">';
+
+if ((userRole('Администратор')) || (userRole('Автор')) || (userRole('Рекламодатель')))
+{
+	$payForm = '
+					<div class = "titles_main_padge"><h4 align="center">Обновить платёжные реквизиты</h4></div>
+					<div class ="post" align="center">
+					<p>Обновите платёжные реквизиты, чтобы получить возможность создавать заявки на вывод средств.</p>
+					  <form action = "../../admin/payment/" method = "post">
+							<input type = "hidden" name = "id" value = "'.$idAuthor.'">
+							<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Вывести средства">
+							<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить платёжные реквизиты">
+					  </form>
+					 </div>';// вывод средств и обновление реквизитов
+		
+	/*История платежей на будущее
+	$payFormIn = '	<div class = "titles_main_padge"><h4 align="center">История платежей</div>
+					<p>Обновите платёжные реквизиты, чтобы получить возможность создавать заявки на вывод средств.</p>
+					<div class = "titles_main_padge"><h4 align="center">Добавить / изменить дополнительную информацию профиля</h4></div>
+					<form action = "../admin/payment/" method = "post">
+								<div>
+									<input type = "hidden" name = "id" value = "'.$idAuthor.'">
+									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Пополнить счёт">
+									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "История платежей">
+								</div>
+							</form>';// перечислить средства на счёт*/
+}
+
+else
+{
+	$payForm = '';
+}
 
 include 'setaccount.html.php';
 exit();

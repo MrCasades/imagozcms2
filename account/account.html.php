@@ -20,14 +20,9 @@ include_once MAIN_FILE . '/header.inc.php';?>
 				
 				{
 					echo ('<strong> Авторский ранг: '.$rangView.' </strong>'.$score.
-						  '<p><strong> Рейтинг: '.$rating.'</strong></p>'.
-						  '<p>'.$payForm.'</p>'.$payFormIn);
+						  '<p><strong> Рейтинг: '.$rating.'</strong></p>');
 					echo $prices;
-					echo $openTable;
-					echo $paysystemName;
 					echo $ewallet;
-					echo $updEwalletDate;
-					echo $closeTable;
 				}?></p>
 			
 			<p><?php if ($authorRole === 'Рекламодатель')//если пользователю присвоен определённый статус, то выводятся его ранг

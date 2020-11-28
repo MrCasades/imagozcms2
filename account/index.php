@@ -108,6 +108,7 @@ if (isset ($_GET['id']))
 								</div>
 							</form>';//запуск обновления информации профиля
 		
+		/*Присвоить роль рекламодателя*/
 		if ((!userRole('Администратор')) && (!userRole('Автор')) && (!userRole('Рекламодатель')))
 		{
 		
@@ -158,7 +159,7 @@ if (isset ($_GET['id']))
 		/*Команда SELECT, Вывод платёжной системы и кошелька*/
 		try
 		{
-			$sql = 'SELECT idpaysystem, paysystemname, ewallet, updewalletdate FROM author 
+			$sql = 'SELECT paysystemname, ewallet FROM author 
 					INNER JOIN paysystem ON idpaysystem = paysystem.id 
 					WHERE author.id = '.$selectedAuthor;
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
@@ -176,58 +177,15 @@ if (isset ($_GET['id']))
 		
 		$row = $s -> fetch();
 		
-		$idPaySystem = $row['idpaysystem'];
-		
-		if (isset ($idPaySystem))
-		{	
-			$openTable = '<table>';
-			$ewallet = '<tr> <td> Номер счёта </td><td>'.$row['ewallet'].'</td> </tr>';
-			$paysystemName = '<tr> <td> Платёжная система </td><td>'.$row['paysystemname'].'</td> </tr>';
-			$updEwalletDate = '<tr> <td> Дата обновления </td><td>'.$row['updewalletdate'].'</td> </tr>';
-			$closeTable = '</table>';
-		}
-		
-		else
-		{
-			$ewallet = '';
-			$paysystemName = '';
-			$updEwalletDate = '';
-			$openTable = '';
-			$closeTable = '';
-		}
-		
-		$payForm = '<form action = "../admin/payment/" method = "post">
-								<div>
-									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Вывести средства">
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить платёжные реквизиты">
-								</div>
-							</form>';// вывод средств и обновление реквизитов
-		
-		$payFormIn = '<form action = "../admin/payment/" method = "post">
-								<div>
-									<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Пополнить счёт">
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "История платежей">
-								</div>
-							</form>';// перечислить средства на счёт
+		$ewallet = $row['ewallet'] ? 'П/с: '.$row['paysystemname']. '; Счёт: '. $row['ewallet'] : '';
 	}
 	
 	else
 	{
-		$updAndDelAvatar = '';
-		$changePass ='';
-		$updAccountInfo = ''; 
 		$setAccount = ''; 
 		$addRoleAdvertiser ='';
 		$score = '';
-		$payForm = '';	
-		$payFormIn = '';
 		$ewallet = '';
-		$paysystemName = '';
-		$updEwalletDate = '';
-		$openTable = '';
-		$closeTable = '';
 	}
 	
 	/*Вывод кнопки "Написать сообщение"*/
@@ -252,8 +210,9 @@ if (isset ($_GET['id']))
 	{
 		$sql = 'SELECT idrole FROM author 
 				INNER JOIN authorrole ON author.id = idauthor
-				INNER JOIN role ON idrole = role.id WHERE author.id = '.$idAuthor;
+				INNER JOIN role ON idrole = role.id WHERE author.id = :id';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> bindValue(':id', $idAuthor);
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 
@@ -272,9 +231,7 @@ if (isset ($_GET['id']))
 	/*Если у автора роль автора, администратора и т. д., то выводится список его новостей и статей*/
 
 	if	(($authorRole == 'Автор') || ($authorRole == 'Администратор'))
-	{
-		include MAIN_FILE . '/includes/db.inc.php';
-		
+	{	
 		/*Выбор новостей автора*/
 		try
 		{

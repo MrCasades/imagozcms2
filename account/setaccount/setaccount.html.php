@@ -15,6 +15,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 		 <form action = "../../account/setavatar/" method = "post">
 			 <input type = "hidden" name = "id" value = "<?php echo $idAuthor;?>'">
 			 <input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить аватар">
+			 <?php echo $delAva;?>
 		 </form>
 	 </div>	
 	 <hr/>
@@ -24,7 +25,6 @@ include_once MAIN_FILE . '/header.inc.php';?>
 		 <form action = "../../account/setaccountinfo/" method = "post">
 			 <input type = "hidden" name = "id" value = "<?php echo $idAuthor;?>'">
 			 <input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Обновить информацию профиля">
-			 <?php echo $delAva;?>
 		 </form>
 	 </div>
 	<div class = "titles_main_padge"><h4 align="center">Смена пароля</h4></div>
@@ -34,6 +34,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 			 <input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Изменить пароль">
 		 </form>
 	 </div>	
+	<?php echo $payForm;?>
 <?php 
 /*Загрузка footer*/
 include_once MAIN_FILE . '/footer.inc.php';?>
