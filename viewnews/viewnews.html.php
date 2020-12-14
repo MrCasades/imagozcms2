@@ -99,7 +99,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 		<div>
 		 <h4>Случайные новости рубрики</h4>
 			
-		<div class="columns">
+		<div class="<?php echo $columns;?>">
 		<?php if (empty($similarNews))
 		 {
 			 echo '<p align = "center">Новости отсутствуют</p>';

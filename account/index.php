@@ -102,11 +102,7 @@ if (isset ($_GET['id']))
 	
 	if ($selectedAuthor == $idAuthor)
 	{
-		$setAccount = '<form action = "./setaccount/" method = "post">
-								<div>
-									<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Настройки учётной записи">
-								</div>
-							</form>';//запуск обновления информации профиля
+		$setAccount = '<a href = "./setaccount" class="btn btn-primary btn-sm">Настройки учётной записи</a>';//запуск обновления информации профиля
 		
 		/*Присвоить роль рекламодателя*/
 		if ((!userRole('Администратор')) && (!userRole('Автор')) && (!userRole('Рекламодатель')))
@@ -115,7 +111,7 @@ if (isset ($_GET['id']))
 			$addRoleAdvertiser = '<form action = "?" method = "post">
 									<div>
 										<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
-										<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Стать рекламодателем">
+										<input type = "submit" name = "action" = value = "Стать рекламодателем">
 									</div>
 								</form>';//вывод кнопки "Стать рекламодателем"
 		}

@@ -51,6 +51,8 @@ foreach ($result as $row)
 						'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid']);
 }
 
+$columns_rec = count ($lastRecommPosts) > 1 ? 'columns' : 'columns_f1';//подсчёт материалов
+
 /*Вывод новостей*/
 /*Команда SELECT*/
 
@@ -77,6 +79,8 @@ foreach ($result as $row)
 	$newsIn[] =  array ('id' => $row['id'], 'textnews' => $row['news'], 'newstitle' =>  $row['newstitle'], 'newsdate' =>  $row['newsdate'],
 						'imghead' =>  $row['imghead']);
 }
+
+$columns_n = count ($newsIn) > 1 ? 'columns' : 'columns_f1';//подсчёт материалов
 
 /*Вывод списка случайных тегов для новостей и статей*/
 
@@ -189,6 +193,8 @@ foreach ($result as $row)
 	$newsInTOP[] =  array ('id' => $row['id'], 'newstitle' => $row['newstitle'], 'viewcount' => $row['viewcount'], 'averagenumber' => $row['averagenumber']);
 }
 
+$columns_tn = count ($newsInTOP) > 1 ? 'columns' : 'columns_f1';//подсчёт материалов
+
 /*Вывод ТОП-5 статей*/
 /*Команда SELECT*/
 try
@@ -213,6 +219,8 @@ foreach ($result as $row)
 {
 	$postsTOP[] =  array ('id' => $row['id'], 'posttitle' => $row['posttitle'], 'viewcount' => $row['viewcount'], 'averagenumber' => $row['averagenumber']);
 }
+
+$columns_tp = count ($postsTOP) > 1 ? 'columns' : 'columns_f1';//подсчёт материалов
 
 /*Вывод ТОП-5 промоушен*/
 /*Команда SELECT*/
@@ -239,6 +247,8 @@ foreach ($result as $row)
 	$promotionsTOP[] =  array ('id' => $row['id'], 'promotiontitle' => $row['promotiontitle'], 'viewcount' => $row['viewcount'], 'averagenumber' => $row['averagenumber']);
 }
 
+$columns_tpr = count ($promotionsTOP) > 1 ? 'columns' : 'columns_f1';//подсчёт материалов
+
 /*Вывод ТОП-5 авторов*/
 /*Команда SELECT*/
 try
@@ -264,6 +274,8 @@ foreach ($result as $row)
 	$authorsTOP[] =  array ('id' => $row['id'], 'authorname' => $row['authorname'], 'avatar' => $row['avatar'],
 						    'countposts' => $row['countposts'], 'rating' => $row['rating']);
 }
+
+$columns_aut = count ($authorsTOP) > 1 ? 'columns' : 'columns_f1';//подсчёт материалов
 
 /*Вывод конкурсной статистики*/
 /*Команда SELECT проверка запуска конкурса*/

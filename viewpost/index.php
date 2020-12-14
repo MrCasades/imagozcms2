@@ -379,6 +379,8 @@ if (isset ($_GET['id']))
 	{
 		$similarPosts[] =  array ('id' => $row['id'], 'posttitle' =>  $row['posttitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt']);
 	}	
+		
+	$columns = count ($similarPosts) > 1 ? 'columns' : 'columns_f1';//подсчёт материалов
 	
 	/*Вывод комментариев*/	
 	/*Постраничный вывод информации*/

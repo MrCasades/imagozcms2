@@ -5,8 +5,8 @@ include_once MAIN_FILE . '/includes/func.inc.php';
 /*Загрузка header*/
 include_once MAIN_FILE . '/header.inc.php';?>
 	
-	<div class = "maincont">
-	<div class = "post">
+	<div class = "maincont_for_view">
+	<div class = "post_reg_log">
 	
 	<p align = "center"><strong><?php htmlecho($errorForm); ?></strong></p>
 	

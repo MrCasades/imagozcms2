@@ -337,7 +337,9 @@ if (isset ($_GET['id']))
 	foreach ($result as $row)
 	{
 		$similarNews[] =  array ('id' => $row['id'], 'newstitle' =>  $row['newstitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt']);
-	}		
+	}	
+	
+	$columns = count ($similarNews) > 1 ? 'columns' : 'columns_f1';//подсчёт материалов
 	
 	/*Вывод комментариев*/
 	/*Постраничный вывод информации*/

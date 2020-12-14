@@ -17,7 +17,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 		<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir,twitter,lj"></div></div>
 
    <div class = "titles_main_padge"><h4 align = "center">Новостная лента</h4></div>
-	<div class="columns">
+	<div class="<?php echo $columns_n;?>">
 		<?php if (empty ($newsIn))
 		 {
 			 echo '<p align = "center">Новости отсутствуют</p>';
@@ -60,7 +60,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 		</div>
 	 	 
 	 <h4 align = "center">Топ-5 новостей</h4>
-	 <div class="columns">
+	 <div class="<?php echo $columns_tn;?>">
 	 <?php if (empty ($newsInTOP))
 		 {
 			 echo '<p align = "center">Нет статей</p>';
@@ -122,7 +122,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 	 
     <div class = "titles_main_padge"><h4 align = "center">Пользователи рекомендуют:</h4></div>	
 
-	<div class="columns">
+	<div class="<?php echo $columns_rec;?>">
 		<?php if (empty($newsIn))
 		 {
 			 echo '<p align = "center">Рекомендации отсутствуют</p>';
@@ -260,7 +260,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 		</div>	
 			
 		<h4 align = "center">Топ-5 промоушен</h4>
-	 <div class="columns">
+	 <div class="<?php echo $columns_tpr;?>">
 	 <?php if (empty($promotionsTOP))
 		 {
 			 echo '<p align = "center">Нет статей</p>';
@@ -374,7 +374,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 		</div>	
 			
 		<h4 align = "center">Топ-5 статей</h4>
-	 <div class="columns">
+	 <div class="<?php echo $columns_tp;?>">
 	 <?php if (empty ($postsTOP))
 		 {
 			 echo '<p align = "center">Нет статей</p>';
@@ -403,7 +403,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 	</div>
 			 
 	<div class = "titles_main_padge"><h4 align = "center">Наши авторы. Топ 7</h4></div>
-	 <div class="columns">		 
+	 <div class="<?php echo $columns_aut;?>">		 
 	 <?php if (empty ($authorsTOP))
 		 {
 			 echo '<p align = "center">Нет авторов</p>';
