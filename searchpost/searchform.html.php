@@ -6,7 +6,7 @@ include_once MAIN_FILE . '/includes/func.inc.php';
 include_once MAIN_FILE . '/header.inc.php';?>
 
 	<div class = "maincont_for_view">
-	<div class = "post">
+	<div class = "post_reg_log">
 	<p> <a href="<?php echo '//'.MAIN_URL.'/searchpost/';?>" class="btn btn-info">Поиск статей</a> | 
 		<a href="<?php echo '//'.MAIN_URL.'/searchpromotion/';?>" class="btn btn-primary btn-sm">Поиск промоушен-статей</a> |
 		<a href="<?php echo '//'.MAIN_URL.'/searchnews/';?>" class="btn btn-primary btn-sm">Поиск новостей</a></p>
