@@ -123,9 +123,7 @@ if (isset ($_GET['id']))
 
 		$row = $s -> fetch();
 
-		$favourites = $row['idpost'];
-
-		if ($favourites != '')
+		if (!empty($row['idpost']))
 		{
 			$addFavourites = '<form action=" " metod "post" id = "ajax_form_fav">
 								<input type = "hidden" name = "idauthor" value = "'.(authorID($_SESSION['email'], $_SESSION['password'])).'">
@@ -243,7 +241,7 @@ if (isset ($_GET['id']))
 	
 	$row = $s -> fetch();
 		
-	if(!$row['idauthor'])
+	if(empty($row['idauthor']))
 	{		
 		$votedAuthor = '';
 	}
@@ -253,7 +251,7 @@ if (isset ($_GET['id']))
 		$votedAuthor = (int)$row['idauthor'];//id автора, который проголосовал
 	}	
 	
-	if (!$row['idpost'])//если переменная отсутствует
+	if (empty($row['idpost']))//если переменная отсутствует
 	{
 		$votedPost = '';
 	}

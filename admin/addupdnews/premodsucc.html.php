@@ -7,11 +7,13 @@ include_once MAIN_FILE . '/header.inc.php';?>
 	
 	<div class = "maincont_for_view"> 
 	 <div class = "post" align="center">
-		<p>Материал отправлен на премодерацию. После проверки администратором будет опубликован!</p>
+		<p>Материал сохранён в черновике! Если хотите отправить его сразу на проверку редактору, нажмите на кнопку ниже.</p>
 		
 		<p>Число знаков в статье (без пробелов) <?php echo $lengthText;?> | Стоимость  <?php echo $fullPrice;?>, с учётом бонуса Х<?php echo $bonus;?></p>
-		<a href="<?php echo '//'.MAIN_URL;?>" id = "confirmok" class="btn btn-danger btn-sm">Подтвердить отправку</a> 
-		 <em>(В случае закрытия страницы материал автоматически будет отправлен на премодерацию!)</em>
+		<form action = "../../admin/addupdnews/" method = "post" id = "confirmok">
+			<input type = "hidden" name = "id" value = "<?php echo $idpost_ind; ?>">
+			<input type = "submit" name = "action" value = "ОПУБЛИКОВАТЬ" class= "btn btn-danger btn-sm">
+		</form>
 	 </div>	
 		<h2>Предварительный просмотр</h2>
 		<div align="center">

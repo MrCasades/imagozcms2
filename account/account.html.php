@@ -25,12 +25,6 @@ include_once MAIN_FILE . '/header.inc.php';?>
 					echo $ewallet;
 				}?></p>
 			
-			<p><?php if ($authorRole === 'Рекламодатель')//если пользователю присвоен определённый статус, то выводятся его ранг
-				
-				{
-					echo ($score.'<p>'.$payForm.'</p>'.$payFormIn);
-				}?></p>
-			
 			<p><?php echo $addRole; ?></p>
 			<p><?php echo $addBonus; ?></p>
 			<p><?php echo $addRoleAdvertiser; ?></p>

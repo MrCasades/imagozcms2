@@ -36,7 +36,7 @@ if (isset ($_GET['news']))
 	try
 	{
 		$sql = 'SELECT newsblock.id, newstitle, newsdate, authorname, email FROM newsblock INNER JOIN author 
-				ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" LIMIT 20';//Вверху самое последнее значение
+				ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND draft = "NO" LIMIT 20';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
 
@@ -74,7 +74,7 @@ if (isset ($_GET['posts']))
 	try
 	{
 		$sql = 'SELECT posts.id, posttitle, postdate, authorname, email FROM posts INNER JOIN author 
-		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" LIMIT 20';//Вверху самое последнее значение
+		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND draft = "NO" LIMIT 20';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
 
@@ -110,7 +110,7 @@ if (isset ($_GET['promotion']))
 	try
 	{
 		$sql = 'SELECT promotion.id, promotiontitle, promotiondate, authorname, email FROM promotion INNER JOIN author 
-		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" LIMIT 20';//Вверху самое последнее значение
+		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND draft = "NO" LIMIT 20';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
 

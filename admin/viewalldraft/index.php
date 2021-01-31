@@ -35,8 +35,10 @@ if (userRole('Автор'))
 
 	try
 	{
-		$sql = 'SELECT newsblock.id, newstitle, newsdate, idauthor, authorname FROM newsblock INNER JOIN author 
-				ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND draft = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
+		$sql = 'SELECT newsblock.id AS newsid, news, author.id AS authorid, newstitle, imghead, imgalt, newsdate, authorname, category.id AS categoryid, categoryname FROM newsblock 
+				INNER JOIN author ON idauthor = author.id 
+				INNER JOIN category ON idcategory = category.id 
+				WHERE premoderation = "NO" AND draft = "YES" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
 
@@ -54,16 +56,19 @@ if (userRole('Автор'))
 	/*Вывод результата в шаблон*/
 	foreach ($result as $row)
 	{
-		$newsIn[] =  array ('id' => $row['id'], 'newstitle' =>  $row['newstitle'], 'newsdate' =>  $row['newsdate'], 
-								'authorname' =>  $row['authorname'], 'idauthor' =>  $row['idauthor']);
+		$newsIn[] =  array ('id' => $row['newsid'], 'idauthor' => $row['authorid'], 'textnews' => $row['news'], 'newstitle' =>  $row['newstitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'],
+							'newsdate' =>  $row['newsdate'], 'authorname' =>  $row['authorname'], 
+							'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid']);
 	}
 
 	/*Вывод стаей*/
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT posts.id, posttitle, postdate, idauthor, authorname FROM posts INNER JOIN author 
-		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND draft = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
+		$sql = 'SELECT posts.id AS postid, post, author.id AS authorid, posttitle, imghead, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
+				INNER JOIN author ON idauthor = author.id 
+				INNER JOIN category ON idcategory = category.id 
+				WHERE premoderation = "NO" AND draft = "YES" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
 
@@ -81,16 +86,19 @@ if (userRole('Автор'))
 	/*Вывод результата в шаблон*/
 	foreach ($result as $row)
 	{
-		$posts[] =  array ('id' => $row['id'], 'posttitle' =>  $row['posttitle'], 'postdate' =>  $row['postdate'], 
-								'authorname' =>  $row['authorname'], 'idauthor' =>  $row['idauthor']);
+		$posts[] =  array ('id' => $row['postid'], 'idauthor' => $row['authorid'], 'text' => $row['post'], 'posttitle' =>  $row['posttitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'],
+							'postdate' =>  $row['postdate'], 'authorname' =>  $row['authorname'], 
+							'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid']);
 	}
 	
 	/*Вывод промоушен*/
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT promotion.id, promotiontitle, promotiondate, idauthor, authorname FROM promotion INNER JOIN author 
-		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND draft = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
+		$sql = 'SELECT promotion.id AS promotionid, promotion, author.id AS authorid, promotiontitle, promotion.www, imghead, imgalt, promotiondate, authorname, category.id AS categoryid, categoryname FROM promotion 
+				INNER JOIN author ON idauthor = author.id 
+				INNER JOIN category ON idcategory = category.id 
+				WHERE premoderation = "NO" AND draft = "YES" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
 
@@ -108,8 +116,9 @@ if (userRole('Автор'))
 	/*Вывод результата в шаблон*/
 	foreach ($result as $row)
 	{
-		$promotions[] =  array ('id' => $row['id'], 'promotiontitle' =>  $row['promotiontitle'], 'promotiondate' =>  $row['promotiondate'], 
-								'authorname' =>  $row['authorname'], 'idauthor' =>  $row['idauthor']);
+		$promotions[] =  array ('id' => $row['promotionid'], 'idauthor' => $row['authorid'], 'text' => $row['promotion'], 'promotiontitle' =>  $row['promotiontitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'],
+								'promotiondate' =>  $row['promotiondate'], 'authorname' =>  $row['authorname'], 'www' =>  $row['www'],
+								'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid']);
 	}
 	
 	if (!isset($newsIn) && !isset($posts) && !isset($promotions))
@@ -122,13 +131,13 @@ if (userRole('Автор'))
 	
 	else
 	{
-		$title = 'Материалы в премодерации';//Данные тега <title>
-		$headMain = 'Материалы автора '.$row['authorname'].' в премодерации';
+		$title = 'Мой черновик';//Данные тега <title>
+		$headMain = 'Мой черновик';
 		$robots = 'noindex, nofollow';
-		$descr = 'Вданном разделе выводятся материалы которые находятся в премодерации';
+		$descr = 'В данном разделе выводятся материалы которые находятся в черновике';
 	}
 
-	include 'authorpremoderation.html.php';
+	include 'draft.html.php';
 	exit();
 }
 
@@ -146,8 +155,10 @@ if (userRole('Рекламодатель'))
 	/*Команда SELECT*/
 	try
 	{
-		$sql = 'SELECT promotion.id, promotiontitle, promotiondate, idauthor, authorname FROM promotion INNER JOIN author 
-		ON idauthor = author.id WHERE premoderation = "NO" AND refused = "NO" AND draft = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
+		$sql = 'SELECT promotion.id AS promotionid, promotion, author.id AS authorid, promotiontitle, promotion.www, imghead, imgalt, promotiondate, authorname, category.id AS categoryid, categoryname FROM promotion 
+				INNER JOIN author ON idauthor = author.id 
+				INNER JOIN category ON idcategory = category.id 
+				WHERE premoderation = "NO" AND refused = "NO" AND idauthor = '.$selectedAuthor.' LIMIT 10';//Вверху самое последнее значение
 		$result = $pdo->query($sql);
 	}
 
@@ -165,8 +176,9 @@ if (userRole('Рекламодатель'))
 	/*Вывод результата в шаблон*/
 	foreach ($result as $row)
 	{
-		$promotions[] =  array ('id' => $row['id'], 'promotiontitle' =>  $row['promotiontitle'], 'promotiondate' =>  $row['promotiondate'], 
-								'authorname' =>  $row['authorname'], 'idauthor' =>  $row['idauthor']);
+		$promotions[] =  array ('id' => $row['promotionid'], 'idauthor' => $row['authorid'], 'text' => $row['promotion'], 'promotiontitle' =>  $row['promotiontitle'], 'imghead' =>  $row['imghead'], 'imgalt' =>  $row['imgalt'],
+								'promotiondate' =>  $row['promotiondate'], 'authorname' =>  $row['authorname'], 'www' =>  $row['www'],
+								'categoryname' =>  $row['categoryname'], 'categoryid' => $row['categoryid']);
 	}
 	
 	if (!isset($promotions))
@@ -179,12 +191,12 @@ if (userRole('Рекламодатель'))
 
 	else
 	{
-		$title = 'Материалы в премодерации';//Данные тега <title>
-		$headMain = 'Материалы автора '.$row['authorname'].' в премодерации';
+		$title = 'Мой черновик';//Данные тега <title>
+		$headMain = 'Мой черновик';
 		$robots = 'noindex, nofollow';
-		$descr = 'Вданном разделе выводятся материалы которые находятся в премодерации';
+		$descr = 'В данном разделе выводятся материалы которые находятся в черновике';
 	}
 	
-	include 'authorpremodpromotion.html.php';
+	include 'draftpromotion.html.php';
 	exit();
 }

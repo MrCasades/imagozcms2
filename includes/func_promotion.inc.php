@@ -693,3 +693,16 @@ function toEmbedInVideo($video)
 	
 	return $video;
 }
+
+/*Корректное отображение видео в статьях*/
+function viewVideoInArticle ($text)
+{
+	$element_1 = 'iframe width="560"'; //искомый элемент
+	$replace_1 = 'iframe width="85%"'; //на что меняем
+	
+	$findSt = strpos ($text, $element_1);
+	
+	$text = $findSt != '' ? str_replace($element_1, $replace_1, $text) : $text;
+
+	return $text;
+}

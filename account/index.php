@@ -111,7 +111,7 @@ if (isset ($_GET['id']))
 			$addRoleAdvertiser = '<form action = "?" method = "post">
 									<div>
 										<input type = "hidden" name = "id" value = "'.$selectedAuthor.'">
-										<input type = "submit" name = "action" = value = "Стать рекламодателем">
+										<input type = "submit" name = "action" class="btn btn-primary btn-sm" value = "Стать рекламодателем">
 									</div>
 								</form>';//вывод кнопки "Стать рекламодателем"
 		}
@@ -173,7 +173,7 @@ if (isset ($_GET['id']))
 		
 		$row = $s -> fetch();
 		
-		$ewallet = $row['ewallet'] ? 'П/с: '.$row['paysystemname']. '; Счёт: '. $row['ewallet'] : '';
+		$ewallet = !empty($row['ewallet']) ? 'П/с: '.$row['paysystemname']. '; Счёт: '. $row['ewallet'] : '';
 	}
 	
 	else
@@ -222,7 +222,8 @@ if (isset ($_GET['id']))
 	}
 
 	$row = $s -> fetch();
-	$authorRole = $row['idrole'];
+	
+	$authorRole = !empty($row['idrole']) ? $row['idrole'] : '';
 
 	/*Если у автора роль автора, администратора и т. д., то выводится список его новостей и статей*/
 
@@ -614,7 +615,7 @@ if (isset ($_GET['addrole']))
 			
 		}
 		
-		header ('Location: ../account/?id='.$_SESSION['idAuthor']);//перенаправление обратно в контроллер index.php
+		header ('Location: ../account/?id='.$_POST['id']);//перенаправление обратно в контроллер index.php
 		exit();	
 }
 

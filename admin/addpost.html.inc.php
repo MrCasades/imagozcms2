@@ -99,7 +99,7 @@ elseif (userRole('Администратор'))
 	{
 		$pdo->beginTransaction();//инициация транзакции
 		
-		$sql = "SELECT count(*) AS mypremodpost FROM posts WHERE premoderation = 'NO' AND refused = 'NO'";
+		$sql = "SELECT count(*) AS mypremodpost FROM posts WHERE premoderation = 'NO' AND refused = 'NO' AND draft = 'NO'";
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
@@ -107,7 +107,7 @@ elseif (userRole('Администратор'))
 		
 		$premodPosts = $row['mypremodpost'];//статьи в премодерации
 		
-		$sql = "SELECT count(*) AS mypremodnews FROM newsblock WHERE premoderation = 'NO' AND refused = 'NO'";
+		$sql = "SELECT count(*) AS mypremodnews FROM newsblock WHERE premoderation = 'NO' AND refused = 'NO' AND draft = 'NO'";
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
@@ -115,7 +115,7 @@ elseif (userRole('Администратор'))
 		
 		$premodNews = $row['mypremodnews'];//новости в премодерации
 		
-		$sql = "SELECT count(*) AS mypremodpromotion FROM promotion WHERE premoderation = 'NO' AND refused = 'NO'";
+		$sql = "SELECT count(*) AS mypremodpromotion FROM promotion WHERE premoderation = 'NO' AND refused = 'NO' AND draft = 'NO'";
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
@@ -241,7 +241,7 @@ elseif (userRole('Администратор') || userRole('Автор'))
 	{
 		$pdo->beginTransaction();//инициация транзакции
 		
-		$sql = "SELECT count(*) AS mypremodpost FROM posts WHERE premoderation = 'NO' AND refused = 'NO' AND idauthor = ".$selectedAuthor;
+		$sql = "SELECT count(*) AS mypremodpost FROM posts WHERE premoderation = 'NO' AND refused = 'NO' AND draft = 'NO' AND idauthor = ".$selectedAuthor;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
@@ -249,7 +249,7 @@ elseif (userRole('Администратор') || userRole('Автор'))
 		
 		$premodPosts = $row['mypremodpost'];//статьи в премодерации
 		
-		$sql = "SELECT count(*) AS mypremodnews FROM newsblock WHERE premoderation = 'NO' AND refused = 'NO' AND idauthor = ".$selectedAuthor;
+		$sql = "SELECT count(*) AS mypremodnews FROM newsblock WHERE premoderation = 'NO' AND refused = 'NO' AND draft = 'NO' AND idauthor = ".$selectedAuthor;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 		
@@ -274,6 +274,44 @@ elseif (userRole('Администратор') || userRole('Автор'))
 	}
 		
 	$allPosts = $premodPosts + $premodNews;//общее количество
+
+	/*Подсчёт количества материалов в черновике*/
+	try
+	{
+		$pdo->beginTransaction();//инициация транзакции
+		
+		$sql = "SELECT count(*) AS newsdraft FROM newsblock WHERE draft = 'YES' AND idauthor = ".$selectedAuthor;
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		
+		$row = $s -> fetch();
+		
+		$newsDraft = $row['newsdraft'];// статьи в черновике
+		
+		$sql = "SELECT count(*) AS postdraft FROM posts WHERE draft = 'YES' AND idauthor = ".$selectedAuthor;
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		
+		$row = $s -> fetch();
+		
+		$postsDraft = $row['postdraft'];// новости в черновике
+		$pdo->commit();//подтверждение транзакции
+	}
+
+	catch (PDOException $e)
+	{
+		$pdo->rollBack();//отмена транзакции
+		
+		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+		$headMain = 'Ошибка данных!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка подсчёта материалов ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+
+	$allDraft = $newsDraft + $postsDraft;
 	
 	/*Подсчёт количества отклонённых материалов*/
 	try
@@ -395,6 +433,7 @@ elseif (userRole('Администратор') || userRole('Автор'))
 				<a href='//".MAIN_URL."/admin/viewallauthortask/#bottom' class='btn btn-primary btn-sm'><strong>МОИ ЗАДАНИЯ (".$myTasks.")</strong></a> |	
 				<a href='//".MAIN_URL."/admin/viewalltask/#bottom' class='btn btn-info btn-sm'><strong>ПОЛУЧИТЬ ЗАДАНИЕ</strong></a> |
 				<a href='//".MAIN_URL."/admin/authorpremoderation/#bottom' class='btn btn-success btn-sm'><strong>В ПРЕМОДЕРАЦИИ (".$allPosts.")</strong></a> |
+				<a href='//".MAIN_URL."/admin/viewalldraft/#bottom' class='btn btn-success btn-sm'><strong>ЧЕРНОВИК (".$allDraft.")</strong></a> |
 				<a href='//".MAIN_URL."/admin/refused/#bottom' class='btn btn-danger btn-sm'><strong>ОТКЛОНЁННЫЕ МАТЕРИАЛЫ (".$allRefused.")</strong></a> |";
 	$forAuthors = "<strong><a href='//".MAIN_URL."/admin/adminmail/viewnews/?idadminnews=17'>ДЛЯ АВТОРОВ! ОБЯЗАТЕЛЬНО К ПРОЧТЕНИЮ!</a></strong>";
 	if (empty ($superUser)) $superUser = '';//если нет значения у переменной, отсутствует ранг супер-автора
@@ -414,15 +453,13 @@ elseif (userRole('Администратор') || userRole('Автор') || user
 	/*Подсчёт количества материалов в премодерации*/
 	try
 	{
-		$sql = "SELECT count(*) AS mypremodpromotions FROM promotion WHERE premoderation = 'NO' AND refused = 'NO' AND idauthor = ".$selectedAuthor;
+		$sql = "SELECT count(*) AS mypremodpromotions FROM promotion WHERE premoderation = 'NO' AND refused = 'NO' AND draft = 'NO' AND idauthor = ".$selectedAuthor;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 
 	catch (PDOException $e)
 	{
-		$pdo->rollBack();//отмена транзакции
-		
 		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
 		$headMain = 'Ошибка данных!';
 		$robots = 'noindex, nofollow';
@@ -435,7 +472,30 @@ elseif (userRole('Администратор') || userRole('Автор') || user
 	$row = $s -> fetch();
 		
 	$mypremodPromotions = $row['mypremodpromotions'];//статьи в премодерации
-	
+
+	/*Подсчёт количества материалов в черновике*/
+	try
+	{
+		$sql = "SELECT count(*) AS promotiondraft FROM promotion WHERE draft = 'YES' AND idauthor = ".$selectedAuthor;
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
+		
+		$row = $s -> fetch();
+		
+		$promotionDraft = $row['promotiondraft'];// статьи в черновике
+	}
+
+	catch (PDOException $e)
+	{
+		$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+		$headMain = 'Ошибка данных!';
+		$robots = 'noindex, nofollow';
+		$descr = '';
+		$error = 'Ошибка подсчёта материалов ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+		include 'error.html.php';
+		exit();
+	}
+
 	/*Подсчёт количества отклонённых материалов*/
 	try
 	{
@@ -500,6 +560,7 @@ elseif (userRole('Администратор') || userRole('Автор') || user
 	
 	$addPost = "| <a href='//".MAIN_URL."/admin/addupdpromotion/?add' class='btn btn-warning btn-sm'><strong>НАПИСАТЬ РЕКЛАМНУЮ СТАТЬЮ</strong></a> |	
 				<a href='//".MAIN_URL."/admin/authorpremoderation/#bottom' class='btn btn-success btn-sm'><strong>В ПРЕМОДЕРАЦИИ (".$mypremodPromotions.")</strong></a> |
+				<a href='//".MAIN_URL."/admin/viewalldraft/#bottom' class='btn btn-success btn-sm'><strong>ЧЕРНОВИК (".$promotionDraft.")</strong></a> |
 				<a href='//".MAIN_URL."/admin/refused/#bottom' class='btn btn-danger btn-sm'><strong>ОТКЛОНЁННЫЕ МАТЕРИАЛЫ (".$myrefusedPromotions.")</strong></a> |";
 	$forAuthors = '';
 	

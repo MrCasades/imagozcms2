@@ -191,7 +191,7 @@ if (isset ($_GET['id']))
 	
 	$row = $s -> fetch();
 		
-	if(!$row['idauthor'])
+	if(empty ($row['idauthor']))
 	{		
 		$votedAuthor = '';
 	}
@@ -201,7 +201,7 @@ if (isset ($_GET['id']))
 		$votedAuthor = (int)$row['idauthor'];;//id автора, который проголосовал
 	}	
 	
-	if (!$row['idpromotion'])//если переменная отсутствует
+	if (empty ($row['idpromotion']))//если переменная отсутствует
 	{
 		$votedPost = '';
 	}
