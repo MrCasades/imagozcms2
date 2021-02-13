@@ -751,7 +751,10 @@ if (isset($_GET['editform']))//Если есть переменная editform �
 		/*Вернуть материал в премодерацию*/
 		try
 		{
-			$sql = 'UPDATE promotion SET refused = "NO" WHERE id = :idpromotion';
+			$sql = 'UPDATE promotion SET 
+					refused = "NO",
+					draft = "YES"  
+					WHERE id = :idpromotion';
 			$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 			$s -> bindValue(':idpromotion', $_POST['id']);//отправка значения
 			$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
