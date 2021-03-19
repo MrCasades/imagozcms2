@@ -32,6 +32,7 @@
 	
 </head>
 <body>
+  <header>
     
 	<div class="forlogo" align = "center"><a href="<?php echo '//'.MAIN_URL;?>"><img width = "15%" height = "15%" src="<?php echo '//'.MAIN_URL;?>/logomain.jpg" alt="imagoz.ru | Hi-Tech, игры, интернет в отражении"></a>
 						<img width = "80%" height = "15%" src="<?php echo '//'.MAIN_URL;?>/LOGO2.jpg" alt="Мир высоких технологий, интернета, игр в отражении"></div>
@@ -78,25 +79,25 @@
 	
 	<div>
 		    <!-- Yandex.RTB R-A-448222-6 -->
-<div id="yandex_rtb_R-A-448222-6"></div>
-<script type="text/javascript">
-    (function(w, d, n, s, t) {
-        w[n] = w[n] || [];
-        w[n].push(function() {
-            Ya.Context.AdvManager.render({
-                blockId: "R-A-448222-6",
-                renderTo: "yandex_rtb_R-A-448222-6",
-                async: true
-            });
-        });
-        t = d.getElementsByTagName("script")[0];
-        s = d.createElement("script");
-        s.type = "text/javascript";
-        s.src = "//an.yandex.ru/system/context.js";
-        s.async = true;
-        t.parentNode.insertBefore(s, t);
-    })(this, this.document, "yandexContextAsyncCallbacks");
-</script>
+	<div id="yandex_rtb_R-A-448222-6"></div>
+	<script type="text/javascript">
+		(function(w, d, n, s, t) {
+			w[n] = w[n] || [];
+			w[n].push(function() {
+				Ya.Context.AdvManager.render({
+					blockId: "R-A-448222-6",
+					renderTo: "yandex_rtb_R-A-448222-6",
+					async: true
+				});
+			});
+			t = d.getElementsByTagName("script")[0];
+			s = d.createElement("script");
+			s.type = "text/javascript";
+			s.src = "//an.yandex.ru/system/context.js";
+			s.async = true;
+			t.parentNode.insertBefore(s, t);
+		})(this, this.document, "yandexContextAsyncCallbacks");
+	</script>
 		</div> 
 		
 		<hr/>
@@ -104,8 +105,9 @@
 	<?php 
 		/*Загрузка списка рубрик*/
 		include_once MAIN_FILE . '/mainmenu/mainmenu.inc.php'; ?>
-		
+  </header>
+  <main>			
 	<h1><?php htmlecho ($headMain); ?> </h1>
-		
+  
 	
 	
