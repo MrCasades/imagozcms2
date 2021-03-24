@@ -403,7 +403,8 @@ function convertToPostOrNews($inData, $idData)
 			lengthtext = '.$lengthtext.', 
 			'.$datapriceBD.' = '.$pricepost.', 
 			authorbonus = '.$authorbonus.',
-			pricetext = '.$pricetext;
+			pricetext = '.$pricetext.',
+			draft = "NO"';
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
