@@ -999,7 +999,7 @@ if (isset ($_POST['action']) && $_POST['action'] == 'ОПУБЛИКОВАТЬ')
 	$robots = 'noindex, nofollow';
 	$descr = '';
 	$action = 'topremod';
-	$posttitle = $row['newstitle'];
+	$posttitle = $row['posttitle'];
 	$price = $row['pricetext'];
 	$id = $_POST['id'];
 	$button = 'Опубликовать';

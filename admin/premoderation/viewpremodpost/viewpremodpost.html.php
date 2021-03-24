@@ -48,6 +48,7 @@ include_once MAIN_FILE . '/header.inc.php';?>
 					<p align="center"><?php echo $video; ?></p>
 					<p><?php echo $delAndUpd; ?></p>
 					<p align="center"><?php echo $premoderation; ?></p>
+					<p align="center"><?php echo $convertData; ?></p>
 			</div>	
 		</div>
 		<?php echo $taskData; ?>

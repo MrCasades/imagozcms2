@@ -170,8 +170,31 @@ if (isset ($_GET['post']))
 						<input type = 'submit' name = 'action' value = 'Опубликовать' class='btn btn-primary btn-sm'>
 						<input type = 'submit' name = 'action' value = 'Добавить в Дзен' class='btn btn-success btn-sm'>
 						<input type = 'submit' name = 'action' value = 'Отклонить' class='btn btn-danger btn-sm'>
-					  </form>";			  
+					  </form>";	
+		$convertData = "<form action = ' ' method = 'post'>
+			
+					  Конвертировать в нвость:
+					  <input type = 'hidden' name = 'id' value = '".$_SESSION['idpost']."'>
+					  <input type = 'submit' name = 'action' value = 'Конвертировать в новость' class='btn btn-info btn-sm'>
+					</form>";			  		  
 	}
 	
 	include 'viewpremodpost.html.php';
+}
+
+if (isset ($_POST['action']) && $_POST['action'] == 'Конвертировать в новость')
+{
+	/*Загрузка функций в шаблон*/
+	include_once MAIN_FILE . '/includes/func.inc.php';
+
+	/*Загрузка функций для формы входа*/
+	require_once MAIN_FILE . '/includes/access.inc.php';
+	
+	$inData = 'posts';
+	$idData = $_POST['id'];
+	
+	convertToPostOrNews($inData, $idData);
+	
+	//header ('Location: //'.$_SERVER['SERVER_NAME']);//перенаправление обратно в контроллер index.php
+	exit();
 }
