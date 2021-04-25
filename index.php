@@ -88,8 +88,7 @@ $columns_n = count ($newsIn) > 1 ? 'columns' : 'columns_f1';//подсчёт м�
 try
 {
 	$sql = 'SELECT DISTINCT metaname, meta.id FROM meta 
-			INNER JOIN metapost ON idmeta = meta.id 
-			INNER JOIN newsblock ON idnews = newsblock.id	
+			INNER JOIN metapost ON idmeta = meta.id 	
 			ORDER BY rand() LIMIT 5';
 	$result = $pdo->query($sql);
 }

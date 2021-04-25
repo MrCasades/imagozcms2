@@ -42,7 +42,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 	 <div>
 		 <table cellspacing="5">
 		 <tr>
-		  <td valign="top"><label for = "meta">Теги:</label></td>
+		  <td valign="top"><label for = "meta">Облако тегов:</label></td>
 			   <?php if (empty($metas_1))
 		 {
 			 echo '<p align = "center">Нет тегов</p>';
@@ -52,7 +52,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 		
 		foreach ($metas_1 as $meta): ?> 	  
 				<td><div>	 
-					<strong><a href="./viewmetanews/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
+					<strong><a href="./viewallmetas/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
 				</div></td> 	
 				<?php endforeach; ?>
 		  </tr>
