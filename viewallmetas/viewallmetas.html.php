@@ -49,7 +49,9 @@ include_once MAIN_FILE . '/header.inc.php';?>
 				 </div> 
 			</div>			
 		 <?php endforeach; ?>
-         <div class="for_allposts_link"><p align = "center"><a href="../viewmetanews/?id=<?php echo $idCategory; ?>" style="color: white">Все новости</a></p></div>	
+			<?php if (!empty ($metas_news)):?>  
+				<div class="for_allposts_link"><p align = "center"><a href="../viewmetanews/?metaid=<?php echo $idCategory; ?>" style="color: white">Все новости</a></p></div>	
+			<?php endif;?>
 		</div>
 
         <div>
@@ -94,7 +96,10 @@ include_once MAIN_FILE . '/header.inc.php';?>
 				   </div>	
 				 </div>
 			</div>	   	
-		 <?php endforeach; ?> 	
+		 <?php endforeach; ?>
+			<?php if (!empty ($metas_prom)):?>  
+				<div class="for_allposts_link"><p align = "center"><a href="../viewmetapromotion/?metaid=<?php echo $idCategory; ?>" style="color: white">Все статьи</a></p></div>	
+			<?php endif;?>
 		</div> 
 
         <div>
@@ -134,7 +139,10 @@ include_once MAIN_FILE . '/header.inc.php';?>
 				   </div>	
 				 </div>
 			</div>	   	
-		 <?php endforeach; ?> 		
+		 <?php endforeach; ?> 
+			<?php if (!empty ($metas_post)):?>
+				<div class="for_allposts_link"><p align = "center"><a href="../viewmetapost/?metaid=<?php echo $idCategory; ?>" style="color: white">Все статьи</a></p></div>
+			<?php endif; ?>		
 		</div> 
 	</div>		
 

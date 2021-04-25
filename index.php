@@ -84,7 +84,7 @@ $columns_n = count ($newsIn) > 1 ? 'columns' : 'columns_f1';//подсчёт м�
 
 /*Вывод списка случайных тегов для новостей и статей*/
 
-/*Команда SELECT для тегов новостей*/
+/*Команда SELECT для облака тегов*/
 try
 {
 	$sql = 'SELECT DISTINCT metaname, meta.id FROM meta 
@@ -110,60 +110,59 @@ foreach ($result as $row)
 	$metas_1[] =  array ('id' => $row['id'], 'meta' => $row['metaname']);
 }
 
-/*Команда SELECT для тегов новостей*/
-try
-{
-	$sql = 'SELECT DISTINCT metaname, meta.id FROM meta 
-			INNER JOIN metapost ON idmeta = meta.id 
-			INNER JOIN posts ON idpost = posts.id	
-			ORDER BY rand() LIMIT 5';
-	$result = $pdo->query($sql);
-}
+// /*Команда SELECT для тегов новостей*/
+// try
+// {
+// 	$sql = 'SELECT DISTINCT metaname, meta.id FROM meta 
+// 			INNER JOIN metapost ON idmeta = meta.id 
+// 			INNER JOIN posts ON idpost = posts.id	
+// 			ORDER BY rand() LIMIT 5';
+// 	$result = $pdo->query($sql);
+// }
 
-catch (PDOException $e)
-{
-	$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-	$headMain = 'Ошибка данных!';
-	$robots = 'noindex, nofollow';
-	$descr = '';
-	$error = 'Ошибка выбора тегов статей ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-	include 'error.html.php';
-	exit();
-}
+// catch (PDOException $e)
+// {
+// 	$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+// 	$headMain = 'Ошибка данных!';
+// 	$robots = 'noindex, nofollow';
+// 	$descr = '';
+// 	$error = 'Ошибка выбора тегов статей ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+// 	include 'error.html.php';
+// 	exit();
+// }
 
-/*Вывод результата в шаблон*/
-foreach ($result as $row)
-{
-	$metas_2[] =  array ('id' => $row['id'], 'meta' => $row['metaname']);
-}
+// /*Вывод результата в шаблон*/
+// foreach ($result as $row)
+// {
+// 	$metas_2[] =  array ('id' => $row['id'], 'meta' => $row['metaname']);
+// }
 
-/*Команда SELECT для тегов промоушена*/
-try
-{
-	$sql = 'SELECT DISTINCT metaname, meta.id FROM meta 
-			INNER JOIN metapost ON idmeta = meta.id 
-			INNER JOIN promotion ON idpromotion = promotion.id	
-			ORDER BY rand() LIMIT 5';
-	$result = $pdo->query($sql);
-}
+// /*Команда SELECT для тегов промоушена*/
+// try
+// {
+// 	$sql = 'SELECT DISTINCT metaname, meta.id FROM meta 
+// 			INNER JOIN metapost ON idmeta = meta.id 
+// 			INNER JOIN promotion ON idpromotion = promotion.id	
+// 			ORDER BY rand() LIMIT 5';
+// 	$result = $pdo->query($sql);
+// }
 
-catch (PDOException $e)
-{
-	$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
-	$headMain = 'Ошибка данных!';
-	$robots = 'noindex, nofollow';
-	$descr = '';
-	$error = 'Ошибка выбора тегов статей ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
-	include 'error.html.php';
-	exit();
-}
+// catch (PDOException $e)
+// {
+// 	$title = 'ImagozCMS | Ошибка данных!';//Данные тега <title>
+// 	$headMain = 'Ошибка данных!';
+// 	$robots = 'noindex, nofollow';
+// 	$descr = '';
+// 	$error = 'Ошибка выбора тегов статей ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
+// 	include 'error.html.php';
+// 	exit();
+// }
 
-/*Вывод результата в шаблон*/
-foreach ($result as $row)
-{
-	$metas_3[] =  array ('id' => $row['id'], 'meta' => $row['metaname']);
-}
-
+// /*Вывод результата в шаблон*/
+// foreach ($result as $row)
+// {
+// 	$metas_3[] =  array ('id' => $row['id'], 'meta' => $row['metaname']);
+// }
 
 /*Вывод топ-5*/
 

@@ -13,6 +13,8 @@ if (loggedIn())
 /*Загрузка статей по тематике*/
 if (isset ($_GET['metaid']))
 {
+	$idCategory = $_GET['metaid'];
+
 	/*Подключение к базе данных*/
 	include MAIN_FILE . '/includes/db.inc.php';
 	

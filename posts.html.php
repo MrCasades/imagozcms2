@@ -38,27 +38,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 		 <?php endforeach; ?>
 	</div>	
 	<div class="for_allposts_link"><p align = "center"><a href="./viewallnews/" style = "color: white">Все новости</a></p></div>
-	  
-	 <div>
-		 <table cellspacing="5">
-		 <tr>
-		  <td valign="top"><label for = "meta">Облако тегов:</label></td>
-			   <?php if (empty($metas_1))
-		 {
-			 echo '<p align = "center">Нет тегов</p>';
-		 }
-		 
-		 else
-		
-		foreach ($metas_1 as $meta): ?> 	  
-				<td><div>	 
-					<strong><a href="./viewallmetas/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
-				</div></td> 	
-				<?php endforeach; ?>
-		  </tr>
-		 </table>
-		</div>
-	 	 
+	  	 
 	 <h4 align = "center">Топ-5 новостей</h4>
 	 <div class="<?php echo $columns_tn;?>">
 	 <?php if (empty ($newsInTOP))
@@ -143,6 +123,26 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 		 <?php endforeach; ?>
 	</div>	
 	<div class="for_allposts_link"><p align = "center"><a href="./viewallrecommpost/" style = "color: white">Все рекомендации</a></p></div>
+
+	<div align = "center">
+		 <table cellspacing="5">
+		 <tr>
+		  <td valign="top"><label for = "meta">Облако тегов:</label></td>
+			   <?php if (empty($metas_1))
+		 {
+			 echo '<p align = "center">Нет тегов</p>';
+		 }
+		 
+		 else
+		
+		foreach ($metas_1 as $meta): ?> 	  
+				<td><div>	 
+					<strong><a href="./viewallmetas/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
+				</div></td> 	
+				<?php endforeach; ?>
+		  </tr>
+		 </table>
+	</div>
 	 
 	 <?php
 	 /*Загрузка компонента магазина*/
@@ -239,27 +239,7 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 		 <?php endforeach; ?>
 		 <div class="for_allposts_link"><p align = "center"><a href="./viewallpromotion/" style="color: white">Весь промоушен</a></p></div>
 			
-		<div>
-		 <table cellspacing="5">
-		 <tr>
-		  <td valign="top"><label for = "meta">Теги:</label></td>
-			   <?php if (empty ($metas_3))
-		 {
-			 echo '<p align = "center">Нет тегов</p>';
-		 }
-		 
-		 else
-		
-		foreach ($metas_3 as $meta): ?> 	  
-				<td><div>	 
-					<strong><a href="./viewmetapromotion/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
-				</div></td> 	
-				<?php endforeach; ?>
-		  </tr>
-		 </table>
-		</div>	
-			
-		<h4 align = "center">Топ-5 промоушен</h4>
+	 <h4 align = "center">Топ-5 промоушен</h4>
 	 <div class="<?php echo $columns_tpr;?>">
 	 <?php if (empty($promotionsTOP))
 		 {
@@ -352,28 +332,8 @@ include_once __DIR__ . '/admin/adminnews.inc.html.php';
 			</div>			
 		 <?php endforeach; ?>
 		 <div class="for_allposts_link"><p align = "center"><a href="./viewallposts/" style="color: white">Все статьи</a></p></div>
-		
-		<div>
-		 <table cellspacing="5">
-		 <tr>
-		  <td valign="top"><label for = "meta">Теги:</label></td>
-			   <?php if (empty ($metas_2))
-		 {
-			 echo '<p align = "center">Нет тегов</p>';
-		 }
-		 
-		 else
-		
-		foreach ($metas_2 as $meta): ?> 	  
-				<td><div>	 
-					<strong><a href="./viewmetapost/?metaid=<?php echo $meta['id']; ?>"> <strong><?php echomarkdown ($meta['meta']); ?></strong></a></strong>	 
-				</div></td> 	
-				<?php endforeach; ?>
-		  </tr>
-		 </table>
-		</div>	
-			
-		<h4 align = "center">Топ-5 статей</h4>
+				
+	<h4 align = "center">Топ-5 статей</h4>
 	 <div class="<?php echo $columns_tp;?>">
 	 <?php if (empty ($postsTOP))
 		 {
