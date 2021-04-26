@@ -78,9 +78,9 @@ if (isset ($_GET['id']))
 	$robots = 'all';
 	$descr = $row['description'];
 	$authorComment = '';
-	$jQuery = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
-	$scriptJScode = '<script src="script.js"></script>
-					 <script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+	//$jQuery = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>';
+	$scriptJScode = '<script src="//'.MAIN_URL.'/js/jquery-1.min.js"></script>
+					 <script src="script.js"></script>
 					 <script src="//'.MAIN_URL.'/js/bootstrap-markdown.js"></script>
 					 <script src="//'.MAIN_URL.'/js/bootstrap.min.js"></script>';//добавить код JS
 	
@@ -223,7 +223,7 @@ if (isset ($_GET['id']))
 	
 	try
 	{
-		$sql = 'SELECT * FROM votedauthor WHERE idauthor = '.$selectedAuthor.' AND idpost = '.$votedPost;
+		$sql = 'SELECT idauthor, idpost FROM votedauthor WHERE idauthor = '.$selectedAuthor.' AND idpost = '.$votedPost;
 		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
@@ -445,7 +445,7 @@ if (isset ($_GET['id']))
 	/*Определение количества статей*/
 	try
 	{
-		$sql = "SELECT count(*) AS all_articles FROM comments WHERE idpost = ".$idPost;
+		$sql = "SELECT count(idpost) AS all_articles FROM comments WHERE idpost = ".$idPost;
 		$result = $pdo->query($sql);
 	}
 	
