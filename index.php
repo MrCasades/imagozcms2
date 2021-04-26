@@ -25,9 +25,9 @@ include MAIN_FILE . '/includes/db.inc.php';
 
 try
 {
-	$sql = 'SELECT posts.id AS postid, author.id AS idauthor, post, posttitle, imghead, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
-			INNER JOIN author ON idauthor = author.id 
-			INNER JOIN category ON idcategory = category.id 
+	$sql = 'SELECT p.id AS postid, a.id AS idauthor, post, posttitle, imghead, imgalt, postdate, authorname, c.id AS categoryid, categoryname FROM posts p 
+			INNER JOIN author a ON idauthor = a.id 
+			INNER JOIN category c ON idcategory = c.id 
 			WHERE premoderation = "YES" AND zenpost = "NO" AND recommendationdate ORDER BY recommendationdate DESC LIMIT 4';//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
@@ -87,8 +87,8 @@ $columns_n = count ($newsIn) > 1 ? 'columns' : 'columns_f1';//подсчёт м�
 /*Команда SELECT для облака тегов*/
 try
 {
-	$sql = 'SELECT DISTINCT metaname, meta.id FROM meta 
-			INNER JOIN metapost ON idmeta = meta.id 	
+	$sql = 'SELECT DISTINCT metaname, m.id FROM meta m 
+			INNER JOIN metapost ON idmeta = m.id 	
 			ORDER BY rand() LIMIT 5';
 	$result = $pdo->query($sql);
 }
@@ -339,10 +339,10 @@ else
 
 try
 {
-	$sql = 'SELECT posts.id AS postid, post, posttitle, imghead, imgalt, postdate, authorname, category.id AS categoryid, categoryname 
-			FROM category 
-			INNER JOIN posts ON idcategory = category.id
-			INNER JOIN author ON idauthor = author.id			
+	$sql = 'SELECT p.id AS postid, post, posttitle, imghead, imgalt, postdate, authorname, c.id AS categoryid, categoryname 
+			FROM category c
+			INNER JOIN posts p ON idcategory = c.id
+			INNER JOIN author a ON idauthor = a.id			
 			WHERE categoryname = "Изображение дня" AND premoderation = "YES" AND zenpost = "NO" ORDER BY postdate DESC LIMIT 1';//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
@@ -370,9 +370,9 @@ foreach ($result as $row)
 /*Команда SELECT*/
 try
 {
-	$sql = 'SELECT promotion.id AS promotionid, author.id AS idauthor, promotion, promotiontitle, imghead, imgalt, promotion.www, promotiondate, authorname, category.id AS categoryid, categoryname FROM promotion 
-			INNER JOIN author ON idauthor = author.id 
-			INNER JOIN category ON idcategory = category.id 
+	$sql = 'SELECT pr.id AS promotionid, a.id AS idauthor, promotion, promotiontitle, imghead, imgalt, pr.www, promotiondate, authorname, c.id AS categoryid, categoryname FROM promotion pr
+			INNER JOIN author a ON idauthor = a.id 
+			INNER JOIN category c ON idcategory = c.id 
 			WHERE premoderation = "YES" ORDER BY promotiondate DESC LIMIT 7';//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
@@ -400,9 +400,9 @@ foreach ($result as $row)
 /*Команда SELECT*/
 try
 {
-	$sql = 'SELECT posts.id AS postid, author.id AS idauthor, post, posttitle, imghead, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
-			INNER JOIN author ON idauthor = author.id 
-			INNER JOIN category ON idcategory = category.id 
+	$sql = 'SELECT p.id AS postid, a.id AS idauthor, post, posttitle, imghead, imgalt, postdate, authorname, c.id AS categoryid, categoryname FROM posts p
+			INNER JOIN author a ON idauthor = a.id 
+			INNER JOIN category c ON idcategory = c.id 
 			WHERE premoderation = "YES" ORDER BY postdate DESC LIMIT 7';//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
