@@ -33,9 +33,9 @@ include MAIN_FILE . '/includes/db.inc.php';
 
 try
 {
-	$sql = 'SELECT newsblock.id AS newsid, news, author.id AS authorid, newstitle, imghead, imgalt, newsdate, authorname, category.id AS categoryid, categoryname FROM newsblock 
-			INNER JOIN author ON idauthor = author.id 
-			INNER JOIN category ON idcategory = category.id 
+	$sql = 'SELECT n.id AS newsid, news, a.id AS authorid, newstitle, imghead, imgalt, newsdate, authorname, c.id AS categoryid, categoryname FROM newsblock n 
+			INNER JOIN author a ON idauthor = a.id 
+			INNER JOIN category c ON idcategory = c.id 
 			WHERE premoderation = "YES" ORDER BY newsdate DESC LIMIT '.$shift.' ,'.$onPage;//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
@@ -62,8 +62,9 @@ foreach ($result as $row)
 /*Определение количества статей*/
 try
 {
-	$sql = "SELECT count(*) AS all_articles FROM newsblock WHERE premoderation = 'YES'";
-	$result = $pdo->query($sql);
+	$sql = "SELECT count(id) AS all_articles FROM newsblock WHERE premoderation = 'YES'";
+	$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+	$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 }
 
 catch (PDOException $e)
@@ -76,13 +77,10 @@ catch (PDOException $e)
 	include 'error.html.php';
 	exit();
 }
-	
-foreach ($result as $row)
-{
-	$numPosts[] = array('all_articles' => $row['all_articles']);
-}
-	
-$countPosts = $row["all_articles"];
+
+$row = $s -> fetch();
+
+$countPosts = $row['all_articles'];			
 $pagesCount = ceil($countPosts / $onPage);
 
 include 'viewallnews.html.php';

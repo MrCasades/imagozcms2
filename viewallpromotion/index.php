@@ -29,9 +29,9 @@ $shift = ($page - 1) * $onPage;// (номер страницы - 1) * стате
 /*Команда SELECT*/
 try
 {
-	$sql = 'SELECT promotion.id AS promotionid, promotion, author.id AS authorid, promotiontitle, promotion.www, imghead, imgalt, promotiondate, authorname, category.id AS categoryid, categoryname FROM promotion 
-			INNER JOIN author ON idauthor = author.id 
-			INNER JOIN category ON idcategory = category.id 
+	$sql = 'SELECT pr.id AS promotionid, promotion, a.id AS authorid, promotiontitle, pr.www, imghead, imgalt, promotiondate, authorname, c.id AS categoryid, categoryname FROM promotion pr 
+			INNER JOIN author a ON idauthor = a.id 
+			INNER JOIN category c ON idcategory = c.id 
 			WHERE premoderation = "YES" ORDER BY promotiondate DESC LIMIT '.$shift.' ,'.$onPage;//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
@@ -59,7 +59,8 @@ foreach ($result as $row)
 try
 {
 	$sql = "SELECT count(*) AS all_articles FROM promotion WHERE premoderation = 'YES'";
-	$result = $pdo->query($sql);
+	$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+	$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 }
 
 catch (PDOException $e)
@@ -73,10 +74,7 @@ catch (PDOException $e)
 	exit();
 }
 	
-foreach ($result as $row)
-{
-	$numPosts[] = array('all_articles' => $row['all_articles']);
-}
+$row = $s -> fetch();
 	
 $countPosts = $row["all_articles"];
 $pagesCount = ceil($countPosts / $onPage);
