@@ -499,13 +499,11 @@ if (isset ($_GET['id']))
 	}
 	
 	/*Определение количества статей*/
-	$sql = "SELECT count(*) AS all_articles FROM comments WHERE idaccount = ".$idAuthor;
-	$result = $pdo->query($sql);
+	$sql = "SELECT count(idaccount) AS all_articles FROM comments WHERE idaccount = ".$idAuthor;
+	$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+	$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	
-	foreach ($result as $row)
-	{
-			$numPosts[] = array('all_articles' => $row['all_articles']);
-	}
+	$row = $s -> fetch();
 	
 	$countPosts = $row["all_articles"];
 	$pagesCount = ceil($countPosts / $onPage);
