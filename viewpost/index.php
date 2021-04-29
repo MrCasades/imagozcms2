@@ -460,6 +460,8 @@ if (isset ($_GET['id']))
 		include 'error.html.php';
 		exit();
 	}
+
+	$row = $s -> fetch();
 		
 	$countPosts = $row["all_articles"];
 	$pagesCount = ceil($countPosts / $onPage);

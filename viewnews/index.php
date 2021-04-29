@@ -406,6 +406,8 @@ if (isset ($_GET['id']))
 	$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
 	$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	
+	$row = $s -> fetch();
+
 	$countPosts = $row["all_articles"];
 	$pagesCount = ceil($countPosts / $onPage);
 	
