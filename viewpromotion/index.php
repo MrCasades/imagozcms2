@@ -396,7 +396,8 @@ if (isset ($_GET['id']))
 	try
 	{
 		$sql = "SELECT count(idpromotion) AS all_articles FROM comments WHERE idpromotion = ".$idPromotion;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 	
 	catch (PDOException $e)
@@ -408,11 +409,6 @@ if (isset ($_GET['id']))
 		$error = 'Ошибка подсчёта комментариев ' . $e -> getMessage();// вывод сообщения об ошибке в переменой $e
 		include 'error.html.php';
 		exit();
-	}
-	
-	foreach ($result as $row)
-	{
-			$numPosts[] = array('all_articles' => $row['all_articles']);
 	}
 	
 	$countPosts = $row["all_articles"];
