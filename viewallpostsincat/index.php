@@ -19,9 +19,9 @@ if (isset ($_GET['id']))
 {
 		
 	$idCategory = $_GET['id'];
-	$selectPost = 'SELECT posts.id AS postid, author.id AS authorid, post, posttitle, imghead, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
-			INNER JOIN author ON idauthor = author.id 
-			INNER JOIN category ON idcategory = category.id 
+	$selectPost = 'SELECT p.id AS postid, a.id AS authorid, post, posttitle, imghead, imgalt, postdate, authorname, c.id AS categoryid, categoryname FROM posts p
+			INNER JOIN author a ON p.idauthor = a.id 
+			INNER JOIN category c ON p.idcategory = category.id 
 			WHERE premoderation = "YES" AND zenpost = "NO" AND idcategory = ';
 	$limit = ' ORDER BY postdate DESC LIMIT ';		
 			
@@ -85,13 +85,14 @@ if (isset ($_GET['id']))
 	/*Определение количества статей*/
 	try
 	{
-		$sql = "SELECT count(*) AS all_articles FROM posts
-				INNER JOIN category
-				ON idcategory = category.id
-				INNER JOIN author
-				ON idauthor = author.id 
+		$sql = "SELECT count(p.id) AS all_articles FROM posts p
+				INNER JOIN category c
+				ON idcategory = c.id
+				INNER JOIN author a
+				ON idauthor = a.id 
 				WHERE premoderation = 'YES' AND zenpost = 'NO' AND idcategory = ".$idCategory;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 
 	catch (PDOException $e)
@@ -105,10 +106,7 @@ if (isset ($_GET['id']))
 		exit();
 	}
 	
-	foreach ($result as $row)
-	{
-		$numPosts[] = array('all_articles' => $row['all_articles']);
-	}
+	$row = $s -> fetch();
 	
 	$countPosts = $row["all_articles"];
 	$pagesCount = ceil($countPosts / $onPage);

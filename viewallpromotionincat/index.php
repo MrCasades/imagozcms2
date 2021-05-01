@@ -19,11 +19,11 @@ if (isset ($_GET['id']))
 {
 		
 	$idCategory = $_GET['id'];
-	$selectPost = 'SELECT promotion.id AS promotionid, author.id AS authorid,  promotion, promotiontitle, promotiondate, imghead, imgalt, promotion.www, idauthor, idcategory, category.id AS categoryid, categoryname, authorname FROM promotion
-			INNER JOIN category
-			ON idcategory = category.id
-			INNER JOIN author
-			ON idauthor = author.id 
+	$selectPost = 'SELECT pr.id AS promotionid, a.id AS authorid,  promotion, promotiontitle, promotiondate, imghead, imgalt, pr.www, idauthor, idcategory, c.id AS categoryid, categoryname, authorname FROM promotion pr
+			INNER JOIN category c
+			ON pr.idcategory = c.id
+			INNER JOIN author a
+			ON pr.idauthor = a.id 
 			WHERE premoderation = "YES" AND idcategory = ';
 	$limit = ' ORDER BY promotiondate DESC LIMIT ';		
 			
@@ -87,13 +87,14 @@ if (isset ($_GET['id']))
 	/*Определение количества статей*/
 	try
 	{
-		$sql = "SELECT count(*) AS all_articles FROM promotion
-				INNER JOIN category
-				ON idcategory = category.id
-				INNER JOIN author
-				ON idauthor = author.id 
+		$sql = "SELECT count(pr.id) AS all_articles FROM promotion pr
+				INNER JOIN category c
+				ON idcategory = c.id
+				INNER JOIN author a
+				ON idauthor = a.id 
 				WHERE premoderation = 'YES' AND idcategory = ".$idCategory;
-		$result = $pdo->query($sql);
+		$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+		$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 	}
 
 	catch (PDOException $e)
@@ -107,10 +108,7 @@ if (isset ($_GET['id']))
 		exit();
 	}
 	
-	foreach ($result as $row)
-	{
-		$numPosts[] = array('all_articles' => $row['all_articles']);
-	}
+	$row = $s -> fetch();
 	
 	$countPosts = $row["all_articles"];
 	$pagesCount = ceil($countPosts / $onPage);
