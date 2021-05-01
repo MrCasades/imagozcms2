@@ -21,7 +21,7 @@ if (isset ($_GET['id']))
 	$idCategory = $_GET['id'];
 	$selectPost = 'SELECT p.id AS postid, a.id AS authorid, post, posttitle, imghead, imgalt, postdate, authorname, c.id AS categoryid, categoryname FROM posts p
 			INNER JOIN author a ON p.idauthor = a.id 
-			INNER JOIN category c ON p.idcategory = category.id 
+			INNER JOIN category c ON p.idcategory = c.id 
 			WHERE premoderation = "YES" AND zenpost = "NO" AND idcategory = ';
 	$limit = ' ORDER BY postdate DESC LIMIT ';		
 			
