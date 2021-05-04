@@ -29,9 +29,9 @@ $shift = ($page - 1) * $onPage;// (номер страницы - 1) * стате
 /*Команда SELECT*/
 try
 {
-	$sql = 'SELECT posts.id AS postid, post, author.id AS authorid, posttitle, imghead, imgalt, postdate, authorname, category.id AS categoryid, categoryname FROM posts 
-			INNER JOIN author ON idauthor = author.id 
-			INNER JOIN category ON idcategory = category.id 
+	$sql = 'SELECT p.id AS postid, post, a.id AS authorid, posttitle, imghead, imgalt, postdate, authorname, c.id AS categoryid, categoryname FROM posts p
+			INNER JOIN author a ON idauthor = a.id 
+			INNER JOIN category c ON idcategory = c.id 
 			WHERE premoderation = "YES" AND zenpost = "NO" AND recommendationdate is not null ORDER BY recommendationdate DESC LIMIT '.$shift.' ,'.$onPage;//Вверху самое последнее значение
 	$result = $pdo->query($sql);
 }
@@ -58,8 +58,9 @@ foreach ($result as $row)
 /*Определение количества статей*/
 try
 {
-	$sql = "SELECT count(*) AS all_articles FROM posts WHERE premoderation = 'YES' AND zenpost = 'NO' AND recommendationdate is not null";
-	$result = $pdo->query($sql);
+	$sql = "SELECT count(id) AS all_articles FROM posts WHERE premoderation = 'YES' AND zenpost = 'NO' AND recommendationdate is not null";
+	$s = $pdo->prepare($sql);// подготавливает запрос для отправки в бд и возвр объект запроса присвоенный переменной
+	$s -> execute();// метод дает инструкцию PDO отправить запрос MySQL
 }
 
 catch (PDOException $e)
@@ -73,10 +74,7 @@ catch (PDOException $e)
 	exit();
 }
 	
-foreach ($result as $row)
-{
-	$numPosts[] = array('all_articles' => $row['all_articles']);
-}
+$row = $s -> fetch();
 	
 $countPosts = $row["all_articles"];
 $pagesCount = ceil($countPosts / $onPage);
